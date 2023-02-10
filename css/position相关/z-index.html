@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style type="text/css">
+    .insert {
+      position: relative;
+      z-index: 100;
+      background: green;
+      width: 300px;
+      height: 300px;
+      top: 100px;
+    }
+
+    .parent {
+      /*position:relative;
+			z-index: 1000;*/
+      width: 200px;
+      height: 200px;
+      /*left:0;
+			top:-50px;*/
+      border: 1px solid #eee;
+    }
+
+    .subbottom {
+      position: relative;
+      z-index: 50;
+      width: 200px;
+      height: 200px;
+      background: red;
+      top: -100px;
+      left: 0;
+
+    }
+
+    .subtop {
+      position: relative;
+      z-index: 1100;
+      width: 100px;
+      height: 100px;
+      left: 0;
+      top: 0;
+      background: blue;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="insert"></div>
+  <div class="parent">
+    <div class="subtop"></div>
+    <div class="subbottom"></div>
+  </div>
+</body>
+
+</html>

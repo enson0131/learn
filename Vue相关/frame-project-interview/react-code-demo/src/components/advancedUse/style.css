@@ -1,0 +1,12 @@
+.modal {
+    position: fixed;
+    width: 300px;
+    height: 100px;
+    top: 100px;
+    left: 50%;
+    margin-left: -150px;
+    background-color: #000;
+    /* opacity: .2; */
+    color: #fff;
+    text-align: center;
+}

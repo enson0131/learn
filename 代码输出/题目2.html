@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    async function async1() {
+  console.log('async1 start')
+  await async2()
+  console.log('async1 end')
+}
+
+async function async2() {
+  console.log('async2 start')
+  await async3()
+  console.log('async2 end')
+}
+
+async function async3() {
+  console.log('async3 start')
+}
+
+setTimeout(function () {
+  console.log('setTimeout0')
+}, 0)
+
+console.log('start')
+
+async1()
+
+new Promise(function (resolve) {
+  console.log('Promise1')
+  resolve()
+}).then(function () {
+  console.log('Promise2')
+})
+
+console.log('all end')
+
+// start
+// async1 start
+// async2 start
+// async3 start
+// Promise1
+// all end
+// console.log("async2 end");
+// console.log("Promise2");
+// console.log("async1 end");
+// console.log('setTimeout0');
+
+  </script>
+</body>
+</html>

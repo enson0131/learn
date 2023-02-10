@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #btn {
+            width: 500px;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div id="btn"></div>
+    <script>
+        const a = document.getElementById('btn');
+        // 队列 先执行fn1 -> 在执行fn2
+        a.addEventListener('click', (event) => {
+            console.log('fn1');
+        }); 
+        a.addEventListener('click', (event) => {
+            console.log('fn2')
+        });
+        
+    </script>
+</body>
+</html>

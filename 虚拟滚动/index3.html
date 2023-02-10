@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>虚拟滚动 - 固定高度2</title>
+  <style>
+    #app {
+      position: relative;
+      height: 600px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+    .height-fixed__scroll-runway {
+      display: block;
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      transition: transform 0.2s;
+    }
+    .item {
+      position: absolute;
+      contain: layout;
+      will-change: transform;
+      display: block;
+      width: 100%;
+      height: 100px;
+      box-sizing: border-box;
+      border-radius: 16px;
+      border: 1px solid sienna;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" @scroll="handleScroll" ref="scroller">
+    <ul ref="scroller" class="height-dynamic" @scroll="handleScroll">
+         <!-- 哨兵元素 -->
+        <li class="height-fixed__scroll-runway" :style="calMaxHeight"></li>
+        <item
+          class="height-dynamic__item"
+          v-for="item in visibleData"
+          ref="items"
+          :data="item"
+          :fixed-height="false"
+          :key="index"
+          :index="index"
+          :style="`transform: translate(0, ${cachedScrollY[index]}px)`"
+          @size-change="handleSizeChange"
+        />
+    </ul>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script>
+    const BUFFER_SIZE = 3;
+    const FIXED_HEIGHT = 100;
+    const VISIBLE_COUNT = 600 / FIXED_HEIGHT;
+    const ESTIMATED_HEIGHT = 80; // 预估高度80
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          listData: [],
+          maxScrollHeight: 100 * 100000, // 可滚动高度
+          canShowHeight: 600, // 视口高度
+          firstAttachedItem: 0,
+          lastAttachedItem: 0,
+          anchorItem: { index: 0, offset: 0 }, // 「基准元素」初始值
+          lastScrollTop: 0, // 记录上次滚动事件时「滚动容器」的「滚动高度」
+          visibleData: [],
+          cachedHeight: [], // 缓存的高度
+          cachedScrollY: [], // 缓存的ScrollY
+        }
+      },
+      methods: {
+        // 滚动高度
+        scrollRunwayEnd() {
+            // 根据当前已渲染的元素高度，求得当前所有元素总高度
+            const maxScrollY = this.cachedHeight.reduce((sum, h) => (sum += h || ESTIMATED_HEIGHT), 0);
+            // 根据当前所有元素总高度，求得元素平均高度
+            const currentAverageH = maxScrollY / this.cachedHeight.length;
+            // 返回估算高度
+            return maxScrollY + (this.listData.length - this.cachedHeight.length) * currentAverageH;
+        },
+        handleScroll() {
+            const delta = this.$refs.scroller.scrollTop - this.lastScrollTop;
+            this.lastScrollTop = this.$refs.scroller.scrollTop;
+            // 1.更新「锚点元素」
+            this.updateAnchorItem(delta);
+            // 更新「头挂载元素」→「尾挂载元素」→「可视元素」
+            this.updateVisibleData();
+         },
+        async updateAnchorItem(delta) {
+            const lastIndex = this.anchorItem.index;
+            const lastOffset = this.anchorItem.offset;
+            delta += lastOffset;
+
+            let index = lastIndex;
+            const isPositive = delta >= 0;
+            // 判断滚动方向
+            if (isPositive) {
+                // 用 delta 一直减去从「锚点元素」开始向下方向的「可视元素」高度，每减一次 index 前进一位
+                while (index < this.listData.length && delta > (this.cachedHeight[index] || ESTIMATED_HEIGHT)) {
+                    // 当 this.cachedHeight[index] 不存在时，说明可能被快速拖动滚动条而略过渲染，此时需要填充估计高度
+                    if (!this.cachedHeight[index]) {
+                        this.$set(this.cachedHeight, index, ESTIMATED_HEIGHT);
+                    }
+                    delta -= this.cachedHeight[index];
+                    index++;
+                }
+                if (index >= this.listData.length) {
+                    this.anchorItem = { index: this.listData.length - 1, offset: 0 };
+                } else {
+                    this.anchorItem = { index, offset: delta };
+                }
+            } else {
+                    // 用 delta 一直叠加从「锚点元素」开始向上方向的「可视元素」高度，每加一次 index 后退一位
+                    while (delta < 0) {
+                        // 当 this.cachedHeight[index] 不存在时，说明可能被快速拖动滚动条而略过渲染，此时需要填充估计高度
+                        if (!this.cachedHeight[index - 1]) {
+                            this.$set(this.cachedHeight, index - 1, ESTIMATED_HEIGHT);
+                        }
+                        delta += this.cachedHeight[index - 1];
+                        index--;
+                    }
+                    if (index < 0) {
+                        this.anchorItem = { index: 0, offset: 0 };
+                    } else {
+                        this.anchorItem = { index, offset: delta };
+                }
+            }
+            // 修正拖动过快导致的滚动到顶端滚动条不足的偏差
+            if (this.cachedScrollY[this.firstAttachedItem] <= -1) {
+                console.log('revising insufficient');
+                this.revising = true;
+                // 需要的修正的滚动高度为「锚点元素」之前的元素总高度 + 「锚点元素」的 offset
+                const actualScrollTop =
+                this.cachedHeight.slice(0, Math.max(0, this.anchorItem.index)).reduce((sum, h) => (sum += h), 0) + this.anchorItem.offset;
+                this.$refs.scroller.scrollTop = actualScrollTop;
+                this.lastScrollTop = this.$refs.scroller.scrollTop;
+                if (this.$refs.scroller.scrollTop === 0) {
+                    this.anchorItem = { index: 0, offset: 0 };
+                }
+                // 更改了 lastScrollTop 后，需要重新计算「可视元素」的 scrollY
+                this.calItemScrollY();
+                this.revising = false;
+            }
+        },
+        updateVisibleData() {
+            // 2.更新「头挂载元素」，注意不能小于 0
+            const start = (this.firstAttachedItem = Math.max(0, this.anchorItem.index - BUFFER_SIZE));
+            // 3.更新「尾挂载元素」
+            this.lastAttachedItem = this.firstAttachedItem + VISIBLE_COUNT + BUFFER_SIZE * 2;
+            const end = Math.min(this.lastAttachedItem, this.listData.length);
+            // 4.更新「可视元素」
+            this.visibleData = this.listData.slice(start, end);
+        },
+        handleSizeChange(index) {
+            this.calItemScrollY();
+        },
+        // 计算每一个「可视元素」的 scrollY
+        async calItemScrollY() {
+            await this.$nextTick();
+            // 修正 vue diff 算法导致「可视元素」顺序不正确的问题
+            this.$refs.items.sort((a, b) => a.index - b.index);
+
+            // 获取「锚点元素」在「可视元素」中的序号
+            const anchorDomIndex = this.$refs.items.findIndex(item => item.index === this.anchorItem.index);
+            const anchorDom = this.$refs.items[anchorDomIndex];
+            const anchorDomHeight = anchorDom.$el.getBoundingClientRect().height;
+
+            // 通过「滚动容器」的「当前滚动高度」和「锚点元素」的 offset 算出其 scrollY
+            this.$set(this.cachedScrollY, this.anchorItem.index, this.$refs.scroller.scrollTop - this.anchorItem.offset);
+            this.$set(this.cachedHeight, this.anchorItem.index, anchorDomHeight);
+
+            // 计算 anchorItem 后面的列表元素 scrollY
+            for (let i = anchorDomIndex + 1; i < this.$refs.items.length; i++) {
+                const item = this.$refs.items[i];
+                const { height } = item.$el.getBoundingClientRect();
+                this.$set(this.cachedHeight, item.index, height);
+                // 当前元素的 scrollY 是上一个元素的 scrollY + 上一个元素的高度
+                const scrollY = this.cachedScrollY[item.index - 1] + this.cachedHeight[item.index - 1];
+                this.$set(this.cachedScrollY, item.index, scrollY);
+            }
+            // 计算 anchorItem 前面的列表元素 scrollY
+            for (let i = anchorDomIndex - 1; i >= 0; i--) {
+                const item = this.$refs.items[i];
+                const { height } = item.$el.getBoundingClientRect();
+                this.$set(this.cachedHeight, item.index, height);
+                // 当前元素的 scrollY 是下一个元素的 scrollY - 当前元素的高度
+                const scrollY = this.cachedScrollY[item.index + 1] - this.cachedHeight[item.index];
+                this.$set(this.cachedScrollY, item.index, scrollY);
+            }
+            // 修正拖动过快导致的滚动到顶端有空余的偏差
+            if (this.cachedScrollY[0] > 0) {
+                console.log('revising redundant');
+                this.revising = true;
+                // 第一个列表元素的 cachedScrollY 即为多出的量
+                const delta = this.cachedScrollY[0];
+                const last = Math.min(this.lastAttachedItem, this.listData.length);
+                for (let i = 0; i < last; i++) {
+                    this.$set(this.cachedScrollY, i, this.cachedScrollY[i] - delta);
+                }
+                const scrollTop = this.cachedScrollY[this.anchorItem.index - 1] ? this.cachedScrollY[this.anchorItem.index - 1] + this.anchorItem.offset
+                : this.anchorItem.offset;
+                this.$refs.scroller.scrollTop = scrollTop;
+                this.lastScrollTop = this.$refs.scroller.scrollTop;
+                this.revising = false;
+            }
+        },
+        // ...
+        },
+      },
+      computed: {
+        // visibleData () {
+        //   // size: 可视区域能存放的item数量
+        //   const size = Math.ceil(this.canShowHeight / FIXED_HEIGHT);
+        //   const maxIndex = this.maxScrollHeight / FIXED_HEIGHT;
+        //   const startIndex =  Math.floor(this.currentScroll / FIXED_HEIGHT); // 初始start
+        //   const endIndex = startIndex + size > maxIndex ? maxIndex: startIndex + size;
+          
+        //   this.lastScrollTop = this.currentScroll;
+        //   this.topHeight = startIndex * FIXED_HEIGHT;
+        //   this.bottomHeight = this.maxScrollHeight - this.topHeight - this.canShowHeight;
+
+        //   return this.list.slice(startIndex - BUFFER_SIZE > 0 ? startIndex - BUFFER_SIZE : startIndex, endIndex + BUFFER_SIZE);
+        // },
+        calMaxHeight() {
+          return `transform: translate(0, ${this.maxScrollHeight}px)`;
+        }
+      },
+      created() {
+        for(let i = 1; i <= 100000; i++) {
+          this.listData.push({
+            value: i,
+            index: i - 1,
+          })
+        }
+      },
+      mounted () {
+          this.$nextTick(() => {
+              this.handleScroll();
+          })
+      }
+    })
+  </script>
+</body>
+</html>

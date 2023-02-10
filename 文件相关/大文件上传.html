@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大文件上传</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.bootcdn.net/ajax/libs/spark-md5/3.0.2/spark-md5.js"></script>
+    <script src="./vue.js"></script>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <upload></upload>
+    </div>
+    <script>
+        // 公共方法
+        function request ({
+            url,
+            method = "post",
+            data,
+            headers = {},
+            onProgress = e => e,
+            requestList
+        }) {
+            return new Promise(resolve => {
+                const xhr = new XMLHttpRequest();
+                xhr.open(method, url, async = true); // 第三个参数是async
+                xhr.upload.onprogress = onProgress; // 获取每个分片的进度
+                Object.keys(headers).forEach(key => {
+                    xhr.setRequestHeader(key, headers[key]);
+                })
+                xhr.send(data);
+                xhr.onload = e => {
+                    // 将请求成功的 xhr 从列表中删除
+                    if (requestList) {
+                        const xhrIndex = requestList.findIndex(item => item === xhr);
+                        requestList.splice(xhrIndex, 1);
+                    }
+
+                    resolve({
+                        data: e.target.response
+                    })
+                },
+
+                // 暴露当前 xhr 给外部
+                requestList?.push(xhr);
+            })
+        }
+    </script>
+    <script>
+        /*
+          总结:
+          1 可以利用 blob.prototype.slice 对文件进行切片, 使用 new FormData 的对象将数据传输给服务端
+
+          2 分片合并:
+            - 参数完成后，前端请求合并接口，服务端将分片进行合并
+            - 服务端根据分片数量，如果数量到达预期数据，则合并
+
+          3 断点续传: -> 前端/服务端需要有记忆功能
+            - 前端可以通过localStorage进行存储
+            - 服务端记录已上传的切片 hash, 前端每次上传前向服务端获取已上传的切片
+
+
+          
+          一些弊端:
+          1 如果分片数量比较多，并发一大堆HTTP请求会导致页面卡死，因此我们可以使用限制并发数的Promise思想去控制HTTP请求
+          2 并发上传中，报错如何重试，比如每个切片我们允许重试两次，三次再终止
+          3 由于文件大小不一，我们每个切片的大小设置成固定的也有点略显笨拙，我们可以参考TCP协议的慢启动策略， 设置一个初始大小，根据上传任务完成的时候，来动态调整下一个切片的大小， 确保文件切片的大小和当前网速匹配
+          4 文件碎片清理
+          
+        */
+
+        const SIZE = 1 * 1024; // 切片大小 1kb
+
+
+        const upload = Vue.extend({
+            name: 'upload',
+            template: `
+                <div>
+                    <input type="file" @change="handleFileChange">
+                    <div @click="handleUpload">上传</div>
+                    <div @click="handlePause">暂停</div>
+                    <div @click="handleResume">恢复</div>
+                </div>
+            `,
+            data () {
+                return {
+                    file: null,
+                    sliceData: [],
+                    worker: null,
+                    requestList: [],
+                    uploadedList: [],
+                    hash: null,
+                    fakeProgress: 0,
+                }
+            },
+            computed: {
+                allProgress () {
+                    if (!this.file || !this.sliceData.length) return 0;
+                    // 获取所有分片的大小
+                    const allSliceSize = this.sliceData
+                    .map(({chunk, percentage}) => (chunk.size * percentage))
+                    .reduce((pre, cur) => {
+                        return pre + cur;
+                    })
+                    this.fakeProgress =  (allSliceSize / this.file.size).toFixed(2);
+                }
+            },
+            watch: {
+                fakeProgress(newValue, oldValue) { // 目的是为了不被abort掉请求后
+                    this.fakeProgress = newValue > oldValue ? newValue : oldValue
+                }
+            },
+            methods: {
+                handleFileChange(e) {
+                    console.log(`handleFileChange`, e)
+                    const [ file ] = e.target.files;
+                    if (!file) return;
+                    
+                    this.file = file;
+                },
+                createFileChunk(file, size = SIZE) {
+                    const fileChunkList = [];
+                    let cur = 0;
+                    while(cur < file.size) {
+                        fileChunkList.push({
+                            file: file.slice(cur, cur + size)
+                        })
+                        cur = cur + size;
+                    }
+
+                    return fileChunkList;
+                },
+                async handleUpload() {
+                    console.log(`handleUpload`)
+                    if (!this.file) return;
+
+                    const fileChunkList = this.createFileChunk(this.file); // 分片
+
+                    this.hash = await this.calculateHash(fileChunkList);
+                    
+                    // const { shouldUpload, uploadedList } = await this.verifyUpload(this.hash);
+                    // if (!shouldUpload) {
+                    //    this.$message.success("秒传：上传成功");
+                    //    return;
+                    // }
+
+                    this.sliceData = fileChunkList.map(({ file }, index) => ({
+                        fileHash: this.hash,
+                        chunk: file,
+                        hash: this.file.name + "-" + index, // 文件名 数组下标
+                        index: index,
+                        percentage: 0,
+                        // percentage: uploadedList.includes(index) ? 1 : 0
+                    }))
+
+                    console.log(`this.sliceData`, this.sliceData);
+                    console.log(`this.hash`, this.hash);
+
+                    // tihis.uploadChunks(uploadedList);
+                },
+                async uploadChunks (uploadedList) {
+                    const requestList = this.sliceData
+                    .filter(({hash}) => uploadedList.includes(hash))
+                    .map(({chunk, hash, index}) => {
+                        const formData = new FormData();
+                        formData.append("chunk", chunk);
+                        formData.append("hash", hash);
+                        formData.append("fileName", this.file.name);
+                        return { formData, index };
+                    }).map(({formData, index}) => {
+                        return request({
+                            url,
+                            data: formData,
+                            onProgress: this.createProgressHandler(this.sliceData[index]),
+                            requestList: this.requestList,
+                        })
+                    })
+
+                    await Promise.all(requestList); // 并发分片
+
+                    // 分片合并
+                    if (uploadedList.length + requestList.length === this.sliceData.length) {
+                        await this.mergeRequest();
+                    }
+                },
+                /*
+                    合并分片
+                */
+                async mergeRequest() {
+                    await request({
+                        url,
+                        data: this.file.name
+                    })
+                },
+                /*
+                    计算每个分片的大小
+                */
+                createProgressHandler (sliceItem) {
+                    return e => {
+                        sliceItem.percentage = parseInt(String((e.loaded / e.total) * 100));
+                    };
+                },
+                /*
+                    计算每个文件的hash (通过web-worker)
+                */
+                calculateHash (fileChunkList) {
+                    return new Promise(resolve => {
+                        // 添加 worker 属性
+                        this.worker = new Worker("./hash.js"); // finish(还是阮一峰老师写得好): https://developer.mozilla.org/zh-CN/docs/Web/API/Web_Workers_API/Using_web_workers
+                        this.worker.postMessage({ fileChunkList });
+                        this.worker.onmessage = e => {
+                            console.log(`e`, e);
+                            const { hash } = e.data;
+                            resolve(hash);
+                        }
+                    })
+                },
+                /*
+                    除了使用 web Worker 也可以使用requestIdleCallback
+                */
+                calculateHashByIdle(chunks) {
+                    return new Promise(resolve => {
+                        const spark = new SparkMD5.ArrayBuffer();
+                        let count = 0;
+
+                        // 根据文件内容追加计算
+                        const appendToSpark = file => {
+                            return new Promise(resolve => {
+                                const reader = new FileReader();
+                                reader.readAsArrayBuffer(file);
+                                reader.onload = e => {
+                                    spark.append(e.target.result);
+                                    resolve();
+                                }
+                            })
+                        };
+
+                        const workLoop = async deadline => {
+                            // 有任务并且当前帧还没有结束
+                            while(count < chunks.length && deadline.timeRemaining() > 1) {
+                                await appendToSpark(chunks[count].file);
+                                count++;
+
+                                if (count < chunks.length) {
+                                    this.hashProgress = Number(
+                                        ((100 * count) / chunks.length).toFixed(2)
+                                    )
+                                } else {
+                                    this.hashProgress = 100;
+                                    resolve(spark.end())
+                                }
+                            }
+
+                            window.requestIdleCallback(workLoop);
+                        }
+
+                        window.requestIdleCallback(workLoop);
+                    })
+                },
+                /*
+                    抽样hash
+                */
+                calculateHashSample() {
+                    return new Promise(async resolve => {
+                        const spark = new SpeakMD5.ArrayBuffer();
+                        const reader = new FileReader();
+                        const file = this.file;
+                        const size = file.size;
+                        let offset = 2 * 1024 * 1024;
+
+                        let chunks = [file.slice(0, offset)];
+
+                        let cur = offset;
+
+                        while(cur < size) {
+                            // 最后一块
+                            if (cur + offset >= size) {
+                                chunks.push(file.slice(cur, cur + offset));
+                            } else {
+                                // 中间部分 前中后取俩个字节
+                                const mid = cur + offset / 2;
+                                const end = cur + offset;
+                                chunks.push(file.slice(cur, cur + 2));
+                                chunks.push(file.slice(mid, mid + 2));
+                                chunks.push(file.slice(end - 2, end));
+                            }
+
+                            cur = cur + offset;
+                        }
+                        
+                        const hash = await this.calculateHashByIdle(chunks)
+                        resolve(hash);
+
+                    })
+                },
+                // 带并发的请求
+                async sendRequest(forms, max = 4) {
+                    return new Promise((resolve) => {
+                        const len = forms.length;
+                        let idx = 0;
+                        let counter = 0;
+
+                        const start = async () => {
+                            // 有请求、有通道
+                            while(counter < len && max > 0) {
+                                max--; // 占用通道
+
+                                const form = forms[idx].form;
+                                const index = forms[idx].index;
+                                idx++;
+
+                                request({
+                                    url,
+                                    data: form,
+                                    onProgress: this.createProgressHandler(this.sliceData[index]),
+                                    requestList: this.requestList
+                                }).then(() => {
+                                    max++; // 释放通道
+                                    counter++;
+                                    if (counter === len) {
+                                        resolve();
+                                    } else {
+                                        start();
+                                    }
+                                })
+                            }
+                        }
+
+                        start();
+                    })
+                },
+                // 并发重试
+                async sendRequestCanRetry(forms, max = 4) {
+                    return new Promise((resolve, reject) => {
+                        const len = forms.length;
+                        let counter = 0;
+                        const retryArr = [];
+
+                        const start = () => {
+                            while(counter < len && max > 0) {
+                                max--;
+                                const i = forms.findIndex(v=> v.status === Status.wait || v.status === Status.error); // 等待或者error
+                                forms[i] = Status.uploading;
+                                const form = forms[i].form;
+                                const index = forms[i].index;
+
+                                if (typeof retryArr[index] === 'number') {
+                                    console.log(index, '重试')
+                                }
+                                
+                                request({
+                                    url,
+                                    data: form,
+                                    onProgress: this.createProgressHandler(this.sliceData[index]),
+                                    requestList: this.requestList
+                                }).then(() => {
+                                    forms[i].status = Status.done;
+                                    max++;
+                                    counter++;
+                                    // forms[counter].done=true
+                                    if (counter === len) {
+                                        resolve();
+                                    } else {
+                                        start();
+                                    }
+                                }).catch(()=>{
+                                    // 初始值
+                                    urls[i].status = Status.error
+                                    if(typeof retryArr[index] !== 'number'){
+                                        retryArr[index] = 0
+                                    }
+                                    // 次数累加
+                                    retryArr[index]++
+                                    // 一个请求报错3次的
+                                    if(retryArr[index] >= 2){
+                                        return reject() // 考虑abort所有别的
+                                    }
+                                    console.log(index, retryArr[index],'次报错')
+                                    // 3次报错以内的 重启
+                                    this.chunks[index].progress = -1 // 报错的进度条
+                                    max++; // 释放当前占用的通道，但是counter不累加
+                                    
+                                    start()
+                                })
+                            }
+                        }
+
+                        start();
+                    })
+                },
+                async uploadChunks(uploadedList = []) {
+                    // 并发控制请求，避免请求过多导致浏览器挂掉
+                    const list = this.sliceData
+                        .filter(chunk => uploadedList.indexOf(chunk.hash) === -1)
+                        .map(({ chunk, hash, index }, i) => {
+                            const form = new FormData();
+                            form.append("chunk", chunk);
+                            form.append("hash", hash);
+                            form.append("fileName", this.file.name);
+                            return {form, index}
+                        })
+
+                    const res = await this.sendRequest(list, 4);
+                    
+                    if (uploadedList.length + list.length ===  this.chunks.length) {
+                        await this.mergeRequest();
+                    }
+                },
+                /*
+                    针对网速慢的场景，通过慢启动策略实现分片切换
+                */
+                async handleUpload1() {
+                    const file = this.file;
+                    if (!file) return;
+                    const fileSize = file.size;
+
+                    let offset = 1024 * 1024;
+                    let cur = 0;
+                    let count = 0;
+                    this.hash = await this.calculateHashSample();
+
+                    while(cur < fileSize) {
+                        // 切割 offset 大小
+                        const chunk = file.slice(cur, cur + offset);
+                        cur += offset;
+                        const chunkName = this.hash + "-" + count;
+                        const form = new FormData();
+                        form.append("chunk", chunk);
+                        form.append("hash", chunkName);
+                        form.append("fileName", file.name);
+                        form.append("size", chunk.size);
+
+                        const start = new Date().getTime();
+                        await request({url, data: form});
+                        const now = new Date().getTime();
+                        
+                        const time = ((now - start) / 1000).toFixed(4);
+                        let rate = time / 30; // 理想是30秒传递一个
+
+                        // 速率有最大2和最小0.5
+                        if (rate < 0.5) rate = 0.5;
+                        if (rate > 2) rate = 2;
+
+                        offset = parseInt(offset / rate);
+                        count++;
+                    }
+                },
+                /*
+                    校验文件是否已上传过
+                */
+                async verifyUpload () {
+                    const { data } = await this.request({
+                        url,
+                        data: hash
+                    });
+
+                    return JSON.parse(data);
+                },
+                // 暂停
+                handlePause () {
+                    this.requestList.forEach(xhr => xhr.abort());
+                    this.requestList = [];
+                },
+                // 恢复上传
+                async handleResume () {
+                    const { uploadedList } = await this.verifyUpload(
+                        this.hash
+                    );
+                    await this.uploadChunks(uploadedList);
+                },
+            }
+        })
+        new Vue({
+            el: '#app',
+            components: {
+                upload
+            }
+        })
+    </script>
+</body>
+</html>

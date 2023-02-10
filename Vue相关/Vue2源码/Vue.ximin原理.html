@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <list></list>
+  </div>
+  <script src="./vue.js"></script>
+  <script>
+    const mixin = {
+        created() {
+            console.log(`全局混入的`);
+        },
+        data () {
+            return {
+                a: 6,
+                b: 1,
+            }
+        },
+        methods: {
+            handleClick () {
+                this.$nextTick(() => {
+                    console.log(`mixin`, this.$refs["div"].innerHTML);
+                })
+                console.log(`mixin-b`, this.b);
+                this.a = 3;
+            }
+        }
+    }
+
+    new Vue({
+      el: '#app',
+      components: {
+        list: {
+            mixins: [mixin],
+            template: `
+                <div ref="div" @click="handleClick">{{a}}</div>
+            `,
+            data() {
+                return {
+                    a: 1
+                }
+            },
+            methods: {
+                handleClick () {
+                    this.$nextTick(() => {
+                        console.log(`list`, this.$refs["div"].innerHTML);
+                    })
+                    console.log(`list-b`, this.b);
+                    this.a = 2;
+                }
+            },
+            created() {
+                console.log(`list-created`);
+            }
+        }
+      },
+    })
+
+   
+    
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>添加一个DOM元素.html</title>
+</head>
+<body>
+  <div id="container"> 
+    <h1 id="title">我是标题</h1>
+  </div>
+  <script>
+    // 要求添加一个有内容的 span 节点到 id 为 title 的节点后面
+    const targetDom = document.getElementById('container');
+    const spanDom = document.createElement('span');
+    spanDom.innerHTML = '有内容的span';
+    targetDom.appendChild(spanDom);
+  </script>
+  <script>
+    // 删除 id 为 title 的元素
+    const titleDom = document.getElementById('title');
+    targetDom.removeChild(titleDom);
+    console.log('targetDom.children', targetDom.children)
+    console.log('targetDom.childNodes', targetDom.childNodes)
+    console.log(targetDom.node)
+  </script>
+</body>
+</html>

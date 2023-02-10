@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>node服务</title>
+</head>
+
+<body>
+  <div>
+    你好呀
+  </div>
+  <script>
+    /**
+     * 图片和sendBeacon可以在浏览器关闭时发送数据
+     */
+    window.addEventListener('unload', () => {
+      // console.log(`unload~~~~~`)
+      // const image = new Image();
+      // image.src = `http://localhost:3000/test`
+      fetch(`http://localhost:3000/test`)
+      // const xhr = new XMLHttpRequest();
+      // xhr.open(`GET`, `http://localhost:3000/test`);
+      // xhr.send();
+      // navigator.sendBeacon(`http://localhost:3000/test2`);
+    })
+  </script>
+</body>
+
+</html>

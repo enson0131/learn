@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>资源异常捕获</title>
+  <link href="./404.css" rel="preload" as="style" onload="this.rel='stylesheet'">
+  <!-- <link rel="stylesheet" href="./404.css"> -->
+</head>
+<body>
+  <script>
+    window.addEventListener('error', (e) => {
+      console.log('我知道 404 错误了');
+      console.log(
+        e
+      );
+    }, true);
+    </script>
+    <img src="./404.png" alt="">
+</body>
+</html>

@@ -1,0 +1,13 @@
+/* 单行 */
+.ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.more-ellipsis {
+  overflow: hidden;
+  display: -webkit-box; /* 将对象作为弹性伸缩盒子模型显示 */
+  -webkit-box-orient: vertical; /* 设置子元素排列方式 */
+  -webkit-line-clamp: 3; /* 显示几行，超出的省略 */
+}

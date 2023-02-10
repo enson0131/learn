@@ -1,0 +1,35 @@
+<html>
+<head>
+    <title>Main</title>
+    <style>
+        area {
+            border: 2px ridge;
+        }
+
+
+        box {
+            background-color: rgba(106, 24, 238, 0.26);
+            height: 5em;
+            margin: 1em;
+            width: 5em;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="area">
+        <div class="box rAF"></div>
+    </div>
+    <br>
+    <script>
+        function setNewArea() {
+            let el = document.createElement('div')
+            el.setAttribute('class', 'area')
+            el.innerHTML = '<div class="box rAF"></div>'
+            document.body.append(el)
+        }
+        setNewArea()   
+    </script>
+</body>
+</html>

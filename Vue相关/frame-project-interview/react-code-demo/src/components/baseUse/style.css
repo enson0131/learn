@@ -1,0 +1,12 @@
+.title {
+    font-size: 30px;
+    color: red;
+}
+
+.btn-white {
+    color: #333;
+}
+.btn-black {
+    background-color: #666;
+    color: #fff;;
+}

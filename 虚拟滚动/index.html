@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>虚拟滚动 - 固定高度</title>
+  <style>
+    #app {
+      position: relative;
+      height: 600px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+    }
+    .height-fixed__scroll-runway {
+      display: block;
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      transition: transform 0.2s;
+    }
+    .item {
+      position: absolute;
+      contain: layout;
+      will-change: transform;
+      display: block;
+      width: 100%;
+      height: 100px;
+      box-sizing: border-box;
+      border-radius: 16px;
+      border: 1px solid sienna;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" @scroll="handleScroll">
+    <!-- 哨兵元素 -->
+    <li class="height-fixed__scroll-runway" :style="calMaxHeight"></li>
+    <li class="item" v-for="(item, index) in visibleData" :key="index" :style="calItemHeight(item)">{{item.value}}</li>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          list: [],
+          maxScrollHeight: 100 * 100000, // 可滚动高度
+          singleHeight: 100, // 单个是100px
+          canShowHeight: 600, // 视口高度
+          currentScroll: 0,
+          topHeight: 0,
+          bottomHeight: 100 * 100000 - 600,
+          timer: null,
+          lastScrollTop: 0, // 记录上次滚动事件时「滚动容器」的「滚动高度」
+          BUFFER_SIZE: 3, // 缓冲区
+        }
+      },
+      computed: {
+        visibleData () {
+          // size: 可视区域能存放的item数量
+          const size = Math.ceil(this.canShowHeight / this.singleHeight);
+          const maxIndex = this.maxScrollHeight / this.singleHeight;
+          const startIndex =  Math.floor(this.currentScroll / this.singleHeight); // 初始start
+          const endIndex = startIndex + size > maxIndex ? maxIndex: startIndex + size;
+          
+          this.lastScrollTop = this.currentScroll;
+          this.topHeight = startIndex * this.singleHeight;
+          this.bottomHeight = this.maxScrollHeight - this.topHeight - this.canShowHeight;
+
+          return this.list.slice(startIndex - this.BUFFER_SIZE > 0 ? startIndex - this.BUFFER_SIZE : startIndex, endIndex + this.BUFFER_SIZE);
+        },
+        calMaxHeight() {
+          return `transform: translate(0, ${this.maxScrollHeight}px)`;
+        }
+      },
+      methods: {
+        handleScroll (e) {
+          this.currentScroll = e.target.scrollTop;
+        },
+        calItemHeight (item) {
+          return `transform: translate(0, ${item.index * this.singleHeight}px)`
+        }
+      },
+      created() {
+        for(let i = 1; i <= 100000; i++) {
+          this.list.push({
+            value: i,
+            index: i - 1,
+          })
+        }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .inline-block {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      background-color: aqua;
+    }
+    
+  </style>
+</head>
+<body>
+    <h2>inline-block的空格问题</h2>
+    <p>-------------------------------------------------------</p>
+    <p class="inline-block">我我</p>
+    <p class="inline-block">我我</p>
+    <p>-------------------------------------------------------</p>
+    <h2>inline的空格问题</h2>
+    <span>我我我我</span>
+    <span>我我我我</span>
+    <span>我我我我</span>
+
+    <h3>原因</h3>
+    <ul>
+      <li>换行符会被当做空格字符处理</li>
+    </ul>
+    <h3>解决方案</h3>
+    <ul>
+      <li>使用font-size时，可通过设置font-size:0、letter-spacing、word-spacing解决</li>
+      <li>使用弹性布局</li>
+      <li>使用margin负值</li>
+    </ul>
+    <p>-------------------------------------------------------</p>
+    <p>-------------------------------------------------------</p>
+    <h2>浏览器对于空格的默认表现</h2>
+    <ul>
+      <li>元素的头尾的空白符会直接忽略</li>
+      <li>内容中间有多个空格，会被合并成一个空格</li>
+    </ul>
+</body>
+</html>

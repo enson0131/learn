@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>监控页面奔溃的iframe中的html</title>
+</head>
+<body>
+  <script>
+    if (navigator.serviceWorker && parent.postMessage) {
+      navigator.serviceWorker.register('./service-worker.js')
+        .then(function (reg) {
+          // console.log('connect serviceWorker success');
+          window.addEventListener('message',  function (e) {
+            if (navigator.serviceWorker.controller !== null) {
+                navigator.serviceWorker.controller.postMessage(e.data);
+            }
+          });
+        })
+        .catch(function (err) {
+            console.log('connect serviceWorker fail', err);
+        });
+    }
+  </script>
+</body>
+</html>

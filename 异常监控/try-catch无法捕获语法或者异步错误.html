@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>try-catch无法捕获语法或者异步错误</title>
+</head>
+<body>
+  <script>
+    try {
+      setTimeout(() => {
+        error        // 异步错误
+      })
+    } catch(e) {
+      console.log('我感知不到错误');
+      console.log(e);
+    }
+  </script>
+  <script>
+    try {
+      var error = 'error'；   // 大写分号
+    } catch(e) {
+      console.log('我感知不到错误');
+      console.log(e);
+    }
+  </script>
+</body>
+</html>
