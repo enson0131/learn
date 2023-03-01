@@ -1,8 +1,9 @@
 import "./App.css";
-import Case1 from "./基础篇/case1_pro";
-import Programmer from "./基础篇/component/index";
-import Index from "./基础篇/state/useEffect_case";
-import Test from "./HOC/节流渲染/节流原理";
+// import Case1 from "./基础篇/case1_pro";
+// import Programmer from "./基础篇/component/index";
+// import Index from "./基础篇/state/useEffect_case";
+// import Test from "./HOC/控制渲染/节流渲染/节流原理";
+import Index from "./HOC/赋能组件/ 劫持原型链-劫持生命周期-事件函数";
 
 function App() {
   return (
@@ -24,7 +25,8 @@ function App() {
           Learn React
         </a>
       </header> */}
-      <Test />
+      {/* <Test /> */}
+      <Index />
     </div>
   );
 }
