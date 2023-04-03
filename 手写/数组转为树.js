@@ -37,6 +37,34 @@ const g_arr = [
   },
 ]
 
+/**
+ * 维护一个 id Map, 这个 Map 的职责在于通过id可以找到对应的节点
+ */
+
+const Arr2Tree = (arr) => {
+  const idMap = new Map();
+  let root = {};
+  const rootId = 0;
+  for(const item of arr) {
+    idMap.set(item.id, item);
+  }
+
+
+  for(const item of arr) {
+    const parentId = item.parentId;
+
+    if (parentId === rootId) {
+      root = item;
+    } else {
+      const parentNode = idMap.get(parentId);
+      parentNode.children = (parentNode.children || []);
+      parentNode.children.push(item)
+    }
+  }
+
+  return root;
+}
+
 
 /**
  * 思路:
@@ -112,7 +140,7 @@ function arr2tree(arr) {
 }
 
   
-borderEach(convert(g_arr))
+borderEach(arr2tree(g_arr))
 
 
 
