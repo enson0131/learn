@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            direction: rtl;
+        }
+        .flex {
+            display: flex;
+            justify-content: flex-start;
+        }
+        .float-left {
+            float: left;
+            height: 100px;
+            overflow: hidden;
+        }
+        .position {
+            position: absolute;
+            height: 100px;
+            left: 0;
+            overflow: hidden;
+        }
+        .mr-50 {
+            margin-right: 50px;
+        }
+        .ml-50 {
+            margin-left: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div>I am enson。</div>
+    <div class="flex">flex 布局影响。</div>
+    <div style="height: 100px;"><span class="float-left">左浮动布局。</span></div>
+    <div><span class="mr-50">左边span</span><span>右边span</span></div>
+    <div class="position">绝对定位左侧布局。</div><br/>
+</body>
+</html>
