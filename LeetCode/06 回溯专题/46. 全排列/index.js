@@ -1,4 +1,5 @@
 /**
+ * 回溯的本质就是递归 + 回撤状态（并在递归内部通过for循环进行不断回撤）
  思路:
  求 [1, 2, 3] 的全排列可以转化成
                       []
@@ -19,10 +20,10 @@ function sortCode(nums) {
         return;
         }
         for (const num of nums) {
-        if (path.include(num)) continue; // 存在相同的值就不填充
-        path.push(num);
-        dfs(path);
-        path.pop();
+          if (path.include(num)) continue; // 存在相同的值就不填充
+          path.push(num);
+          dfs(path);
+          path.pop();
         }
     }
     
