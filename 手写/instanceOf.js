@@ -16,3 +16,23 @@ function _instanceof (obj, fn) {
 
 console.log(_instanceof({}, Array));
 console.log(_instanceof([], Array));
+
+
+/**
+ * instanceof 判断当前对象的原型链上是否存在指定的构造函数的原型
+ */
+
+function instanceof2(obj, Fn) {
+    let current = obj;
+
+    while(current) {
+        const parent = Object.getPrototypeOf(current);
+        if (parent === Fn.prototype) return true;
+        current = parent;
+    }
+
+    return false;
+}
+
+console.log('instanceof2', instanceof2({}, Array));
+console.log('instanceof2', instanceof2([], Array));
