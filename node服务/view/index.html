@@ -9,22 +9,29 @@
 </head>
 
 <body>
-  <div>
-    你好呀
+  <div id="test">
+    你好呀3
   </div>
   <script>
     /**
      * 图片和sendBeacon可以在浏览器关闭时发送数据
      */
-    window.addEventListener('unload', () => {
-      // console.log(`unload~~~~~`)
-      // const image = new Image();
-      // image.src = `http://localhost:3000/test`
-      fetch(`http://localhost:3000/test`)
-      // const xhr = new XMLHttpRequest();
-      // xhr.open(`GET`, `http://localhost:3000/test`);
-      // xhr.send();
-      // navigator.sendBeacon(`http://localhost:3000/test2`);
+    // window.addEventListener('unload', () => {
+    //   // console.log(`unload~~~~~`)
+    //   // const image = new Image();
+    //   // image.src = `http://localhost:3000/test`
+    //   fetch(`http://localhost:3000/test`)
+    //   // const xhr = new XMLHttpRequest();
+    //   // xhr.open(`GET`, `http://localhost:3000/test`);
+    //   // xhr.send();
+    //   // navigator.sendBeacon(`http://localhost:3000/test2`);
+    // })
+    const btn = document.getElementById("test");
+    btn.addEventListener('click', () => {
+      console.log(`unload~~~~~`)
+      const image = new Image();
+      image.src = `http://localhost:3000/test`
+      window.location.href = "https://www.baidu.com/"
     })
   </script>
 </body>
