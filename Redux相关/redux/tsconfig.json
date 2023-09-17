@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "lib": ["dom", "es2017"],
+    "jsx": "react",
+    "declaration": true,
+    "declarationDir": "./types",
+    "sourceMap": true,
+    "removeComments": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "baseUrl": "./",
+    "types": ["vitest/globals", "esbuild-extra/global"],
+    "paths": {
+      "redux": ["src/index.ts"], // @remap-prod-remove-line
+      "@internal/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
