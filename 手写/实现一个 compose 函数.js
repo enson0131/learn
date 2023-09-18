@@ -62,5 +62,41 @@ function compose(...args) {
         }, initValue);
     };
 }
-const a = compose(fn1, fn2, fn3, fn4);
-console.log(a(1));
+
+// [func1, func2, func3].reduce((pre, value) => {
+//     return value(pre);
+// }, (fun) => fun);
+
+const func1 = (fn) => () => {
+    console.log('进入func1', fn);
+    const res = fn();
+    console.log('离开func1');
+    return res;
+}
+const func2 = (fn) => () => {
+    console.log('进入func2', fn);
+    const res = fn();
+    console.log('离开func2');
+    return res;
+}
+const func3 = (fn) => () => {
+    console.log('进入func3', fn);
+    const res = fn();
+    console.log('离开func3');
+    return res;
+}
+
+const composeB = (...fns) => {
+    if (fns.length === 0) return arg => arg    
+    if (fns.length === 1) return fns[0]  
+    return fns.reduce((res, cur) => {
+        return (...args) => res(cur(...args))
+    });
+}
+
+// (...args) => func1(func2(func3(...args))) // 从左到右入栈
+const dispatch = () => void 0;
+const c = composeB(func1, func2, func3)(dispatch);
+c();
+
+

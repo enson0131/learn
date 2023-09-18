@@ -53,7 +53,9 @@ export default function applyMiddleware<Ext, S = any>(
 export default function applyMiddleware(
   ...middlewares: Middleware[]
 ): StoreEnhancer<any> {
+  // 返回一个接收 createStore为入参的函数
   return createStore => (reducer, preloadedState) => {
+    // 创建 store
     const store = createStore(reducer, preloadedState)
     let dispatch: Dispatch = () => {
       throw new Error(
@@ -61,6 +63,11 @@ export default function applyMiddleware(
           'Other middleware would not be applied to this dispatch.'
       )
     }
+
+    /**
+     * middleware 形如:
+     * ({dispatch, getState}) => next => action => { ... return next(action) }
+     */
 
     const middlewareAPI: MiddlewareAPI = {
       getState: store.getState,

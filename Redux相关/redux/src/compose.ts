@@ -59,3 +59,5 @@ export default function compose(...funcs: Function[]) {
         a(b(...args))
   )
 }
+// f, g, h 的参数都是一个高阶函数，高阶函数最终也将在函数体内被调用，这样才能实现中间件
+// compose(f, g, h) // f(g(h(...args)))
