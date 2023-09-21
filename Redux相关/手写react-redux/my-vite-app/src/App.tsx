@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { connect } from './react-redux';
+import { connect } from './react-redux2';
 
 const addAction = {
   type: 'add'
@@ -31,7 +31,7 @@ function App(props: Props): JSX.Element {
       { count }        
       <button onClick={ () => addCount() }>增加</button>      
     </div>
-  ) as any;
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
