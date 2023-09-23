@@ -94,9 +94,10 @@ const composeB = (...fns) => {
     });
 }
 
-// (...args) => func1(func2(func3(...args))) // 从左到右入栈
+//  (...args) => func1((...args) => func2((...args) => func3(...args))) // 从左到右入栈
 const dispatch = () => void 0;
 const c = composeB(func1, func2, func3)(dispatch);
 c();
+
 
 
