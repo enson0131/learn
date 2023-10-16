@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /**
+         * 某个监听函数异常了只会影响当前监听函数的执行，不会影响其他监听函数的执行
+         * 并且抛出的错误会被 window.onerror 捕获, 并立马执行！！！
+         */
+         window.onerror = function(msg, url, lineno, colno, event) {
+            console.log('msg, url, lineno, colno, event', msg, url, lineno, colno, event)
+            console.log(event)
+        }
+
+        const event = new Event('MyCustomEvent');
+        window.addEventListener('MyCustomEvent',function(){
+            console.log('触发了 MyCustomEvent1');
+        });
+        window.addEventListener('MyCustomEvent',function(){
+            console.log('触发了 MyCustomEvent2');
+            console.log('抛出错误前');
+            throw new Error('抛出错误');
+            console.log('抛出错误后');
+        });
+        window.addEventListener('MyCustomEvent',function(){
+            console.log('触发了 MyCustomEvent3');
+        });
+
+        console.log(`开启自定义事件`);
+        window.dispatchEvent(event);
+        console.log(`结束自定义事件`);
+
+        /*
+            输出结果:
+                开启自定义事件
+                触发了 MyCustomEvent1
+                触发了 MyCustomEvent2
+                结束自定义事件
+
+            如果某个监听函数异常了只会影响当前监听函数的执行，不会影响其他监听函数的执行
+        */
+    </script>
+</body>
+</html>
