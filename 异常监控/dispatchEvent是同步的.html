@@ -6,20 +6,17 @@
     <title>Document</title>
 </head>
 <body>
-    <button id="btn">
-        触发自定义事件
-    </button>
     <script>
         const event = new Event('MyCustomEvent');
-        btn.addEventListener('MyCustomEvent',function(){
+        window.addEventListener('MyCustomEvent',function(){
             console.log('触发了 MyCustomEvent1');
         });
-        btn.addEventListener('MyCustomEvent',function(){
+        window.addEventListener('MyCustomEvent',function(){
             console.log('触发了 MyCustomEvent2');
         });
 
         console.log(`开启自定义事件`);
-        btn.dispatchEvent(event);
+        window.dispatchEvent(event);
         console.log(`结束自定义事件`);
 
         /*
@@ -28,6 +25,8 @@
                 触发了 MyCustomEvent1
                 触发了 MyCustomEvent2
                 结束自定义事件
+
+            如果某个监听函数异常了只会影响当前监听函数的执行，不会影响其他监听函数的执行
         */
     </script>
 </body>
