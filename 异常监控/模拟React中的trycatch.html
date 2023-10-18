@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        /**
+         * React 通过 dispatch 是同步的回调执行，并且某一个任务中断不会影响下一个任务的执行来模拟 try-catch
+         * 这样的好处在于不会影响其他任务的执行，但是坏处在于如果某个任务中断了，那么后续的任务就不会执行了，还能抛出开发环境下用户未捕获的异常
+         */
+        let caughtError;
+        function invokeGuardedCallback (func) {
+            const fakeNode = document.createElement('react');
+            const evtType = `react-invokeguardedcallback`;
+            const event = new Event(evtType);
+
+            function callCallback () {
+                fakeNode.removeEventListener(evtType, callCallback, false);
+                func();
+            }
+
+            function handleWindowError (event) {
+                caughtError = event.error;
+            }
+
+            // Attach our event handlers
+            window.addEventListener('error', handleWindowError);
+            fakeNode.addEventListener(evtType, callCallback, false);
+
+            fakeNode.dispatchEvent(event); // 触发事件
+            // Remove our event listeners
+            window.removeEventListener('error', handleWindowError);
+        }
+
+        invokeGuardedCallback(() => {
+            console.log(`aaa`, aaabbbb);
+        })
+    </script>
+</body>
+</html>
