@@ -21,7 +21,7 @@ console.log(ObjectIs(6, 6));
 console.log(ObjectIs(+0, -0), `+0 === -0 => ${+0 === -0}`);
 console.log(ObjectIs(NaN, NaN), `NaN === NaN => ${NaN === NaN}`);
 
-console.log(+0 === -0); // true
+console.log(+0 === -0); // true - 其实就是将 +0 与 -0 的判断转化为正无穷与负无穷的判断
 
 
 
