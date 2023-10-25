@@ -60,9 +60,64 @@ class Scheduler {
   }
 }
 
-const scheduler = new Scheduler(2);
+// const scheduler = new Scheduler(2);
+// function addTask(time, param) {
+//   scheduler.addTask(time, param)
+// }
+
+// addTask(1000,"1");
+// addTask(500,"2");
+// addTask(300,"3");
+// addTask(400,"4");
+
+// scheduler.start();
+
+
+
+class Scheduler1 {
+  constructor(limit) {
+    this.tasks = [];
+    this.limit = limit;
+    this.currentRunNum = 0;
+  }
+
+  addTask(timer, param) {
+    const task = () => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          console.log(param);
+          resolve();
+        }, timer);
+      })
+    }
+
+    this.tasks.push(task);
+  }
+
+  run () {
+    for(let i = 0; i < this.limit; i++) {
+      this.runTask();
+    }
+  }
+
+  runTask() {
+    if (!this.tasks.length) return;
+    if (this.currentRunNum >= this.limit) return;
+
+    this.currentRunNum++;
+    const task = this.tasks.shift();
+
+    
+    task().then(() => {
+      this.currentRunNum--;
+      this.runTask();
+    })
+  }
+}
+
+const scheduler1 = new Scheduler1(2);
 function addTask(time, param) {
-  scheduler.addTask(time, param)
+  scheduler1.addTask(time, param)
 }
 
 addTask(1000,"1");
@@ -70,5 +125,5 @@ addTask(500,"2");
 addTask(300,"3");
 addTask(400,"4");
 
-scheduler.start();
+scheduler1.run();
      
