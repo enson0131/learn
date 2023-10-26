@@ -101,3 +101,13 @@ c();
 
 
 
+
+
+
+const compose = (...fns) => {
+    return (initValue) => {
+        return fns.reduce((pre, cur) => {
+            return cur(pre);
+        }, initValue)
+    }
+}
