@@ -111,3 +111,44 @@ const compose = (...fns) => {
         }, initValue)
     }
 }
+
+
+
+const fun1 = (result) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log(`next1`, result);
+        resolve(result + 1);
+      }, 1000);
+    });
+  };
+  
+  const fun2 = (result) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        console.log(`next2`, result);
+        resolve(result + 2);
+      }, 0);
+    });
+  };
+  
+  const fun3 = (result) => {
+    return new Promise((resolve, reject) => {
+      console.log(`next3`, result);
+      resolve(result + 3);
+    });
+  };
+  
+  const compose1 = (...fns) => {
+    return (initValue) => {
+      return fns.reduceRight((promise, fn) => {
+        return promise.then((res) => {
+          return fn(res);
+        });
+      }, Promise.resolve(initValue));
+    }
+  }
+  compose1(fun1, fun2, fun3)(1).then((res) => {
+    console.log(`最终结果--->`, res);
+  })
+  
