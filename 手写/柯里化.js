@@ -11,3 +11,27 @@ const curry = (fn, ...args) => {
   }
   return res;
 }
+
+
+
+const currying = (fn, ...args) => {
+  const len = fn.length;
+  return (...params) => {
+    args = [...args, ...params];
+    if (args.length === len) {
+      return fn(...args);
+    } else {
+      return currying(fn, ...args);
+    }
+  }
+}
+
+
+const add = (a, b, c) => {
+  console.log(a + b + c);
+}
+
+const curryAdd = currying(add);
+
+curryAdd(1)(2)(3);
+
