@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas 实验</title>
+    <style type="text/css">
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <canvas id="test-canvas"></canvas> -->
+    <canvas id="test-canvas" width="500" height="500"></canvas>
+    <script>
+        const dpr = window.devicePixelRatio || 1;
+
+        console.log(`dpr--->`, dpr);
+        const canvas = document.getElementById('test-canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.style.width = "500px";
+        canvas.style.height = "500px";
+        canvas.width = 500 * dpr;
+        canvas.height = 500 * dpr;
+        ctx.scale(dpr, dpr);
+        ctx.strokeRect(0, 0, 100, 100);
+    </script>
+</body>
+
+</html>
