@@ -70,13 +70,13 @@
             addPoint(e); // 将鼠标按下的点添加到points数组中
         });
 
-        canvas.addEventListener('pointermove', (e) => {
-            console.log('e--->', e);
+        canvas.addEventListener('pointermove', throttle((e) => {
+            console.log('e--->throttle', e);
             if (!start) return; // 如果没有按下，则不绘制
             addPoint(e); // 将鼠标移动的点添加到points数组中
             render(ctx, points); // 绘制
             updatePointCounter(points.length);
-        });
+        }, 100));
 
         canvas.addEventListener('pointerup', (e) => {
             start = false;
@@ -102,7 +102,7 @@
          * @param {*} points - 鼠标移动的点集
          */
         function render(ctx, points) {
-            ctx.clearRect(0, 0, width, height); // 清空画布 - 如果没有这块的话容易出现锯齿
+            // ctx.clearRect(0, 0, width, height); // 清空画布 - 如果没有这块的话容易出现锯齿
             ctx.strokeStyle = 'red'; // 设置线条颜色
             ctx.lineWidth = 20; // 设置线条宽度
             /*
@@ -146,6 +146,17 @@
         // 更新点数计数器
         function updatePointCounter(count) {
             pointCounter.textContent = `当前绘制元素的点数：${count}`;
+        }
+
+        function throttle(fn, delay = 60 / 1000) {
+            let timer = null;
+            return function () {
+                if (timer) return;
+                timer = setTimeout(() => {
+                    fn.apply(this, arguments);
+                    timer = null;
+                }, delay);
+            }
         }
     </script>
 </body>
