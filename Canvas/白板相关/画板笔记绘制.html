@@ -102,6 +102,7 @@
          * @param {*} points - 鼠标移动的点集
          */
         function render(ctx, points) {
+            ctx.clearRect(0, 0, width, height); // 清空画布 - 如果没有这块的话容易出现锯齿
             ctx.strokeStyle = 'red'; // 设置线条颜色
             ctx.lineWidth = 20; // 设置线条宽度
             /*
