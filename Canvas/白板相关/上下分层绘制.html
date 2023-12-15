@@ -29,6 +29,7 @@
             border: 1px solid black;
             position: absolute;
             z-index: 9998;
+            pointer-events: none;
         }
 
         #point-counter {
@@ -40,10 +41,14 @@
             padding: 5px;
         }
     </style>
+    <!-- <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script> -->
 </head>
 
 <body>
+    <!-- 动态层 Canvas -->
     <canvas id="draw"></canvas>
+    <!-- 静态层 Canvas -->
     <canvas id="draw-content"></canvas>
     <script>
         let start = false; // 是否开始绘制
@@ -96,7 +101,7 @@
             // 将上层 canvas 绘制的内容保存到下层 canvas 中
             history.push(points);
             points = []; // 绘制完毕后，清空points数组
-            renderLowerCanvas(ctxContent);
+            renderLowerCanvas(ctx, ctxContent);
         });
 
         /*
@@ -152,12 +157,13 @@
             render(ctx, points);
         }
 
-        function renderLowerCanvas(ctx) {
+        function renderLowerCanvas(ctx, ctxContent) {
             if (!history.length) return;
             ctx.clearRect(0, 0, window.innerWidth, window.innerHeight); // 清空画布
+            ctxContent.clearRect(0, 0, window.innerWidth, window.innerHeight); // 清空画布
             history.forEach(points => {
                 console.log(`points--->`, points);
-                render(ctx, points);
+                render(ctxContent, points);
             });
         }
 
