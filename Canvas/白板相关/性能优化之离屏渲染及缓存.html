@@ -23,7 +23,7 @@
             border: 1px solid black;
             position: absolute;
             z-index: 9999;
-            left: 0;
+            /* left: 0; */
         }
 
         #draw-content {
@@ -31,7 +31,7 @@
             position: absolute;
             z-index: 9998;
             pointer-events: none;
-            right: 0;
+            /* right: 0; */
         }
 
         #point-counter {
@@ -134,13 +134,16 @@
             */
             if (isOffScreen && elementWithCanvasCache.has(points)) {
                 const { canvas, x, y, width, height } = elementWithCanvasCache.get(points);
+                ctx.save();
+                ctx.scale(1 / dpr, 1 / dpr);
                 ctx.drawImage(
                     canvas,
                     x,
                     y,
-                    width,
-                    height
+                    canvas.width,
+                    canvas.height
                 );
+                ctx.restore();
                 return;
             }
 
@@ -237,9 +240,9 @@
             console.log(`realHeight---->`, realHeight, Math.floor(minY));
             canvas.width = realWidth * dpr + padding * 2;
             canvas.height = realHeight * dpr + padding * 2;
-            // canvas.style.width = realWidth + "px";
-            // canvas.style.height = realHeight + "px";
-            ctxContent.translate(padding, padding);
+            canvas.style.width = realWidth + "px";
+            canvas.style.height = realHeight + "px";
+            ctxContent.translate(padding, padding); // 将坐标轴原点移动到（20, 20）
             ctxContent.scale(dpr, dpr);
             ctxContent.strokeStyle = 'red'; // 设置线条颜色
             ctxContent.lineWidth = 6; // 设置线条宽度
@@ -256,14 +259,14 @@
             ctxContent.stroke(); // 画线
             ctxContent.restore();
             console.log(`canvas--->`, canvas.toDataURL());
-            // TODO 目前会有 20 像素的偏移，需要修复
+
+            console.log(`minX - padding--->`, minX - padding);
+            console.log(`minY - padding--->`, minY - padding);
             elementWithCanvasCache.set(points, {
                 canvas,
-                width: realWidth,
-                height: realHeight,
                 realPoints,
-                x: Math.floor(minX),
-                y: Math.floor(minY)
+                x: minX * dpr - padding,
+                y: minY * dpr - padding
             });
         }
     </script>
