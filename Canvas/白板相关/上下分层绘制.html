@@ -31,15 +31,6 @@
             z-index: 9998;
             pointer-events: none;
         }
-
-        #point-counter {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            color: white;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 5px;
-        }
     </style>
     <!-- <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script> -->
@@ -55,10 +46,8 @@
         let points = []; // 记录鼠标移动的点
         let history = []; // 记录之前绘制的内容
         const dpr = window.devicePixelRatio || 1;
-        const appContainer = document.getElementById("app-container");
         const canvas = document.getElementById('draw');
         const canvasContent = document.getElementById('draw-content');
-        const pointCounter = document.getElementById("point-counter");
         const width = window.innerWidth;
         const height = window.innerHeight;
         // 上层 canvas 用来动态绘制绘制鼠标移动的轨迹
