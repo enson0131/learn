@@ -24,6 +24,7 @@ const RenderCanvasInScreen = () => {
       ctx.translate(appState.current.scrollX, appState.current.scrollY);
       pointList.forEach((points) => {
         if (!points.length) return;
+        // 判断是否在可视区域内
         quadraticCurveTo(ctx, points);
       });
       ctx.restore();
@@ -38,8 +39,7 @@ const RenderCanvasInScreen = () => {
      */
     function addPoint(e: PointerEvent) {
       points.push({
-        // 处理一下坐标，将坐标转化为相对于canvas的坐标
-        x: e.clientX - appState.current.scrollX,
+        x: e.clientX - appState.current.scrollX, // 对其进行滚动的偏移
         y: e.clientY - appState.current.scrollY,
       });
     }
