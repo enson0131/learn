@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef } from "react";
 import styles from "./index.module.less";
 import { Pointer } from "@/types";
-import { isVisibleElement, quadraticCurveTo } from "@/utils";
+import { quadraticCurveTo } from "@/utils";
 /**
- * 实现在可视区域内渲染
+ * 实现无线画布
  * @returns
  */
-const RenderCanvasInScreen = () => {
+const RenderInfiniteCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
   const elementsRes = useRef<Array<Pointer[]>>([]);
@@ -24,26 +24,7 @@ const RenderCanvasInScreen = () => {
       ctx.translate(appState.current.scrollX, appState.current.scrollY);
       pointList.forEach((points) => {
         if (!points.length) return;
-        // 判断是否在可视区域内
-        console.log(
-          `是否在可视区域内: `,
-          isVisibleElement(points, {
-            minX: -appState.current.scrollX,
-            minY: -appState.current.scrollY,
-            maxX: window.innerWidth - appState.current.scrollX,
-            maxY: window.innerHeight - appState.current.scrollY,
-          })
-        );
-        if (
-          isVisibleElement(points, {
-            minX: -appState.current.scrollX,
-            minY: -appState.current.scrollY,
-            maxX: window.innerWidth - appState.current.scrollX,
-            maxY: window.innerHeight - appState.current.scrollY,
-          })
-        ) {
-          quadraticCurveTo(ctx, points);
-        }
+        quadraticCurveTo(ctx, points);
       });
       ctx.restore();
     },
@@ -80,12 +61,7 @@ const RenderCanvasInScreen = () => {
       ctxRef.current = ctx;
 
       canvas.addEventListener("pointerdown", (e) => {
-        console.log(
-          `pointerdown-->`,
-          e,
-          elementsRes.current?.slice(),
-          appState.current
-        );
+        console.log(`pointerdown-->`, e);
         start = true; // 通过监听鼠标按下事件，来判断是否开始绘制
         addPoint(e); // 将鼠标按下的点添加到points数组中
       });
@@ -136,4 +112,4 @@ const RenderCanvasInScreen = () => {
   );
 };
 
-export default RenderCanvasInScreen;
+export default RenderInfiniteCanvas;

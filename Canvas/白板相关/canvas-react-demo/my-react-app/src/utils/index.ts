@@ -24,22 +24,20 @@ export const getBoundsFromPoints = (points: Pointer[]) => {
  */
 export const isVisibleElement = (
   element: Pointer[],
-  canvasWidth: number,
-  canvasHeight: number
-) => {
-  const [x1, y1, x2, y2] = getBoundsFromPoints(element);
-  const screenCoords = {
+  screenCoords = {
     minX: 0,
     minY: 0,
-    maxX: canvasWidth,
-    maxY: canvasHeight,
-  }; // 可视区域内的范围
+    maxX: window.innerWidth,
+    maxY: window.innerHeight,
+  }
+) => {
+  const [x1, y1, x2, y2] = getBoundsFromPoints(element);
 
   return (
-    screenCoords.minX <= x2 &&
-    screenCoords.minY <= y2 &&
-    screenCoords.maxX >= x1 &&
-    screenCoords.maxY >= y1
+    x1 <= screenCoords.maxX &&
+    y1 <= screenCoords.maxY &&
+    x2 >= screenCoords.minX &&
+    y2 >= screenCoords.minY
   );
 };
 
@@ -58,16 +56,16 @@ export const quadraticCurveTo = (
   ctx.lineCap = "round"; // 设置线条末端的样式
 
   /*
-            beginPath() 是 Canvas 2D API 中的一个方法，用于开始一个新的路径。当你想创建一个新的路径时，你需要调用这个方法。
-            例如，你可能会这样使用它：
-                context.beginPath();
-                context.moveTo(50, 50);
-                context.lineTo(200, 50);
-                context.stroke();
-                在这个例子中，beginPath() 开始一个新的路径，moveTo(50, 50) 将路径的起点移动到 (50, 50)，lineTo(200, 50) 添加一条从当前位置到 (200, 50) 的线，
-                最后 stroke() 方法绘制出路径。
-                其中 context 是你的 canvas 上下文。
-            */
+    beginPath() 是 Canvas 2D API 中的一个方法，用于开始一个新的路径。当你想创建一个新的路径时，你需要调用这个方法。
+    例如，你可能会这样使用它：
+        context.beginPath();
+        context.moveTo(50, 50);
+        context.lineTo(200, 50);
+        context.stroke();
+        在这个例子中，beginPath() 开始一个新的路径，moveTo(50, 50) 将路径的起点移动到 (50, 50)，lineTo(200, 50) 添加一条从当前位置到 (200, 50) 的线，
+        最后 stroke() 方法绘制出路径。
+        其中 context 是你的 canvas 上下文。
+    */
   ctx.beginPath(); // 开始绘制
 
   ctx.moveTo(points[0].x, points[0].y); // 将画笔移动到起始点
