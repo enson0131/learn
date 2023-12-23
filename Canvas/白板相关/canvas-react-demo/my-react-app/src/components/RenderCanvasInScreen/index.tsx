@@ -34,6 +34,11 @@ const RenderCanvasInScreen = () => {
             maxY: window.innerHeight - appState.current.scrollY,
           })
         );
+        /**
+         * 这里为什么是减去scrollX和scrollY呢？
+         * 因为鼠标在向下滚动的时候, appState.current.scrollY 是减去了偏移量，也就是这里的 appState.current.scrollY = -偏移量
+         * 因此我们需要通过减法来获取滚动后的真实坐标
+         */
         if (
           isVisibleElement(points, {
             minX: -appState.current.scrollX,
