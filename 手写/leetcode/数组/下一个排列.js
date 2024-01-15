@@ -6,8 +6,7 @@
  *    - 1 找到第一个比右邻居小的数，记录下标 povit
  *    - 2 获取 povit 的值，从右边找到第一个比 povit 大的数，互换位置
  *    - 3 对 povit 右边的数进行升序排序
- * 15234
- * 15324
+ * 15243 -> 15324
  * @param {*} nums
  */
 const nextPermutation = (nums) => {
