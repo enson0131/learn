@@ -30,9 +30,9 @@
   },
   // "eslint.autoFixOnSave": true, 这个设置被废弃了，使用下面的editor.codeActionsOnSave的配置
   "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.fixAll.eslint": true,
-    "source.fixAll.stylelint": true
+    "source.fixAll": "explicit",
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
   },
   // ================ Stylelint ===================
   // ===========================================
