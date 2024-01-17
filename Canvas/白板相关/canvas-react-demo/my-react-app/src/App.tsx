@@ -1,10 +1,12 @@
 import RenderCanvasInScreen from "@/components/RenderCanvasInScreen";
+import RenderUndoCanvas from "@/components/RenderUndoCanvas";
 import "./App.css";
 
 function App() {
   return (
     <>
-      <RenderCanvasInScreen></RenderCanvasInScreen>
+      {/* <RenderCanvasInScreen></RenderCanvasInScreen> */}
+      <RenderUndoCanvas></RenderUndoCanvas>
     </>
   );
 }
