@@ -51,3 +51,33 @@ console.log(
   findPeakElement([1, 2, 3, 1]),
   findPeakElement([1, 2, 1, 3, 5, 6, 4])
 );
+
+/**
+ * 通过二分查找获取最大值
+ * @param {*} nums
+ * @returns
+ */
+var findPeakElement2 = function (nums) {
+  const len = nums.length;
+
+  if (len <= 0) return len;
+
+  const findMax = (left, right) => {
+    if (left >= right) return left;
+
+    const middle = (left + right) >> 1;
+
+    // 这里需要留意，左 middle ，右 middle + 1
+    const leftMax = findMax(left, middle);
+    const rightMax = findMax(middle + 1, right);
+
+    return nums[leftMax] >= nums[rightMax] ? leftMax : rightMax;
+  };
+
+  return findMax(0, len - 1);
+};
+
+console.log(
+  findPeakElement2([1, 2, 3, 1]),
+  findPeakElement2([1, 2, 1, 3, 5, 6, 4])
+);
