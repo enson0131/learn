@@ -1,8 +1,13 @@
 import { useCallback, useEffect, useRef } from "react";
 import styles from "./index.module.less";
 import { Pointer } from "@/types";
-import { isVisibleElement, quadraticCurveTo } from "@/utils";
+import { ERASER_WIDTH, isVisibleElement, quadraticCurveTo } from "@/utils";
 import { Button } from "antd";
+
+interface ElementType {
+  type: "pen" | "eraser";
+  points: Pointer[];
+}
 /**
  * 实现在可视区域内渲染
  * @returns
@@ -10,49 +15,58 @@ import { Button } from "antd";
 const RenderCanvasInScreen = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
-  const elementsRes = useRef<Array<Pointer[]>>([]); // 目前绘画的数据
-  const redoRef = useRef<Array<Pointer[]>>([]); // 存储撤销的数据
+  const elementsRes = useRef<Array<ElementType>>([]); // 目前绘画的数据
+  const redoRef = useRef<Array<ElementType>>([]); // 存储撤销的数据
+  const isEraser = useRef<boolean>(false); // 是否是橡皮擦
   const appState = useRef({
     scrollX: 0,
     scrollY: 0,
   });
 
   const render = useCallback(
-    (ctx: CanvasRenderingContext2D, points?: Pointer[] | undefined) => {
+    (ctx: CanvasRenderingContext2D, points?: ElementType | undefined) => {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      const elementList = [
+        ...elementsRes.current,
+        points || {},
+      ] as ElementType[];
 
-      const pointList = [...elementsRes.current, points || []];
-      ctx.save();
-      ctx.translate(appState.current.scrollX, appState.current.scrollY);
-      pointList.forEach((points) => {
-        if (!points.length) return;
+      elementList.forEach((element) => {
+        if (!Object.keys(element)?.length) return;
+        ctx.save();
+        ctx.translate(appState.current.scrollX, appState.current.scrollY);
         // 判断是否在可视区域内
         console.log(
           `是否在可视区域内: `,
-          isVisibleElement(points, {
+          isVisibleElement(element.points, {
             minX: -appState.current.scrollX,
             minY: -appState.current.scrollY,
             maxX: window.innerWidth - appState.current.scrollX,
             maxY: window.innerHeight - appState.current.scrollY,
           })
         );
+
+        if (element.type === "eraser") {
+          ctx.globalCompositeOperation = "destination-out";
+          ctx.lineWidth = ERASER_WIDTH;
+        }
         /**
          * 这里为什么是减去scrollX和scrollY呢？
          * 因为鼠标在向下滚动的时候, appState.current.scrollY 是减去了偏移量，也就是这里的 appState.current.scrollY = -偏移量
          * 因此我们需要通过减法来获取滚动后的真实坐标
          */
         if (
-          isVisibleElement(points, {
+          isVisibleElement(element.points, {
             minX: -appState.current.scrollX,
             minY: -appState.current.scrollY,
             maxX: window.innerWidth - appState.current.scrollX,
             maxY: window.innerHeight - appState.current.scrollY,
           })
         ) {
-          quadraticCurveTo(ctx, points);
+          quadraticCurveTo(ctx, element.points);
         }
+        ctx.restore();
       });
-      ctx.restore();
     },
     []
   );
@@ -94,7 +108,10 @@ const RenderCanvasInScreen = () => {
       canvas.addEventListener("pointermove", (e) => {
         if (!start) return; // 如果没有按下，则不绘制
         addPoint(e); // 将鼠标移动的点添加到points数组中
-        render(ctx, points);
+        render(ctx, {
+          type: isEraser.current ? "eraser" : "pen",
+          points: points.slice(),
+        });
       });
 
       canvas.addEventListener("pointerup", () => {
@@ -102,7 +119,10 @@ const RenderCanvasInScreen = () => {
         start = false;
         // 将上层 canvas 绘制的内容保存到下层 canvas 中
         console.log(`points---<>`, points.slice());
-        elementsRes.current.push(points);
+        elementsRes.current.push({
+          type: isEraser.current ? "eraser" : "pen",
+          points: points.slice(),
+        });
         points = [];
       });
     };
@@ -152,9 +172,21 @@ const RenderCanvasInScreen = () => {
     render(ctxRef.current);
   }, []);
 
+  const handleEraser = useCallback(() => {
+    if (!ctxRef.current) return;
+    isEraser.current = true;
+  }, []);
+
+  const handlePen = useCallback(() => {
+    if (!ctxRef.current) return;
+    isEraser.current = false;
+  }, []);
+
   return (
     <>
       <div className={styles["btn-wrap"]}>
+        <Button onClick={handlePen}>pen</Button>
+        <Button onClick={handleEraser}>擦除</Button>
         <Button onClick={handleUndo}>撤销</Button>
         <Button onClick={handleRedo}>取消撤销</Button>
       </div>

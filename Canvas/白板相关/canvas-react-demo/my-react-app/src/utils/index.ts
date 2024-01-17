@@ -1,5 +1,5 @@
 import { Pointer } from "@/types";
-
+export const ERASER_WIDTH = 15; // 橡皮擦宽度
 export const getBoundsFromPoints = (points: Pointer[]) => {
   let minX = Infinity;
   let minY = Infinity;
