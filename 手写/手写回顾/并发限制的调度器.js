@@ -22,52 +22,98 @@
   3 通过currentRunNum判断当前正在运行的函数数量，避免多次运行
  */
 
-
 class Scheduler {
-    constructor(limit) {
-        this.limit = limit;
-        this.tasks = [];
-        this.count = 0;
+  constructor(limit) {
+    this.limit = limit;
+    this.tasks = [];
+    this.count = 0;
+  }
+
+  addTask(time, number) {
+    const next = () => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(number);
+        }, time);
+      });
+    };
+
+    this.tasks.push(next);
+  }
+
+  run() {
+    for (let i = 0; i <= this.limit; i++) {
+      this.request();
     }
+  }
 
-    addTask(time, number) {
-        const next = () => {
-            return new Promise(resolve => {
-                setTimeout(() => {
-                 
-                    resolve(number)
-                }, time)
-            })
-        }
+  request() {
+    if (!this.tasks.length || this.count >= this.limit) return;
 
-        this.tasks.push(next);
-    }
-
-
-    run() {
-        for(let i = 0; i <= this.limit; i++) {
-            this.request();
-        }
-    }
-
-    request() {
-        if (!this.tasks.length || this.count >= this.limit) return;
-
-        this.count++;
-        const fn = this.tasks.shift();
-        fn().then(res => {
-            console.log(res);
-            this.count--;
-            this.request();
-        })
-    }
+    this.count++;
+    const fn = this.tasks.shift();
+    fn().then((res) => {
+      console.log(res);
+      this.count--;
+      this.request();
+    });
+  }
 }
 
 const scheduler = new Scheduler(2);
 
-scheduler.addTask(1000,"1");
-scheduler.addTask(500,"2");
-scheduler.addTask(300,"3");
-scheduler.addTask(400,"4");
+scheduler.addTask(1000, "1");
+scheduler.addTask(500, "2");
+scheduler.addTask(300, "3");
+scheduler.addTask(400, "4");
 
-scheduler.run();
+// scheduler.run();
+
+class LimitRequest {
+  constructor(limit) {
+    this.limit = limit;
+    this.queue = [];
+  }
+
+  //   add = (fn) => {
+  //     const task = async () => {
+  //       return await fn();
+  //     };
+  //     this.queue.push(task);
+  //   };
+
+  addTask(time, number) {
+    const next = () => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          console.log(number);
+          resolve(number);
+        }, time);
+      });
+    };
+
+    this.queue.push(next);
+  }
+
+  run = () => {
+    for (let i = 0; i < this.limit; i++) {
+      this.startTask();
+    }
+  };
+
+  startTask = () => {
+    if (!!this.queue.length) {
+      const fn = this.queue.shift();
+      fn().then(this.startTask);
+    }
+  };
+}
+
+const limitRequest = new LimitRequest(2);
+
+limitRequest.addTask(1000, "1");
+limitRequest.addTask(500, "2");
+limitRequest.addTask(300, "3");
+limitRequest.addTask(400, "4");
+
+limitRequest.run();
