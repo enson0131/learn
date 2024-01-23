@@ -18,10 +18,22 @@ const RenderCanvasInScreen = () => {
   const elementsRes = useRef<Array<ElementType>>([]); // 目前绘画的数据
   const redoRef = useRef<Array<ElementType>>([]); // 存储撤销的数据
   const isEraser = useRef<boolean>(false); // 是否是橡皮擦
+  let start = false; // 是否开始绘制
+  let points: Pointer[] = [];
   const appState = useRef({
     scrollX: 0,
     scrollY: 0,
   });
+
+  /*
+   * 将鼠标事件的点转化为相对于canvas的坐标上的点
+   */
+  function addPoint(e: PointerEvent) {
+    points.push({
+      x: e.clientX - appState.current.scrollX, // 对其进行滚动的偏移
+      y: e.clientY - appState.current.scrollY,
+    });
+  }
 
   const render = useCallback(
     (ctx: CanvasRenderingContext2D, points?: ElementType | undefined) => {
@@ -72,22 +84,11 @@ const RenderCanvasInScreen = () => {
   );
 
   useEffect(() => {
-    let points: Pointer[] = [];
-    /*
-     * 将鼠标事件的点转化为相对于canvas的坐标上的点
-     */
-    function addPoint(e: PointerEvent) {
-      points.push({
-        x: e.clientX - appState.current.scrollX, // 对其进行滚动的偏移
-        y: e.clientY - appState.current.scrollY,
-      });
-    }
-
     const onChange = () => {
       const canvas = canvasRef.current;
       console.log(`canvas--->`);
       if (!canvas) return;
-      let start = false; // 是否开始绘制
+
       const ctx = canvas.getContext("2d")!;
       const dpr = window.devicePixelRatio || 1;
       const width = window.innerWidth;
@@ -99,32 +100,6 @@ const RenderCanvasInScreen = () => {
       ctx.setTransform(1, 0, 0, 1, 0, 0); // scale 前先恢复变换矩阵，不然会重复 scale
       ctx.scale(dpr, dpr); // 解决高清屏模糊问题
       ctxRef.current = ctx;
-
-      canvas.addEventListener("pointerdown", (e) => {
-        start = true; // 通过监听鼠标按下事件，来判断是否开始绘制
-        addPoint(e); // 将鼠标按下的点添加到points数组中
-      });
-
-      canvas.addEventListener("pointermove", (e) => {
-        if (!start) return; // 如果没有按下，则不绘制
-        addPoint(e); // 将鼠标移动的点添加到points数组中
-        render(ctx, {
-          type: isEraser.current ? "eraser" : "pen",
-          points: points.slice(),
-        });
-      });
-
-      canvas.addEventListener("pointerup", () => {
-        if (!start) return;
-        start = false;
-        // 将上层 canvas 绘制的内容保存到下层 canvas 中
-        console.log(`points---<>`, points.slice());
-        elementsRes.current.push({
-          type: isEraser.current ? "eraser" : "pen",
-          points: points.slice(),
-        });
-        points = [];
-      });
     };
 
     window.addEventListener("resize", onChange);
@@ -147,10 +122,10 @@ const RenderCanvasInScreen = () => {
   };
 
   // 撤销
-  const handleUndo = useCallback(() => {
+  const handleUndo = useCallback((event: PointerEvent) => {
     if (!ctxRef.current) return;
     if (!elementsRes.current) return;
-
+    event.stopPropagation();
     console.log(`elementsRes.current--->1`, elementsRes.current?.slice());
     const last = elementsRes.current.pop();
     console.log(`elementsRes.current--->2`, elementsRes.current?.slice());
@@ -163,38 +138,85 @@ const RenderCanvasInScreen = () => {
   }, []);
 
   // 取消撤销
-  const handleRedo = useCallback(() => {
+  const handleRedo = useCallback((event: PointerEvent) => {
     if (!ctxRef.current) return;
     if (!redoRef.current) return;
-
+    event.stopPropagation();
     const last = redoRef.current.pop();
     last && elementsRes.current.push(last);
     render(ctxRef.current);
   }, []);
 
-  const handleEraser = useCallback(() => {
+  const handleEraser = useCallback((event: PointerEvent) => {
     if (!ctxRef.current) return;
     isEraser.current = true;
+    event.stopPropagation();
   }, []);
 
-  const handlePen = useCallback(() => {
+  const handlePen = useCallback((event: PointerEvent) => {
     if (!ctxRef.current) return;
     isEraser.current = false;
+    event.stopPropagation();
+  }, []);
+
+  const handleInsertImage = useCallback(() => {}, []);
+
+  const onPointerDown = (e: any) => {
+    start = true; // 通过监听鼠标按下事件，来判断是否开始绘制
+    addPoint(e); // 将鼠标按下的点添加到points数组中
+  };
+
+  const onPointerMove = (e: any) => {
+    if (!ctxRef.current) return;
+    if (!start) return; // 如果没有按下，则不绘制
+    addPoint(e); // 将鼠标移动的点添加到points数组中
+    render(ctxRef.current, {
+      type: isEraser.current ? "eraser" : "pen",
+      points: points.slice(),
+    });
+  };
+
+  const onPointerUp = () => {
+    if (!start) return;
+    start = false;
+    // 将上层 canvas 绘制的内容保存到下层 canvas 中
+    console.log(`points---<>`, points.slice());
+    elementsRes.current.push({
+      type: isEraser.current ? "eraser" : "pen",
+      points: points.slice(),
+    });
+    points = [];
+  };
+
+  useEffect(() => {
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("pointermove", onPointerMove);
+    document.addEventListener("pointerup", onPointerUp);
+
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("pointermove", onPointerMove);
+      document.removeEventListener("pointerup", onPointerUp);
+    };
   }, []);
 
   return (
     <>
       <div className={styles["btn-wrap"]}>
-        <Button onClick={handlePen}>pen</Button>
-        <Button onClick={handleEraser}>擦除</Button>
-        <Button onClick={handleUndo}>撤销</Button>
-        <Button onClick={handleRedo}>取消撤销</Button>
+        <Button onPointerDown={handlePen}>书写</Button>
+        <Button onPointerDown={handleEraser}>擦除</Button>
+        <Button onPointerDown={handleUndo}>撤销</Button>
+        <Button onPointerDown={handleRedo}>取消撤销</Button>
+        <Button onPointerDown={handleInsertImage}>插入图片</Button>
       </div>
       <canvas
         ref={canvasRef}
         id="draw"
         className={styles["draw"]}
         onWheel={handleCanvasWheel}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
       ></canvas>
     </>
   );
