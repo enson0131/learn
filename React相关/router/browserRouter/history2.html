@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button onclick="goto('/a')">/a</button>
+    <button onclick="goto('/b')">/b</button>
+    <div id="root"></div>
+    <script>
+        const old = history.pushState;
+        history.pushState = function (...args) {
+            render(args && args[2]);
+            old.call(history, ...args);
+        }
+        function goto(path) {
+            history.pushState({
+                path
+            }, '', path);
+        }
+        window.onpopstate = function (event) {
+            // history.go / history.forward / history.back 都会触发
+            console.log(`event`, event);
+            const path = event.currentTarget.location.pathname
+            render(path);
+        }
+
+        const render = (path) => {
+            const pathname = path;
+            const root = document.getElementById('root');
+            if (pathname === '/a') {
+                root.innerHTML = 'a';
+            } else if (pathname === '/b') {
+                root.innerHTML = 'b';
+            }
+        }
+    </script>
+</body>
+
+</html>

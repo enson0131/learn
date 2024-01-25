@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        window.onpopstate = function (event) {
+            // history.go / history.forward / history.back 都会触发
+            console.log(`event`, event);
+        }
+        setTimeout(function () {
+            // 参数有三个，分别是 当前的对象、页面标题、页面链接
+            history.pushState({
+                page: 1
+            }, 'page1', '/page1');
+        }, 1000);
+        setTimeout(function () {
+            // 参数有三个，分别是 当前的对象、页面标题、页面链接
+            history.pushState({
+                page: 2
+            }, 'page2', '/page2');
+        }, 2000)
+        setTimeout(function () {
+            // 参数有三个，分别是 当前的对象、页面标题、页面链接
+            history.pushState({
+                page: 3
+            }, 'page3', '/page3');
+        }, 3000)
+        setTimeout(function () {
+            // 参数有三个，分别是 当前的对象、页面标题、页面链接
+            history.replaceState({
+                page: 4
+            }, 'page4', '/page4');
+        }, 4000)
+        setTimeout(function () {
+            history.back(); // 最后页面路径是在 page2
+        }, 5000)
+        setTimeout(function () {
+            history.forward(); // 最后页面路径是在 page4
+        }, 6000)
+        setTimeout(function () {
+            history.go(-1); // 向后移动一页，最后页面路径是在 page2
+        }, 7000)
+    </script>
+</body>
+
+</html>
