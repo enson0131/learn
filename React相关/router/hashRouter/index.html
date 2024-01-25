@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        a {
+            display: block;
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="#/a">a路由</a>
+    <a href="#/b">b路由</a>
+    <script>
+        window.addEventListener('hashchange', () => {
+            console.log(window.location.hash);
+        })
+    </script>
+</body>
+
+</html>
