@@ -5,8 +5,8 @@
  * inline 行内
  * post 后置
  */
-let runLoaders = require("./loader-runner"); // 自行实现
-// let { runLoaders } = require("loader-runner"); // 官方实现
+// let { runLoaders } = require("./loader-runner"); // 自行实现
+let { runLoaders } = require("loader-runner"); // 官方实现
 let path = require("path");
 let fs = require("fs");
 
