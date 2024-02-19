@@ -36,16 +36,16 @@ module.exports = {
       remotes: {
         remote: "remote@http://localhost:3000/remoteEntry.js", // 引用的模块
       },
-      shared: {
-        react: {
-          singleton: true,
-          eager: true,
-        },
-        "react-dom": {
-          singleton: true,
-          eager: true,
-        },
-      }, // 共享代码块
+      // shared: {
+      //   react: {
+      //     singleton: true,
+      //     eager: true,
+      //   },
+      //   "react-dom": {
+      //     singleton: true,
+      //     eager: true,
+      //   },
+      // }, // 共享代码块
       // or
       /**
       shared: {

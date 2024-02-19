@@ -14,7 +14,8 @@
     "webpack-dev-server": "^5.0.2"
   },
   "scripts": {
-    "start": "webpack server"
+    "start": "webpack server",
+    "build": "webpack"
   },
   "dependencies": {
     "react": "^18.2.0",
