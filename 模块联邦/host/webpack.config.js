@@ -7,10 +7,10 @@ module.exports = {
   mode: "development",
   entry: "./src/index.js",
   output: {
-    publicPath: "http://localhost:3001/",
+    publicPath: "http://localhost:3002/",
   },
   devServer: {
-    port: 3001,
+    port: 3002,
   },
   module: {
     rules: [
@@ -36,6 +36,23 @@ module.exports = {
       remotes: {
         remote: "remote@http://localhost:3000/remoteEntry.js", // 引用的模块
       },
+      shared: {
+        react: {
+          singleton: true,
+          eager: true,
+        },
+        "react-dom": {
+          singleton: true,
+          eager: true,
+        },
+      }, // 共享代码块
+      // or
+      /**
+      shared: {
+        react: { singleton: true }, // 单例
+        'react-dom': { singleton: true }, // 单例
+      }, // 共享代码块
+       */
     }),
   ],
 };
