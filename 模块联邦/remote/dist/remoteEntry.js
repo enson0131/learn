@@ -2,20 +2,66 @@ var remote;
 (() => {
   // webpackBootstrap
   "use strict";
-  var modules = {};
+  var modules = {
+    "webpack/container/entry/remote": (
+      __unused_webpack_module,
+      exports,
+      require
+    ) => {
+      var moduleMap = {
+        "./NewsList": () => {
+          return Promise.all([
+            require.e("vendors-node_modules_react_index_js"),
+            require.e("src_NewsList_js"),
+          ]).then(
+            () => () => require(/*! ./src/NewsList */ "./src/NewsList.js")
+          );
+        },
+      };
+      var get = (module, getScope) => {
+        require.R = getScope;
+        getScope = require.o(moduleMap, module)
+          ? moduleMap[module]()
+          : Promise.resolve().then(() => {
+              throw new Error(
+                'Module "' + module + '" does not exist in container.'
+              );
+            });
+        require.R = undefined;
+        return getScope;
+      };
+      var init = (shareScope, initScope) => {
+        if (!require.S) return;
+        var name = "default";
+        var oldScope = require.S[name];
+        if (oldScope && oldScope !== shareScope)
+          throw new Error(
+            "Container initialization failed as it has already been initialized with a different share scope"
+          );
+        require.S[name] = shareScope;
+        return require.I(name, initScope);
+      };
+
+      // This exports getters to disallow modifications
+      require.d(exports, {
+        get: () => get,
+        init: () => init,
+      });
+    },
+  };
 
   // The module cache
-  var cache = {};
+  var module_cache = {};
 
   // The require function
   function require(moduleId) {
     // Check if module is in cache
-    var cachedModule = cache[moduleId];
+    var cachedModule = module_cache[moduleId];
     if (cachedModule !== undefined) {
       return cachedModule.exports;
     }
     // Create a new module (and put it into the cache)
-    var module = (cache[moduleId] = {
+    var module = (module_cache[moduleId] = {
       id: moduleId,
       loaded: false,
       exports: {},
@@ -33,6 +79,9 @@ var remote;
 
   // expose the modules object (modules)
   require.m = modules;
+
+  // expose the module cache
+  require.c = module_cache;
 
   /* webpack/runtime/compat get default export */
   (() => {
@@ -170,6 +219,71 @@ var remote;
     };
   })();
 
+  /* webpack/runtime/sharing */
+  (() => {
+    require.S = {};
+    var initPromises = {};
+    var initTokens = {};
+    require.I = (name, initScope) => {
+      if (!initScope) initScope = [];
+      // handling circular init calls
+      var initToken = initTokens[name];
+      if (!initToken) initToken = initTokens[name] = {};
+      if (initScope.indexOf(initToken) >= 0) return;
+      initScope.push(initToken);
+      // only runs once
+      if (initPromises[name]) return initPromises[name];
+      // creates a new share scope if needed
+      if (!require.o(require.S, name)) require.S[name] = {};
+      // runs all init snippets from all modules reachable
+      var scope = require.S[name];
+      var warn = (msg) => {
+        if (typeof console !== "undefined" && console.warn) console.warn(msg);
+      };
+      var uniqueName = "remote";
+      var register = (name, version, factory, eager) => {
+        var versions = (scope[name] = scope[name] || {});
+        var activeVersion = versions[version];
+        if (
+          !activeVersion ||
+          (!activeVersion.loaded &&
+            (!eager != !activeVersion.eager
+              ? eager
+              : uniqueName > activeVersion.from))
+        )
+          versions[version] = {
+            get: factory,
+            from: uniqueName,
+            eager: !!eager,
+          };
+      };
+      var initExternal = (id) => {
+        var handleError = (err) =>
+          warn("Initialization of sharing external failed: " + err);
+        try {
+          var module = require(id);
+          if (!module) return;
+          var initFn = (module) =>
+            module && module.init && module.init(require.S[name], initScope);
+          if (module.then)
+            return promises.push(module.then(initFn, handleError));
+          var initResult = initFn(module);
+          if (initResult && initResult.then)
+            return promises.push(initResult["catch"](handleError));
+        } catch (err) {
+          handleError(err);
+        }
+      };
+      var promises = [];
+      switch (name) {
+      }
+      if (!promises.length) return (initPromises[name] = 1);
+      return (initPromises[name] = Promise.all(promises).then(
+        () => (initPromises[name] = 1)
+      ));
+    };
+  })();
+
   /* webpack/runtime/publicPath */
   (() => {
     require.p = "http://localhost:3000/";
@@ -241,6 +355,7 @@ var remote;
         }
       }
     };
+
     // install a JSONP callback for chunk loading
     var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
       var [chunkIds, moreModules, runtime] = data;
@@ -276,48 +391,9 @@ var remote;
     );
   })();
 
-  var exports = {};
-  // This entry need to be wrapped in an IIFE because it uses a non-standard name for the exports (exports).
-  (() => {
-    var exports = exports;
-    var moduleMap = {
-      "./NewsList": () => {
-        return Promise.all([
-          require.e("vendors-node_modules_react_index_js"),
-          require.e("src_NewsList_js"),
-        ]).then(() => () => require(/*! ./src/NewsList */ "./src/NewsList.js"));
-      },
-    };
-    var get = (module, getScope) => {
-      require.R = getScope;
-      getScope = require.o(moduleMap, module)
-        ? moduleMap[module]()
-        : Promise.resolve().then(() => {
-            throw new Error(
-              'Module "' + module + '" does not exist in container.'
-            );
-          });
-      require.R = undefined;
-      return getScope;
-    };
-    var init = (shareScope, initScope) => {
-      if (!require.S) return;
-      var name = "default";
-      var oldScope = require.S[name];
-      if (oldScope && oldScope !== shareScope)
-        throw new Error(
-          "Container initialization failed as it has already been initialized with a different share scope"
-        );
-      require.S[name] = shareScope;
-      return require.I(name, initScope);
-    };
-
-    // This exports getters to disallow modifications
-    require.d(exports, {
-      get: () => get,
-      init: () => init,
-    });
-  })();
-
+  // module cache are used so entry inlining is disabled
+  // startup
+  // Load entry module and return exports
+  var exports = require("webpack/container/entry/remote");
   remote = exports;
 })();

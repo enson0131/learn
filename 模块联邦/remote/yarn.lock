@@ -2463,6 +2463,11 @@ ipaddr.js@^2.1.0:
   resolved "https://r.cnpmjs.org/ipaddr.js/-/ipaddr.js-2.1.0.tgz#2119bc447ff8c257753b196fc5f1ce08a4cdf39f"
   integrity sha512-LlbxQ7xKzfBusov6UMi4MFpEg0m+mAm9xyNGEduwXMEDuf4WfzB/RZwMVYEd7IKGvh4IUkEXYxtAVu9T3OelJQ==
 
+is-array@^1.0.1:
+  version "1.0.1"
+  resolved "https://r2.cnpmjs.org/is-array/-/is-array-1.0.1.tgz#e9850cc2cc860c3bc0977e84ccf0dd464584279a"
+  integrity sha512-gxiZ+y/u67AzpeFmAmo4CbtME/bs7J2C++su5zQzvQyaxUqVzkh69DI+jN+KZuSO6JaH6TIIU6M6LhqxMjxEpw==
+
 is-binary-path@~2.1.0:
   version "2.1.0"
   resolved "https://r2.cnpmjs.org/is-binary-path/-/is-binary-path-2.1.0.tgz#ea1f7f3b80f064236e83470f86c09c254fb45b09"
@@ -3722,7 +3727,7 @@ webpack-sources@^3.2.3:
   resolved "https://r.cnpmjs.org/webpack-sources/-/webpack-sources-3.2.3.tgz#2d4daab8451fd4b240cc27055ff6a0c2ccea0cde"
   integrity sha512-/DyMEOrDgLKKIG0fmvtz+4dUX/3Ghozwgm6iPp8KRhvn+eQf9+Q7GWxVNMk3+uCPWfdXYC4ExGBckIXdFEfH1w==
 
-webpack@^5.90.2:
+webpack@^5.0.0:
   version "5.90.2"
   resolved "https://r.cnpmjs.org/webpack/-/webpack-5.90.2.tgz#189686a8a292427076db9907d495625345805fab"
   integrity sha512-ziXu8ABGr0InCMEYFnHrYweinHK2PWrMqnwdHk2oK3rRhv/1B+2FnfwYv5oD+RrknK/Pp/Hmyvu+eAsaMYhzCw==

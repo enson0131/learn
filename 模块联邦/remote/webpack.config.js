@@ -37,16 +37,16 @@ module.exports = {
       exposes: {
         "./NewsList": "./src/NewsList",
       },
-      //   shared: {
-      //     react: {
-      //       singleton: true,
-      //       eager: true,
-      //     },
-      //     "react-dom": {
-      //       singleton: true,
-      //       eager: true,
-      //     },
-      //   },
+      shared: {
+        // react: {
+        //   singleton: true,
+        //   eager: true,
+        // },
+        "is-array": {
+          singleton: true,
+          eager: true,
+        },
+      },
     }),
   ],
 };
