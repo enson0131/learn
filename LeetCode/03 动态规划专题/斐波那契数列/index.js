@@ -1,27 +1,25 @@
 // 0, 1, 1, 2, 3, 5
 
 /**
- * fibonacci(递归) 
+ * fibonacci(递归)
  * 时间复杂度 O(2^n)
- * @param {*} n 
- * @returns 
+ * @param {*} n
+ * @returns
  */
 function fibonacci(n) {
   if (n <= 0) return 0;
   if (n === 1) return 1;
 
-  return fibonacci(n-1) + fibonacci(n-2)
+  return fibonacci(n - 1) + fibonacci(n - 2);
 }
 
-console.log(fibonacci(10))
-
-
+console.log(fibonacci(10));
 
 /**
- * fibonacci(循环) 
- * 时间复杂度 O(2^n)
- * @param {*} n 
- * @returns 
+ * fibonacci(循环)
+ * 时间复杂度 O(n)
+ * @param {*} n
+ * @returns
  */
 function fibonacci(n) {
   if (n <= 0) return 0;
@@ -31,7 +29,7 @@ function fibonacci(n) {
   let n_2 = 0;
   let res = 0;
 
-  for(let i = 2; i <= n; i++) {
+  for (let i = 2; i <= n; i++) {
     res = n_1 + n_2;
     n_2 = n_1;
     n_1 = res;
@@ -39,4 +37,4 @@ function fibonacci(n) {
 
   return res;
 }
-console.log(fibonacci(10))
+console.log(fibonacci(10));
