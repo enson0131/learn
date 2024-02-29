@@ -35,17 +35,17 @@ function getImageBuffer() {
   return readFileSync(imagePath);
 }
 
-const imgaeBuffer = getImageBuffer();
+const imageBuffer = getImageBuffer();
 
 console.log(
   `imgaeBuffer===>`,
-  imgaeBuffer,
-  imgaeBuffer.buffer instanceof ArrayBuffer,
+  imageBuffer,
+  imageBuffer.buffer instanceof ArrayBuffer,
   Buffer.alloc(0).buffer // Create a 0 bytes buffer object:
 );
 
 // Buffer 转 ArrayBuffer: Buffer => Uint8Array => ArrayBuffer
-const uint8Array = new Uint8Array(imgaeBuffer);
+const uint8Array = new Uint8Array(imageBuffer);
 const arrayBuffer = uint8Array.buffer;
 // console.log(`uint8Array`, uint8Array);
 // console.log(`arrayBuffer`, arrayBuffer);

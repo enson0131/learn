@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File、FileReader、Base64、Buffer、Blob 互转</title>
+</head>
+
+<body>
+    <input id="file" type="file">
+    <script>
+        const fileDOM = document.getElementById('file');
+        fileDOM.addEventListener('change', (e) => {
+            console.log(e, e.target.files);
+            const File = e.target.files[0]; // 获取到一个 File 对象
+
+            // 通过 FileReader 获取 File 文件
+            const fileReader = new FileReader();
+            fileReader.readAsArrayBuffer(File); // 读取 File 文件，通过 arrayBuffer 格式得到结果
+            fileReader.onload = (e) => {
+                console.log(`-------- ArrayBuffer: readAsArrayBuffer start ------------------`);
+                console.log(e.target.result);
+                console.log(`-------- readAsArrayBuffer end --------------------`);
+
+                fileReader.readAsDataURL(File);
+                fileReader.onload = (e) => {
+                    console.log(`-------- Base64: readAsDataURL start ------------------`);
+                    console.log(e.target.result); // Base 64
+                    console.log(`-------- readAsDataURL end --------------------`);
+
+
+                    fileReader.readAsBinaryString(File);
+                    fileReader.onload = (e) => {
+                        console.log(`-------- 二进制数据编码: readAsBinaryString start ------------------`);
+                        console.log(e.target.result); // 二进制数据编码
+                        /**
+                            atob()：解码，解码一个 Base64 字符串；
+                            btoa()：编码，从一个字符串或者二进制数据编码一个 Base64 字符串。
+                         */
+                        console.log(`二进制数据编码转 base64`, window.btoa(e.target.result)); // 字符串
+                        console.log(`-------- readAsBinaryString end --------------------`);
+
+
+                        fileReader.readAsText(File);
+                        fileReader.onload = (e) => {
+                            console.log(`-------- 内容文本: readAsText start ------------------`);
+                            console.log(e.target.result); // 内容文本
+                            /**
+                                atob()：解码，解码一个 Base64 字符串；
+                                btoa()：编码，从一个字符串或者二进制数据编码一个 Base64 字符串。
+                             */
+                            console.log(`-------- readAsText end --------------------`);
+                        }
+                    }
+                }
+            }
+        })
+
+
+        /*
+            // ArrayBuffer -> Unit8Array -> Blob
+            const blob = new Blob([new Uint8Array(buffer, byteOffset, length)]);
+        */
+    </script>
+</body>
+
+</html>
