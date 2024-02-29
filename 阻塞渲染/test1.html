@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /*
+         * await 一个异步长任务是不会阻塞主进程的
+         */
+        const test = async () => {
+            console.log(1);
+            await new Promise(resolve => {
+                // for (let i = 0; i <= 1000000000000; i++) {
+
+                // }
+                setTimeout(() => {
+                    resolve();
+                }, 10000)
+            })
+            console.log(2);
+            // for (let i = 0; i <= 1000000000000; i++) {
+
+            // }
+        }
+        console.log(`执行了～0`)
+        test();
+
+        console.log(`执行了～1`)
+        setInterval(() => {
+            console.log(`执行了～`)
+        }, 1000)
+    </script>
+</body>
+
+</html>
