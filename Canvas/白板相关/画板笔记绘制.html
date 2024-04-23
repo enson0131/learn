@@ -71,7 +71,7 @@
         });
 
         canvas.addEventListener('pointermove', throttle((e) => {
-            console.log('e--->throttle', e);
+            // console.log('e--->throttle', e);
             if (!start) return; // 如果没有按下，则不绘制
             addPoint(e); // 将鼠标移动的点添加到points数组中
             render(ctx, points); // 绘制

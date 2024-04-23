@@ -231,14 +231,12 @@
         const distance = (x, y) => Math.abs(x - y);
 
         const generateOffScreenCanvas = (points) => {
-            const canvas = document.createElement('canvas'); // 创建一个离屏 Canvas
+            const canvas = document.createElement('canvas'); // 创建一个缓存 Canvas
             const ctxContent = canvas.getContext('2d');
             ctxContent.save();
             // 获取最小的点和最大的点
             const { minX, minY, width: realWidth, height: realHeight, points: realPoints } = getElementAbsoluteCoords(points);
 
-            console.log(`realWidth---->`, realWidth, Math.floor(minX));
-            console.log(`realHeight---->`, realHeight, Math.floor(minY));
             canvas.width = realWidth * dpr + padding * 2;
             canvas.height = realHeight * dpr + padding * 2;
             canvas.style.width = realWidth + "px";
