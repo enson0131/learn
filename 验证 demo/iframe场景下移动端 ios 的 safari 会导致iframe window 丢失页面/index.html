@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我是父页面</title>
+</head>
+
+<body>
+    我是父页面
+    <iframe id="iframe"></iframe>
+    <script type="text/javascript">
+        console.debug('我是父页面');
+        const iframe = document.getElementById('iframe');
+        iframe.src = './iframe.html';
+        iframe.onload = function () {
+            console.log('我是父页面', window, window.parent === window)
+        }
+
+        window.addEventListener('message', function (e) {
+            console.log('我是父页面，接收到iframe消息', e.data)
+            if (e.data === 'https://www.baidu.com') {
+                console.log('我是父页面，接收到iframe消息，准备跳转')
+                window.location.href = e.data;
+            }
+            // window.location.href = e.data;
+        });
+    </script>
+</body>
+
+
+</html>

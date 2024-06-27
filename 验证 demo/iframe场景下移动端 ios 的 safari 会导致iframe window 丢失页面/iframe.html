@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我是iframe</title>
+</head>
+
+<body>
+    我是iframe
+    <button id="btn">发送消息给父页面</button>
+    <script type="text/javascript">
+        console.debug('我是iframe')
+        function handleClick() {
+            window.parent.postMessage('https://www.baidu.com', 'http://172.20.213.247:65355')
+        }
+
+        document.getElementById('btn').addEventListener('click', handleClick)
+        console.log('我是iframe', window, window.parent === window)
+    </script>
+</body>
+
+
+</html>
