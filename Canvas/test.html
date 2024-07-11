@@ -15,10 +15,16 @@
 </head>
 
 <body>
+    <div id="content">
+        当前的触摸内容: <span id="touchContent"></span>
+    </div>
     <script>
         const body = document.querySelector('body');
+        const content = document.getElementById('touchContent');
         body.addEventListener('pointerdown', (e) => {
             console.log('e--->1', e, window.devicePixelRatio);
+            console.log(`当前的类型`, e.pointerType);
+            content.innerText = e.pointerType;
         });
     </script>
 </body>
