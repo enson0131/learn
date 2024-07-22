@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Deferred Notify Example</title>
+    <script>
+        (function (global) {
+            var options = ["resolve", "reject", "notify"];
+
+            function Callbacks() {
+                var list = [];
+                return {
+                    add: function (fn) {
+                        list.push(fn);
+                    },
+                    fire: function (context, args) {
+                        list.forEach(function (fn) {
+                            fn.apply(context, args);
+                        });
+                    }
+                };
+            }
+
+            function Deferred() {
+                // 通过元组的实现
+                var tuples = [
+                    ["resolve", "done", Callbacks(), "resolved"],
+                    ["reject", "fail", Callbacks(), "rejected"],
+                    ["notify", "progress", Callbacks()]
+                ];
+                var state = "pending";
+                var deferred = {};
+
+                function handleAction(action, stateString, callbacks) {
+                    return function () {
+                        if (state === "pending" || (state === "notify" && action === "notify")) {
+                            state = stateString || state;
+                            callbacks.fire(deferred, arguments);
+                        }
+                        return this;
+                    };
+                }
+
+                tuples.forEach(function (tuple) {
+                    var action = tuple[0],
+                        stateString = tuple[3],
+                        callbacks = tuple[2];
+
+                    deferred[action] = handleAction(action, stateString, callbacks); // 定义 resolve, reject, notify 方法
+
+                    // 定义处理函数
+                    if (tuple[1]) {  // Add done, fail, and progress methods
+                        deferred[tuple[1]] = function (fn) {
+                            callbacks.add(fn);
+                            return this;
+                        };
+                    }
+                });
+
+                deferred.state = function () {
+                    return state;
+                };
+
+                deferred.promise = function (obj) {
+                    return obj != null ? Object.assign(obj, deferred) : deferred;
+                };
+
+                return deferred;
+            }
+
+            window.Deferred = Deferred;
+
+        })(this);
+
+        // 示例使用
+        // var dfd = new Deferred();
+
+        // dfd.progress(function (progressInfo) {
+        //     console.log("Progress:", progressInfo);
+        // });
+
+        // dfd.done(function () {
+        //     console.log("Done");
+        // });
+
+        // dfd.fail(function () {
+        //     console.log("Fail");
+        // });
+
+        // // 模拟异步操作
+        // setTimeout(function () {
+        //     dfd.notify("50% complete");
+        //     dfd.resolve();
+        // }, 1000);
+
+    </script>
+    <script>
+        // $(document).ready(function () {
+        // 创建一个 Deferred 对象
+        var deferred = Deferred();
+
+        // 用于存储通知状态
+        var notifyStates = [];
+
+        // 注册一个观察者来监听进度更新
+        deferred.progress(function (progressInfo) {
+            console.log("监听了么:", progressInfo);
+            notifyStates.push(progressInfo);
+        });
+
+        // 模拟进度通知
+        setTimeout(function () {
+            deferred.notify("Progress 1");
+        }, 1000);
+
+        setTimeout(function () {
+            deferred.notify("Progress 2");
+        }, 2000);
+
+        setTimeout(function () {
+            deferred.notify("Progress 3");
+        }, 3000);
+
+        // 注册一个完成通知的回调
+        deferred.done(function () {
+            console.log("Deferred resolved");
+            console.log("Collected notify states:", notifyStates);
+        });
+
+        // 模拟任务完成
+        setTimeout(function () {
+            deferred.resolve();
+        }, 4000);
+        // });
+    </script>
+
+</head>
+
+<body>
+    <h1>Deferred Notify Example</h1>
+</body>
+
+</html>
