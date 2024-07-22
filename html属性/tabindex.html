@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root" tabindex="-1">tabIndex</div>
+    <script>
+        // 通过 tabIndex 让 div 具有焦点
+        const root = document.getElementById('root');
+        root.addEventListener('focus', () => {
+            console.log('focus');
+        });
+        root.addEventListener('blur', () => {
+            console.log('blur');
+        });
+    </script>
+</body>
+
+</html>
