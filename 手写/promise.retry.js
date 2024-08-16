@@ -26,3 +26,20 @@ const retry2 = (fn, times = 1) => {
   });
   return promise;
 };
+
+const retry3 = function (promiseFunc, num = 2) {
+  return promiseFunc().then(null, (e) =>
+    num > 0 ? Promise.retry(promiseFunc, num - 1) : Promise.reject(e)
+  );
+};
+
+const test = async () => {
+  const a = await Promise.retry(() => Promise.resolve(1));
+  console.log(a);
+  const b = await Promise.retry(() => Promise.reject(2)).catch((e) =>
+    console.log(e)
+  );
+  console.log(b);
+};
+
+test();
