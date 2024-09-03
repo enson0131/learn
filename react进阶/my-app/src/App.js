@@ -4,7 +4,9 @@ import "./App.css";
 // import Index from "./基础篇/state/useEffect_case";
 // import Test from "./HOC/控制渲染/节流渲染/节流原理";
 // import Index from "./HOC/赋能组件/ 劫持原型链-劫持生命周期-事件函数";
-import Hoc2 from "./HOC/赋能组件/组件内的事件监听"
+// import Hoc2 from "./HOC/赋能组件/组件内的事件监听";
+import AnimationUpload from "./components/云盘动画";
+// import AnimationUpload2 from "./components/云盘转动";
 
 function App() {
   return (
@@ -28,7 +30,8 @@ function App() {
       </header> */}
       {/* <Test /> */}
       {/* <Index /> */}
-      {<Hoc2 />}
+      {/* {<Hoc2 />} */}
+      <AnimationUpload />
     </div>
   );
 }

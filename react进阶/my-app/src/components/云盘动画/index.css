@@ -1,0 +1,75 @@
+.arrow {
+  position: absolute;
+  left: 50%;
+  bottom: 20%;
+  font-size: 60px;
+  /* transform-origin: 50%; */
+  transform: translateX(-50%);
+  z-index: 9;
+}
+
+.arrow-1 {
+  -webkit-animation: arrow-movement 2s ease-in-out infinite;
+  animation: arrow-movement 2s ease-in-out infinite;
+}
+
+/* .arrow-2 {
+  -webkit-animation: arrow-movement 2s 1s ease-in-out infinite;
+  animation: arrow-movement 2s 1s ease-in-out infinite;
+} */
+
+/* .arrow:before,
+.arrow:after {
+  background: #fff;
+  content: "";
+  display: block;
+  height: 3px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30px;
+} */
+/* 
+.arrow:before {
+  -webkit-transform: rotate(45deg) translateX(-23%);
+  transform: rotate(45deg) translateX(-23%);
+  -webkit-transform-origin: top left;
+  transform-origin: top left;
+}
+
+.arrow:after {
+  -webkit-transform: rotate(-45deg) translateX(23%);
+  transform: rotate(-45deg) translateX(23%);
+  -webkit-transform-origin: top right;
+  transform-origin: top right;
+} */
+
+@keyframes arrow-movement {
+  0% {
+    opacity: 0;
+    bottom: 20%;
+  }
+  70% {
+    opacity: 1;
+    bottom: 40%;
+  }
+  100% {
+    opacity: 0;
+    bottom: 40%;
+  }
+}
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+}
+
+.bg {
+  font-size: 200px;
+  height: 200px;
+  width: 200px;
+}

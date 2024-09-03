@@ -1,0 +1,27 @@
+.syncOutlined {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+  z-index: 9;
+}
+
+.container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 200px;
+  height: 200px;
+}
+
+.bg {
+  font-size: 200px;
+  height: 200px;
+  width: 200px;
+}
