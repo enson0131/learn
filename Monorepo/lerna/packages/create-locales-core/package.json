@@ -1,0 +1,29 @@
+{
+  "name": "create-locales-core",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "enson_chen <1004714132@qq.com>",
+  "homepage": "https://github.com/enson0131/learn#readme",
+  "license": "ISC",
+  "main": "lib/create-locales-core.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://r.cnpmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enson0131/learn.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/create-locales-core.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/enson0131/learn/issues"
+  }
+}

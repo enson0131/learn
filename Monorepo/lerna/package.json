@@ -1,0 +1,16 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "bootstrap": "lerna bootstrap --hoist",
+    "publish": "lerna publish",
+    "clean": "lerna clean"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "lerna": "^8.1.8"
+  }
+}
