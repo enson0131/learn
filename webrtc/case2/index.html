@@ -1,0 +1,46 @@
+<!doctype html>
+
+<!--
+    参考链接: https://github.com/mdn/samples-server/tree/master/s/webrtc-from-chat
+-->
+
+<html>
+
+<head>
+    <title>一个视频通话 demo 案例</title>
+    <meta charset="utf-8">
+    <link href="chat.css" rel="stylesheet">
+    <link href="shared.css" rel="stylesheet">
+    <script type="text/javascript" src="chatclient.js"></script>
+    <script src="adapter.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="infobox">
+            <p>请输入用户名: <input id="name" type="text" maxlength="12" required autocomplete="username" inputmode="verbatim"
+                    placeholder="Username">
+                <input type="button" name="login" value="登陆" onclick="connect()">
+            </p>
+        </div>
+        <ul class="userlistbox"></ul>
+        <div class="chatbox"></div>
+        <div class="camerabox">
+            <video id="received_video" autoplay></video>
+            <!-- <video id="local_video" autoplay muted></video> -->
+            <!-- <button id="hangup-button" onclick="hangUpCall();" role="button" disabled>
+                挂断电话
+            </button> -->
+        </div>
+        <div class="empty-container"></div>
+        <div class="chat-controls">
+            聊天记录:<br />
+            <input id="text" type="text" name="text" size="100" maxlength="256"
+                placeholder="Say something meaningful..." autocomplete="off" onkeyup="handleKey(event)" disabled>
+            <input type="button" id="send" name="send" value="Send" onclick="handleSendButton()" disabled>
+            <button id="share-screen" disabled>投屏</button>
+        </div>
+    </div>
+</body>
+
+</html>

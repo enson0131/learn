@@ -1,0 +1,29 @@
+/*
+    Styles to share across samples
+ */
+
+html,
+body {
+  height: 100%;
+  font-family: "Open Sans", "Lucida Grande", Arial, Helvetica, sans-serif;
+}
+
+.mdn-disclaimer {
+  font-size: 18px;
+  background-color: #ddd;
+  color: black;
+  margin-left: 80px;
+  margin-right: 80px;
+  max-width: 620px;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid black;
+  box-shadow: 1px 1px 2px black;
+}
+
+.mdn-footer {
+  font-weight: normal;
+  font-size: 12px;
+  text-align: right;
+  border-top: 2px solid #000000;
+}
