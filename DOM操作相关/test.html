@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="test">我是一个 click 按钮</div>
+    <div id="test2" style="margin-top: 20px; color:bisque;">我是一个 onPointDown 按钮</div>
+    <script>
+        // 1. 获取元素
+        var div = document.getElementById('test');
+        // 2. 绑定事件
+        div.onclick = function () {
+            console.log(`我被点击了`);
+            window.open('https://www.baidu.com');
+        }
+
+
+        // 1. 获取元素
+        var div2 = document.getElementById('test2');
+        // 2. 绑定事件
+        div2.onpointerdown = function () {
+            console.log(`我被点击了2`);
+            window.open('https://www.baidu.com');
+        }
+    </script>
+</body>
+
+</html>
