@@ -1,4 +1,4 @@
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 const Home = () => {
   const [value, setValue] = useState(0);
@@ -7,6 +7,7 @@ const Home = () => {
     console.log("创建子组件"),
     (
       <button
+        id="btn"
         onClick={(e) => {
           console.log("触发点击事件handleClick");
           e.preventDefault();
@@ -19,13 +20,25 @@ const Home = () => {
     )
   );
 
-  console.log("2");
+  const a = <Comp1 />;
+  console.log("2", a);
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     console.log("触发了～～～");
+  //     const btn = document.getElementById("btn");
+  //     btn?.click();
+  //   }, 5000);
+  // }, []);
 
   return (
     <>
       <div>主页</div>
       <div>失焦次数：{value}</div>
       <input
+        onChange={(e) => {
+          console.log(`e`, e);
+        }}
         onBlur={() => {
           // setTimeout(() => {
           console.log("1");
@@ -33,7 +46,7 @@ const Home = () => {
           // }, 1000);
         }}
       />
-      <Comp1 />
+      {a}
     </>
   );
 };
