@@ -19,6 +19,35 @@
  */
 
 /**
+ * 思路:
+ * 1 如何数字小于 1000 直接返回
+ * 2 源数字进行遍历，每3位插入一个点
+
+ * @param {number} n
+ * @return {string}
+ */
+var thousandSeparator = function (n) {
+  if (n < 1000) return n;
+
+  let res = "";
+  const str = n.toString();
+  const len = str.length;
+
+  for (let i = 0; i < len; i++) {
+    if (i > 0 && i % 3 === 0) {
+      res = "." + res; // 要留意整除的场景
+    }
+    res = str[len - 1 - i] + res;
+  }
+
+  if (res[0] === ".") {
+    res = res.slice(1);
+  }
+
+  return res;
+};
+
+/**
  *
  * @param {number} n
  * @return {string}
