@@ -7,6 +7,10 @@ import "./App.css";
 // import Hoc2 from "./HOC/赋能组件/组件内的事件监听";
 import AnimationUpload from "./components/云盘动画";
 // import AnimationUpload2 from "./components/云盘转动";
+import DemoUseReducer from "./components/不常见的Hooks/useReducer";
+import DemoUseSyncExternalStore from "./components/不常见的Hooks/useSyncExternalStore";
+import DemoUseTransition from "./components/不常见的Hooks/useTransition";
+import DemoUseDeferredValue from "./components/不常见的Hooks/useDeferredValue";
 
 function App() {
   return (
@@ -31,7 +35,11 @@ function App() {
       {/* <Test /> */}
       {/* <Index /> */}
       {/* {<Hoc2 />} */}
-      <AnimationUpload />
+      {/* <AnimationUpload /> */}
+      {/* <DemoUseReducer /> */}
+      {/* <DemoUseSyncExternalStore /> */}
+      {/* <DemoUseTransition /> */}
+      <DemoUseDeferredValue />
     </div>
   );
 }
