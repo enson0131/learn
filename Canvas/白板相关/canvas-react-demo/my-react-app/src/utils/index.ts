@@ -79,3 +79,24 @@ export const quadraticCurveTo = (
 
   ctx.stroke(); // 绘制路径
 };
+
+/**
+ * 获取点击的坐标在画布的位置
+ * @param point - 鼠标点击的坐标
+ * @param canvasPoint - 画布的左边距和上边距
+ * @returns
+ */
+export const viewportCoordsToSceneCoords = (
+  point: { clientX: number; clientY: number },
+  canvasPoint: {
+    offsetLeft: number;
+    offsetTop: number;
+    scrollX: number;
+    scrollY: number;
+  }
+) => {
+  return {
+    x: point.clientX - canvasPoint.offsetLeft - canvasPoint.scrollX, // x: 点击的坐标 - 画布的左边距，即在画布内的坐标
+    y: point.clientY - canvasPoint.offsetTop - canvasPoint.scrollY, // y: 点击的坐标 - 画布的上边距，即在画布内的坐标
+  };
+};
