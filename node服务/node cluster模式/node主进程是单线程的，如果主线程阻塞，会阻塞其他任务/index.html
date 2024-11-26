@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试接口逻辑是否阻塞主线程</title>
+</head>
+
+<body>
+    <script>
+        const startTime = Date.now();
+        fetch('http://localhost:3000/slow').then(res => {
+            console.log('slow耗时：', Date.now() - startTime)
+        })
+
+        fetch('http://localhost:3000/fast').then(res => {
+            console.log('fast耗时：', Date.now() - startTime)
+        })
+    </script>
+</body>
+
+</html>
