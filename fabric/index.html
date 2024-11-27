@@ -39,6 +39,47 @@
             fill: 'red',
         });
         canvas.add(rect);
+
+        // 创建一个圆形对象
+        let circle = new fabric.Circle({
+            left: 0, //距离左边的距离
+            top: 0, //距离上边的距离
+            fill: "green", //填充的颜色
+            radius: 50, //圆的半径
+        });
+        // 创建一个三角形对象
+        let triangle = new fabric.Triangle({
+            left: 200, //距离左边的距离
+            top: 0, //距离上边的距离
+            fill: "blue", //填充的颜色
+            width: 100, //宽度
+            height: 100, //高度
+        });
+        triangle.set("selectable", false); // 只是禁止这个三角形选中
+        // 将图形形添加到canvas画布上
+        canvas.add(circle, triangle);
+
+        //通过url绘制图片
+        fabric.Image.fromURL(
+            `http://${window.location.host}/public/1.png`,
+            (img) => {
+                img.scale(0.5);
+                canvas.add(img);
+            }
+        );
+        //也可以通过标签绘制
+        // let img = document.getElementById("img");
+        // let image = new fabric.Image(img, {
+        //     left: 100,
+        //     top: 100,
+        //     opacity: 0.8,
+        // });
+
+        // canvas.isDrawingMode = true;
+        // canvas.freeDrawingBrush.color = "blue";
+        // canvas.freeDrawingBrush.width = 5;
+
+        // canvas.selection = false; // 禁止选中
     </script>
 </body>
 
