@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>visibilitychange</title>
+</head>
+
+<body>
+    <!-- F12 控制台可能导致 visibilitychange 不触发 -->
+    <h1>当前的页面状态</h1>
+    <div id="text"></div>
+    <script>
+        document.addEventListener('visibilitychange', function () {
+            const textDOM = document.getElementById('text');
+            if (document.hidden) {
+                textDOM.innerText += '页面被隐藏了\n';
+            } else {
+                textDOM.innerText += '页面被显示了\n';
+            }
+        });
+    </script>
+</body>
+
+</html>
