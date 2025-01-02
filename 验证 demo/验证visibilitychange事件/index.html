@@ -12,8 +12,9 @@
     <h1>当前的页面状态</h1>
     <div id="text"></div>
     <script>
+        const textDOM = document.getElementById('text');
+        textDOM.innerText += '当前页面是否隐藏：' + !!document.hidden + '\n';
         document.addEventListener('visibilitychange', function () {
-            const textDOM = document.getElementById('text');
             if (document.hidden) {
                 textDOM.innerText += '页面被隐藏了\n';
             } else {

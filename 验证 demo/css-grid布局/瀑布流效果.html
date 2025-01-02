@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>瀑布流效果</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f5f5f5;
+        }
+
+        .waterfall {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(200px, 1fr));
+            /* grid-auto-rows: 10px; */
+            /* 设置最小的网格行高 */
+            grid-auto-flow: row dense;
+            /* 紧密排列内容 */
+            gap: 16px;
+            grid-auto-rows: minmax(100px, auto);
+
+            /*
+              // 在不定高的布局下，使用 column-count 和 column-gap 可以比较好的实现瀑布流效果
+              display: block;
+              column-count: 4; // 指定列数 
+              column-gap: 16px; // 列间距
+            */
+        }
+
+        .item {
+            background-color: #4caf50;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 1.2em;
+            padding: 8px;
+            /* 每个 item 的高度会基于内容不同 */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="waterfall">
+        <div class="item" style="height: 100px;">1</div>
+        <div class="item" style="height: 150px;">2</div>
+        <div class="item" style="height: 120px;">3</div>
+        <div class="item" style="height: 180px;">4</div>
+        <div class="item" style="height: 90px;">5</div>
+        <div class="item" style="height: 200px;">6</div>
+    </div>
+
+</body>
+
+</html>
