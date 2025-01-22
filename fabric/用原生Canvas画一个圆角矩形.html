@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas 绘制圆角矩形</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+
+        canvas {
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="400" height="300"></canvas>
+
+    <script>
+        function drawRoundedRect(ctx, x, y, width, height, radius) {
+            // 确保 radius 不会超出矩形边长的一半
+            radius = Math.min(radius, width / 2, height / 2);
+
+            // 开始绘制路径
+            ctx.beginPath();
+
+            // 绘制四个角和四条边
+            ctx.moveTo(x + radius, y); // 从左上角开始
+            ctx.lineTo(x + width - radius, y); // 上边线
+            ctx.arcTo(x + width, y, x + width, y + radius, radius); // 右上角
+            ctx.lineTo(x + width, y + height - radius); // 右边线
+            ctx.arcTo(x + width, y + height, x + width - radius, y + height, radius); // 右下角
+            ctx.lineTo(x + radius, y + height); // 下边线
+            ctx.arcTo(x, y + height, x, y + height - radius, radius); // 左下角
+            ctx.lineTo(x, y + radius); // 左边线
+            ctx.arcTo(x, y, x + radius, y, radius); // 左上角
+
+            // 结束路径
+            ctx.closePath();
+
+            // 填充和描边矩形
+            ctx.fillStyle = 'lightblue'; // 填充颜色
+            ctx.fill(); // 填充图形
+            ctx.strokeStyle = 'blue'; // 描边颜色
+            ctx.lineWidth = 2; // 描边宽度
+            ctx.stroke(); // 绘制描边
+        }
+
+        // 获取 Canvas 元素
+        const canvas = document.getElementById('myCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // 绘制一个圆角矩形
+        drawRoundedRect(ctx, 50, 50, 200, 100, 20);
+    </script>
+</body>
+
+</html>

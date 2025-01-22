@@ -4,11 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>用 Fabric.js 绘制一个圆角矩形</title>
+    <title>Fabric.js Rounded Rectangle</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 
 <body>
+    <canvas id="canvas" width="400" height="300" style="border:1px solid #ccc;"></canvas>
+    <script>
+        // 初始化 Fabric.js canvas
+        const canvas = new fabric.Canvas('canvas');
 
+        // 创建一个圆角矩形
+        const roundedRect = new fabric.Rect({
+            left: 50, // 矩形的左侧位置
+            top: 50,  // 矩形的顶部位置
+            width: 200, // 矩形宽度
+            height: 100, // 矩形高度
+            fill: 'lightblue', // 矩形填充颜色
+            stroke: 'blue', // 矩形描边颜色
+            strokeWidth: 2, // 描边宽度
+            rx: 20, // 水平方向的圆角半径
+            ry: 20  // 垂直方向的圆角半径
+        });
+
+        // 将矩形添加到画布
+        canvas.add(roundedRect);
+    </script>
 </body>
 
 </html>
