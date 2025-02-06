@@ -64,3 +64,29 @@ var longestConsecutive = function (nums) {
 };
 
 console.log(longestConsecutive([-1, -2, -3]));
+
+/**
+ * 思路2
+ *  1. 找到所有的第一个数字: 特点是没有前置数字，例如 [100,4,200,1,3,2]，则第一个数字是 【100, 200, 1】, 因为 4、3、2 都存在前置数字 3、2、1
+ *  2. 在根据第一个数字找到连续数字的长度
+ *  3. 最后比较最长的长度并返回
+ * @param {*} nums
+ */
+var longestConsecutive2 = function (nums) {
+  const set = new Set(nums);
+  const result = Array.from(set)
+    .filter((num) => !set.has(num - 1))
+    .map((num) => {
+      let n = 1;
+      while (set.has(num + n)) {
+        n++;
+      }
+      return n;
+    });
+
+  if (result.length <= 0) return 0;
+
+  return Math.max(...result);
+};
+
+console.log(longestConsecutive2([]));
