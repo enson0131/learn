@@ -19,7 +19,7 @@ FMP我们可以通过MutationObserver对页面的元素进行监听, 当元素�
 分数最高的元素对应的渲染时间就是我们的FMP时间
 */
 
-import utils from './utils';
+import utils from "./utils.js";
 
 const START_TIME = performance && performance.timing.responseEnd;
 
@@ -31,7 +31,7 @@ const TAG_WEIGHT_MAP = {
   CANVAS: 4,
   OBJECT: 4,
   EMBED: 4,
-  VIDEO: 4
+  VIDEO: 4,
 };
 
 const LIMIT = 1000;
@@ -63,7 +63,7 @@ class FMPTiming {
       this.doTag(bodyTarget, this.callbackCount++); // 给元素打标记，标记是第几次渲染出来的
     }
     this.statusCollector.push({
-      t
+      t,
     });
   }
   initObserver() {
@@ -77,13 +77,13 @@ class FMPTiming {
         this.doTag(bodyTarget, this.callbackCount++);
       }
       this.statusCollector.push({
-        t
+        t,
       });
     });
 
     this.observer.observe(document, {
       childList: true, // 也会监听目标节点的子节点
-      subtree: true
+      subtree: true,
     });
 
     if (document.readyState === "complete") {
@@ -103,7 +103,9 @@ class FMPTiming {
    * 获取各个资源加载的时间
    */
   initResourceMap() {
-    performance.getEntries().forEach(item => {
+    performance.getEntries().forEach((item) => {
+      // console.log(`item---->`, item);
+      // https://developer.mozilla.org/zh-CN/docs/Web/API/PerformanceResourceTiming
       this.mp[item.name] = item.responseEnd;
     });
   }
@@ -136,7 +138,7 @@ class FMPTiming {
 
         let tp;
 
-        res.dpss.forEach(item => {
+        res.dpss.forEach((item) => {
           if (tp && tp.st) {
             if (tp.st < item.st) {
               tp = item;
@@ -146,15 +148,17 @@ class FMPTiming {
           }
         });
 
-        console.log(tp, this.statusCollector);
+        // console.log("tp---->", tp, this.statusCollector);
 
         this.initResourceMap();
 
         let resultSet = this.filterTheResultSet(tp.els);
 
+        // console.log(`resultSet--->`, resultSet);
+
         let fmpTiming = this.calResult(resultSet);
 
-        console.log("fmp : ", fmpTiming);
+        console.log("FMP 指标: ", fmpTiming);
 
         console.timeEnd("calTime");
       } else {
@@ -168,21 +172,26 @@ class FMPTiming {
   calResult(resultSet) {
     let rt = 0;
 
-    resultSet.forEach(item => {
+    resultSet.forEach((item) => {
       let t = 0;
       if (item.weight === 1) {
         let index = +item.node.getAttribute("f_c") - 1;
         t = this.statusCollector[index].t;
       } else if (item.weight === 2) {
         if (item.node.tagName === "IMG") {
-          t = this.mp[item.node.src];
+          // console.log(`item.node.src-->`, item.node.src, this.mp);
+          let index = +item.node.getAttribute("f_c") - 1;
+          t = this.statusCollector[index].t + this.mp[item.node.src];
+          // t = this.mp[item.node.src];
         } else if (item.node.tagName === "SVG") {
           let index = +item.node.getAttribute("f_c") - 1;
           t = this.statusCollector[index].t;
         } else {
           //background image
-          let match = utils.getStyle(item.node, 'background-image').match(/url\(\"(.*?)\"\)/);
-          
+          let match = utils
+            .getStyle(item.node, "background-image")
+            .match(/url\(\"(.*?)\"\)/);
+
           let s;
           if (match && match[1]) {
             s = match[1];
@@ -203,7 +212,7 @@ class FMPTiming {
         }
       }
 
-      console.log(t, item.node);
+      // console.log(t, item.node);
       rt < t && (rt = t);
     });
 
@@ -212,14 +221,14 @@ class FMPTiming {
 
   filterTheResultSet(els) {
     let sum = 0;
-    els.forEach(item => {
+    els.forEach((item) => {
       sum += item.st;
     });
 
     let avg = sum / els.length;
 
-    return els.filter(item => {
-      return item.st > avg;
+    return els.filter((item) => {
+      return item.st >= avg;
     });
   }
 
@@ -240,14 +249,8 @@ class FMPTiming {
   }
 
   calScore(node, dpss) {
-    let {
-      width,
-      height,
-      left,
-      top,
-      bottom,
-      right
-    } = node.getBoundingClientRect();
+    let { width, height, left, top, bottom, right } =
+      node.getBoundingClientRect();
     let f = 1;
 
     if (WH < top || WW < left) {
@@ -257,7 +260,7 @@ class FMPTiming {
 
     let sdp = 0; // 子元素的总得分
 
-    dpss.forEach(item => {
+    dpss.forEach((item) => {
       sdp += item.st;
     });
 
@@ -265,8 +268,8 @@ class FMPTiming {
 
     if (
       weight === 1 &&
-      utils.getStyle(node, 'background-image') && 
-      utils.getStyle(node, 'background-image') !== "initial"
+      utils.getStyle(node, "background-image") &&
+      utils.getStyle(node, "background-image") !== "initial"
     ) {
       weight = TAG_WEIGHT_MAP["IMG"]; //将有图片背景的普通元素 权重设置为img
     }
@@ -281,7 +284,7 @@ class FMPTiming {
       st = sdp;
       els = [];
 
-      dpss.forEach(item => {
+      dpss.forEach((item) => {
         els = els.concat(item.els);
       });
     }
@@ -289,7 +292,7 @@ class FMPTiming {
     return {
       dpss,
       st,
-      els
+      els,
     };
   }
 
@@ -311,23 +314,17 @@ class FMPTiming {
 
   /**
    * 计算元素在可视区域的占比
-   * @param {*} node 
-   * @returns 
+   * @param {*} node
+   * @returns
    */
   calAreaPercent(node) {
-    let {
-      left,
-      right,
-      top,
-      bottom,
-      width,
-      height
-    } = node.getBoundingClientRect();
+    let { left, right, top, bottom, width, height } =
+      node.getBoundingClientRect();
     let wl = 0;
     let wt = 0;
     let wr = WW;
     let wb = WH;
-    
+
     // right - left 是元素的宽度
     let overlapX =
       right - left + (wr - wl) - (Math.max(right, wr) - Math.min(left, wl));
