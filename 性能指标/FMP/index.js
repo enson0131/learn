@@ -58,7 +58,6 @@ class FMPTiming {
   firstSnapshot() {
     let t = Date.now() - START_TIME;
     let bodyTarget = document.body;
-
     if (bodyTarget) {
       this.doTag(bodyTarget, this.callbackCount++); // 给元素打标记，标记是第几次渲染出来的
     }
@@ -134,10 +133,12 @@ class FMPTiming {
 
         this.flag = false;
 
-        let res = this.deepTraversal(document.body);
+        // 获取元素的分数
+        let res = this.deepTraversal(document.body); // 深度优先计算元素的得分
 
         let tp;
 
+        // 获取最大分数的元素
         res.dpss.forEach((item) => {
           if (tp && tp.st) {
             if (tp.st < item.st) {
@@ -156,7 +157,7 @@ class FMPTiming {
 
         // console.log(`resultSet--->`, resultSet);
 
-        let fmpTiming = this.calResult(resultSet);
+        let fmpTiming = this.calResult(resultSet); // 计算时间
 
         console.log("FMP 指标: ", fmpTiming);
 
@@ -220,11 +221,6 @@ class FMPTiming {
   }
 
   filterTheResultSet(els) {
-    let sum = 0;
-    els.forEach((item) => {
-      sum += item.st;
-    });
-
     let avg = sum / els.length;
 
     return els.filter((item) => {
@@ -232,12 +228,18 @@ class FMPTiming {
     });
   }
 
+  /**
+   * 深度优先遍历子节点，将节点存储到 dpss 中
+   * @param {*} node
+   * @returns
+   */
   deepTraversal(node) {
     if (node) {
-      let dpss = [];
+      let dpss = []; // 存储的是 { dpss, st, els } 👉 st: 总分数、els 元素集合、dpss 子元素的计算结果
 
+      // for 循环遍历子节点
       for (let i = 0, child; (child = node.children[i]); i++) {
-        let s = this.deepTraversal(child);
+        let s = this.deepTraversal(child); // 子节点进行深度遍历
         if (s.st) {
           dpss.push(s); // dpss为子节点的分数
         }
@@ -278,8 +280,9 @@ class FMPTiming {
 
     let els = [{ node, st, weight }];
 
-    let areaPercent = this.calAreaPercent(node);
+    let areaPercent = this.calAreaPercent(node); // 计算元素在可视区域的占比
 
+    // 如果子元素的总分大于元素的总分，那么这个元素的总分就是子元素的总分
     if (sdp > st * areaPercent || areaPercent === 0) {
       st = sdp;
       els = [];
