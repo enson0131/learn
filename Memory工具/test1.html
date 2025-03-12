@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- 
+参考文章: https://juejin.cn/post/7146976516692410376
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通过一段测试代码来了解 Memory 工具各关键性的关系</title>
+</head>
+
+<body>
+    <script>
+        // 测试代码
+        class Jane { }
+        class Tom {
+            constructor() {
+                this.jane = new Jane();
+            }
+        }
+        let list = Array(1000000)
+            .fill('')
+            .map(() => new Tom());
+    </script>
+</body>
+
+</html>

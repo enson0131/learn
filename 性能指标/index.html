@@ -1,15 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
 </head>
+
 <body>
   <div>测试测试</div>
-  <img src="./1.jpg" alt="" srcset="">
+  <img id="img" alt="" srcset="">
   <script src="./FCP.JS"></script>
+  <script src="./LCP.JS"></script>
+  <script src="./FMP.js"></script>
   <script src="./FPS.JS"></script>
+  <script>
+    setTimeout(() => {
+      // const now = +new Date();
+      // let current = +new Date();
+      // while (current < now + 1000) {
+      //   current = +new Date();
+      // }
+
+      const image = document.getElementById('img');
+      image.src = './1.jpg';
+    }, 1000)
+  </script>
 </body>
+
 </html>
