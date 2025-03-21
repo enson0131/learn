@@ -6,7 +6,8 @@
   addTask(500,"2");
   addTask(300,"3");
   addTask(400,"4");
-  的输出顺序是：2 3 1 4
+
+  执行 run() 的输出顺序是：2 3 1 4
 
   整个的完整执行流程：
 
@@ -28,7 +29,7 @@ class Scheduler {
     this.currentRunNum = 0; // 当前运行的任务数量
   }
 
-  task () {
+  task() {
     if (this.currentRunNum >= this.limit || !this.queue.length) return;
     this.currentRunNum++;
     const fn = this.queue.shift();
@@ -38,25 +39,23 @@ class Scheduler {
     });
   }
 
-  run () {
-    for(let i = 0; i < this.limit; i++) {
-        this.task();
+  run() {
+    for (let i = 0; i < this.limit; i++) {
+      this.task();
     }
   }
 
-  
   addTask(time, param) {
     const task = () => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           console.log(param);
           resolve();
-        }, time)
-      })
-      
-    }
+        }, time);
+      });
+    };
 
-    this.queue.push(task)
+    this.queue.push(task);
   }
 }
 
@@ -72,8 +71,6 @@ class Scheduler {
 
 // scheduler.start();
 
-
-
 class Scheduler1 {
   constructor(limit) {
     this.tasks = [];
@@ -88,14 +85,14 @@ class Scheduler1 {
           console.log(param);
           resolve();
         }, timer);
-      })
-    }
+      });
+    };
 
     this.tasks.push(task);
   }
 
-  run () {
-    for(let i = 0; i < this.limit; i++) {
+  run() {
+    for (let i = 0; i < this.limit; i++) {
       this.runTask();
     }
   }
@@ -107,23 +104,21 @@ class Scheduler1 {
     this.currentRunNum++;
     const task = this.tasks.shift();
 
-    
     task().then(() => {
       this.currentRunNum--;
       this.runTask();
-    })
+    });
   }
 }
 
 const scheduler1 = new Scheduler1(2);
 function addTask(time, param) {
-  scheduler1.addTask(time, param)
+  scheduler1.addTask(time, param);
 }
 
-addTask(1000,"1");
-addTask(500,"2");
-addTask(300,"3");
-addTask(400,"4");
+addTask(1000, "1");
+addTask(500, "2");
+addTask(300, "3");
+addTask(400, "4");
 
 scheduler1.run();
-     
