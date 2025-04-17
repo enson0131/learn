@@ -10,8 +10,7 @@ async function asyncPool(limit, iterable, iteratorFn) {
 
     const clear = () => executing.delete(p);
 
-    p.then(clear).catch(clear);
-
+    p.finally(clear);
     if (executing.size >= limit) {
       await Promise.race(executing); // 等待有结果返回在继续执行
     }
