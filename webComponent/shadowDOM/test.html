@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow DOM</title>
+</head>
+
+<body>
+    <div id="outer">外部 DOM</div>
+    <script>
+        const template = `
+            <div id="template">
+                <div id="inner">内部 DOM</div>
+                <style>div{color: red;}</style>
+            </div>
+        `;
+        const container = document.createElement('div');
+        container.innerHTML = template;
+        const appElement = container.querySelector('#template');
+        const shadowRoot = appElement.attachShadow({ mode: 'closed' });
+        shadowRoot.innerHTML = appElement.innerHTML;
+        appElement.innerHTML = ''; // 清空 appElement 内容
+        document.body.appendChild(appElement);
+    </script>
+</body>
+
+</html>
