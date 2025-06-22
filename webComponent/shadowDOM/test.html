@@ -19,10 +19,30 @@
         const container = document.createElement('div');
         container.innerHTML = template;
         const appElement = container.querySelector('#template');
-        const shadowRoot = appElement.attachShadow({ mode: 'closed' });
+        const shadowRoot = appElement.attachShadow({ mode: 'closed' }); // closed 模式，外部无法访问 shadowRoot，appElement.shadowRoot 返回 null
         shadowRoot.innerHTML = appElement.innerHTML;
         appElement.innerHTML = ''; // 清空 appElement 内容
         document.body.appendChild(appElement);
+
+
+        // 如果使用 open 模式，则外部可以访问 shadowRoot
+        const container2 = document.createElement('div');
+        container2.innerHTML = template;
+        const appElement2 = container2.querySelector('#template');
+        const shadowRoot2 = appElement2.attachShadow({ mode: 'open' }); // appElement2.shadowRoot; // 返回一个 ShadowRoot 对象
+        shadowRoot2.innerHTML = appElement2.innerHTML;
+        appElement2.innerHTML = '';
+        document.body.appendChild(appElement2);
+
+        console.log('document');
+        console.log(document.querySelector('#inner'));
+
+        console.log('shadowRoot');
+        console.log(shadowRoot.querySelector('#inner').innerHTML, appElement.shadowRoot);
+
+        console.log('shadowRoot2');
+        console.log(shadowRoot2.querySelector('#inner').innerHTML, appElement2.shadowRoot);
+
     </script>
 </body>
 
