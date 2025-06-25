@@ -26,23 +26,35 @@
 
 
         // 如果使用 open 模式，则外部可以访问 shadowRoot
+        const template2 = `
+            <div id="template2">
+                <div id="inner2">内部 DOM</div>
+                <style>div{color: red;}</style>
+            </div>
+        `;
         const container2 = document.createElement('div');
-        container2.innerHTML = template;
-        const appElement2 = container2.querySelector('#template');
+        container2.innerHTML = template2;
+        const appElement2 = container2.querySelector('#template2');
         const shadowRoot2 = appElement2.attachShadow({ mode: 'open' }); // appElement2.shadowRoot; // 返回一个 ShadowRoot 对象
         shadowRoot2.innerHTML = appElement2.innerHTML;
         appElement2.innerHTML = '';
         document.body.appendChild(appElement2);
 
         console.log('document');
-        console.log(document.querySelector('#inner'));
+        console.log(document.querySelector('#inner'), document.querySelector('#inner2'));
 
         console.log('shadowRoot');
         console.log(shadowRoot.querySelector('#inner').innerHTML, appElement.shadowRoot);
 
         console.log('shadowRoot2');
-        console.log(shadowRoot2.querySelector('#inner').innerHTML, appElement2.shadowRoot);
+        console.log(shadowRoot2.querySelector('#inner')?.innerHTML, appElement2?.shadowRoot);
 
+
+        /*
+        1 document 都拿不到 shadow 元素节点
+        2 open 模式下，shadowRoot 宿主节点可以访问 shadow 元素节点
+        3 closed 模式下，无法获取 shadowRoot 宿主节点，无法访问 shadow 元素节点
+        */
     </script>
 </body>
 
