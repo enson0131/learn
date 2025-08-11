@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>添加支持传入交互的参数</title>
+    <link rel="stylesheet" href="./css/common.css">
     <script src="./utils/webgl-helper.js"></script>
 </head>
 
@@ -47,7 +48,8 @@
 
     <script>
         var canvas = document.querySelector('#canvas');
-        var gl = canvas.getContext('webgl');
+        resizeCanvas(canvas);
+        var gl = getContext(canvas);
 
         var vertexShader = createShaderFromScript(gl, gl.VERTEX_SHADER, 'vertexShader');
         var fragmentShader = createShaderFromScript(gl, gl.FRAGMENT_SHADER, 'fragmentShader');
@@ -58,8 +60,43 @@
         // 使用着色器程序
         gl.useProgram(program);
 
-        // 绘制一个点
-        gl.drawArrays(gl.POINTS, 0, 1);
+        //找到顶点着色器中的变量a_Position
+        var a_Position = gl.getAttribLocation(program, 'a_Position');
+        //找到顶点着色器中的变量a_Screen_Size
+        var a_Screen_Size = gl.getAttribLocation(program, 'a_Screen_Size');
+        //找到片元着色器中的变量u_Color
+        var u_Color = gl.getUniformLocation(program, 'u_Color');
+        //为顶点着色器中的 a_Screen_Size 传递 canvas 的宽高信息
+        gl.vertexAttrib2f(a_Screen_Size, canvas.width, canvas.height);
+        //存储点击位置的数组。
+        var points = [];
+
+
+        canvas.addEventListener('click', function (e) {
+            var x = e.pageX;
+            var y = e.pageY;
+            var color = randomColor();
+            console.log('color', color);
+            points.push({ x: x, y: y, color: color })
+            gl.clearColor(0, 0, 0, 1.0);
+            //用上一步设置的清空画布颜色清空画布。
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            for (let i = 0; i < points.length; i++) {
+                var color = points[i].color;
+                //为片元着色器中的 u_Color 传递随机颜色
+                gl.uniform4f(u_Color, color.r, color.g, color.b, color.a);
+                //为顶点着色器中的 a_Position 传递顶点坐标。
+                gl.vertexAttrib2f(a_Position, points[i].x, points[i].y);
+                //绘制点
+                gl.drawArrays(gl.POINTS, 0, 1);
+            }
+        });
+
+        // 设置清屏颜色
+        gl.clearColor(0, 0, 0, 1.0);
+        // 用上一步设置的清空画布颜色清空画布。
+        gl.clear(gl.COLOR_BUFFER_BIT);
     </script>
 </body>
 

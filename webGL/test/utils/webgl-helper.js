@@ -1,3 +1,13 @@
+var random = Math.random;
+function randomColor() {
+  return {
+    r: random() * 255,
+    g: random() * 255,
+    b: random() * 255,
+    a: random() * 1,
+  };
+}
+
 function $$(str) {
   if (!str) return null;
   if (str.startsWith("#")) {
@@ -61,4 +71,17 @@ function createSimpleProgram(gl, vertexShader, fragmentShader) {
   }
   console.error(gl.getProgramInfoLog(program));
   gl.deleteProgram(program);
+}
+
+function resizeCanvas(canvas, width, height) {
+  if (canvas.width !== width) {
+    canvas.width = width ? width : window.innerWidth;
+  }
+  if (canvas.height !== height) {
+    canvas.height = height ? height : window.innerHeight;
+  }
+}
+
+function getContext(canvas) {
+  return canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
 }
