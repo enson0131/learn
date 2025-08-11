@@ -87,7 +87,7 @@
                 //为片元着色器中的 u_Color 传递随机颜色
                 gl.uniform4f(u_Color, color.r, color.g, color.b, color.a);
                 //为顶点着色器中的 a_Position 传递顶点坐标。
-                gl.vertexAttrib2f(a_Position, points[i].x, points[i].y);
+                gl.vertexAttrib2f(a_Position, points[i].x, points[i].y); // 本示例我们采用 `gl.vertexAttrib2f ` 直接给 a_Position 赋值，所以每绘制一个点，都要给着色器变量赋值一次，并且绘制一次，效率比较低。后面我们会介绍一种更快速的方式：利用缓冲区传递多个顶点数据。
                 //绘制点
                 gl.drawArrays(gl.POINTS, 0, 1);
             }
