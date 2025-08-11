@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>绘制一个在屏幕中心，大小为 10，颜色是红色的点</title>
+    <script src="./utils/webgl-helper.js"></script>
+</head>
+
+<body>
+    <!-- 顶点着色器源码 -->
+    <script type="shader-source" id="vertexShader">
+     //告诉 GPU 在`裁剪坐标系`的原点（也就是屏幕中心）画一个大小为 10 的点。
+	 void main(){
+  		//声明顶点位置
+  		gl_Position = vec4(0.0, 0.0, 0.0, 1.0);
+  		//声明要绘制的点的大小。
+  		gl_PointSize = 10.0;
+  	}
+	</script>
+
+    <!-- 片元着色器源码 -->
+    <script type="shader-source" id="fragmentShader">
+	 void main(){
+	 	//设置像素颜色为红色
+		gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); 
+	}
+	</script>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        var canvas = document.querySelector('#canvas');
+        var gl = canvas.getContext('webgl');
+
+        var vertexShader = createShaderFromScript(gl, gl.VERTEX_SHADER, 'vertexShader');
+        var fragmentShader = createShaderFromScript(gl, gl.FRAGMENT_SHADER, 'fragmentShader');
+
+        //创建着色器程序
+        var program = createSimpleProgram(gl, vertexShader, fragmentShader);
+
+        // 使用着色器程序
+        gl.useProgram(program);
+
+        // 绘制一个点
+        gl.drawArrays(gl.POINTS, 0, 1);
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>添加支持传入交互的参数</title>
+    <script src="./utils/webgl-helper.js"></script>
+</head>
+
+<body>
+    <!-- 顶点着色器源码 -->
+    <script type="shader-source" id="vertexShader">
+        //设置浮点数精度为中等精度
+        precision mediump float;
+        //接收点在 canvas 坐标系上的坐标 (x, y)
+        attribute vec2 a_Position;
+        //接收 canvas 的宽高尺寸
+        attribute vec2 a_Screen_Size;
+        void main(){
+           //start 将屏幕坐标系转化为裁剪坐标（裁剪坐标系）
+           // 这句代码用来将浏览器窗口坐标转换成裁剪坐标，之后通过透视除法，除以 w 值（此处为 1 ）转变成设备坐标（NDC坐标系）。这个算法首先将(x,y) 转化到【0, 1】区间，再将 【0, 1】之间的值乘以 2 转化到 【0, 2】区间，之后再减去 1 ，转化到 【-1, 1】之间的值，即 `NDC 坐标`。   
+           // 事实上，这是我们第一次接触坐标系变换: 从 Canvas 坐标系转变到 NDC 坐标系（即设备坐标系），这个变换比较简单，我们用基本运算就可以实现。
+           vec2 position = (a_Position / a_Screen_Size) * 2.0 - 1.0; 
+           position = position * vec2(1.0, -1.0);
+           gl_Position = vec4(position, 0, 1);
+           //end 将屏幕坐标系转化为裁剪坐标（裁剪坐标系）
+           //声明要绘制的点的大小。
+           gl_PointSize = 10.0;
+        }
+	</script>
+
+    <!-- 片元着色器源码 -->
+    <script type="shader-source" id="fragmentShader">
+        //设置浮点数精度为中等精度
+        precision mediump float;
+        //接收 JavaScript 传过来的颜色值（RGBA）。
+        uniform vec4 u_Color;
+        void main(){
+            //将普通的颜色表示转化为 WebGL 需要的表示方式，即将【0-255】转化到【0,1】之间。
+           vec4 color = u_Color / vec4(255, 255, 255, 1);
+           gl_FragColor = color; 
+        }
+	</script>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        var canvas = document.querySelector('#canvas');
+        var gl = canvas.getContext('webgl');
+
+        var vertexShader = createShaderFromScript(gl, gl.VERTEX_SHADER, 'vertexShader');
+        var fragmentShader = createShaderFromScript(gl, gl.FRAGMENT_SHADER, 'fragmentShader');
+
+        //创建着色器程序
+        var program = createSimpleProgram(gl, vertexShader, fragmentShader);
+
+        // 使用着色器程序
+        gl.useProgram(program);
+
+        // 绘制一个点
+        gl.drawArrays(gl.POINTS, 0, 1);
+    </script>
+</body>
+
+</html>
