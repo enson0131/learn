@@ -62,6 +62,12 @@
         gl.attachShader(program, fragmentShader);
         //链接着色器程序
         gl.linkProgram(program);
+
+        // 使用着色器程序
+        gl.useProgram(program);
+
+        // 绘制一个点
+        gl.drawArrays(gl.POINTS, 0, 1);
     </script>
 </body>
 
