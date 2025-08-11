@@ -17,12 +17,17 @@
         precision mediump float;
         // 接收顶点坐标 (x, y)
         attribute vec2 a_Position;
+        // 接收顶点颜色 (r, g, b, a)
+        attribute vec4 a_Color;
         // 接收 canvas 的尺寸(width, height)
         attribute vec2 a_Screen_Size;
+        // 传递给片元着色器的颜色
+        varying vec4 u_Color;
         void main(){
             vec2 position = (a_Position / a_Screen_Size) * 2.0 - 1.0;
             position = position * vec2(1.0,-1.0);
             gl_Position = vec4(position, 0, 1);
+            u_Color = a_Color;
         }
 	</script>
 
@@ -30,8 +35,8 @@
     <script type="shader-source" id="fragmentShader">
         //设置浮点数据类型为中级精度
         precision mediump float;
-        //接收 JavaScript 传过来的颜色值（rgba）。
-        uniform vec4 u_Color;
+        //接收从顶点着色器传过来的颜色值
+        varying vec4 u_Color;
 
         void main(){
             vec4 color = u_Color / vec4(255, 255, 255, 1);
@@ -42,7 +47,7 @@
     <canvas id="canvas"></canvas>
 
     <script>
-        var positions = []; // 三角形三个顶点的坐标
+        var triangles = []; // 存储所有三角形的数据
         var canvas = document.querySelector('#canvas');
         resizeCanvas(canvas);
         var gl = getContext(canvas);
@@ -58,58 +63,86 @@
 
         //找到顶点着色器中的变量a_Position
         var a_Position = gl.getAttribLocation(program, 'a_Position');
+        //找到顶点着色器中的变量a_Color
+        var a_Color = gl.getAttribLocation(program, 'a_Color');
         //找到顶点着色器中的变量a_Screen_Size
         var a_Screen_Size = gl.getAttribLocation(program, 'a_Screen_Size');
-        //找到片元着色器中的变量u_Color
-        var u_Color = gl.getUniformLocation(program, 'u_Color');
         //为顶点着色器中的 a_Screen_Size 传递 canvas 的宽高信息
         gl.vertexAttrib2f(a_Screen_Size, canvas.width, canvas.height);
 
-        // 创建缓冲区
-        var buffer = gl.createBuffer();
-        // 绑定缓冲区
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-
-        //每次取两个数据
-        var size = 2;
-        //每个数据的类型是32位浮点型
-        var type = gl.FLOAT;
-        //不需要归一化数据
-        var normalize = false;
-        // 每次迭代运行需要移动数据数 * 每个数据所占内存 到下一个数据开始点。
-        var stride = 0;
-        // 从缓冲起始位置开始读取     
-        var offset = 0;
-        // 将 a_Position 变量获取数据的缓冲区指向当前绑定的 buffer。
-        gl.vertexAttribPointer(
-            a_Position, size, type, normalize, stride, offset);
-
-        // 启用顶点着色器中的变量a_Position
-        gl.enableVertexAttribArray(a_Position);
+        // 创建位置缓冲区
+        var positionBuffer = gl.createBuffer();
+        // 创建颜色缓冲区
+        var colorBuffer = gl.createBuffer();
 
         //渲染函数
         function render(gl) {
             gl.clearColor(0, 0, 0, 1.0);
             //用上一步设置的清空画布颜色清空画布。
             gl.clear(gl.COLOR_BUFFER_BIT);
+
+            if (triangles.length === 0) return;
+
+            // 准备所有顶点位置数据
+            var allPositions = [];
+            var allColors = [];
+
+            triangles.forEach(triangle => {
+                // 添加三个顶点的位置
+                allPositions.push(...triangle.positions);
+                // 为三个顶点添加各自的颜色（支持渐变）
+                allColors.push(...triangle.colors);
+            });
+
+            // 绑定位置缓冲区
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(allPositions), gl.STATIC_DRAW);
+            gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, 0, 0);
+            gl.enableVertexAttribArray(a_Position);
+
+            // 绑定颜色缓冲区
+            gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(allColors), gl.STATIC_DRAW);
+            gl.vertexAttribPointer(a_Color, 4, gl.FLOAT, false, 0, 0);
+            gl.enableVertexAttribArray(a_Color);
+
             //绘制图元设置为三角形
             var primitiveType = gl.TRIANGLES;
-            //从顶点数组的开始位置取顶点数据
-            var drawOffset = 0;
-            //因为我们要绘制 N 个点，所以执行 N 次顶点绘制操作。
-            gl.drawArrays(primitiveType, 0, positions.length / 2);
+            //绘制所有三角形
+            gl.drawArrays(primitiveType, 0, triangles.length * 3);
         }
 
+
+        var currentTrianglePositions = []; // 当前正在构建的三角形顶点
 
         canvas.addEventListener('mouseup', e => {
             var x = e.pageX;
             var y = e.pageY;
-            positions.push(x, y);
-            var color = randomColor();
-            if (positions.length % 6 == 0) {
-                //向缓冲区中复制新的顶点数据。
-                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.DYNAMIC_DRAW);
-                gl.uniform4f(u_Color, color.r, color.g, color.b, color.a);
+            currentTrianglePositions.push(x, y);
+
+            // 当收集到3个顶点时，创建一个三角形
+            if (currentTrianglePositions.length === 6) {
+                // 为三个顶点生成三种不同的颜色，创建渐变效果
+                var color1 = randomColor();
+                var color2 = randomColor();
+                var color3 = randomColor();
+
+                // 将颜色转换为0-1范围并组合成数组
+                var gradientColors = [
+                    color1.r, color1.g, color1.b, color1.a, // 第一个顶点
+                    color2.r, color2.g, color2.b, color2.a, // 第二个顶点  
+                    color3.r, color3.g, color3.b, color3.a  // 第三个顶点
+                ];
+
+                // 保存三角形数据
+                triangles.push({
+                    positions: [...currentTrianglePositions],
+                    colors: gradientColors
+                });
+
+                // 重置当前三角形顶点
+                currentTrianglePositions = [];
+
                 //重新渲染
                 render(gl);
             }
