@@ -85,3 +85,18 @@ function resizeCanvas(canvas, width, height) {
 function getContext(canvas) {
   return canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
 }
+
+function createSimpleProgramFromScript(gl, vertexScriptId, fragmentScriptId) {
+  let vertexShader = createShaderFromScript(
+    gl,
+    gl.VERTEX_SHADER,
+    vertexScriptId
+  );
+  let fragmentShader = createShaderFromScript(
+    gl,
+    gl.FRAGMENT_SHADER,
+    fragmentScriptId
+  );
+  let program = createSimpleProgram(gl, vertexShader, fragmentShader);
+  return program;
+}
