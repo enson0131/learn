@@ -86,7 +86,7 @@
 
 
             //绘制图元设置为线段
-            var primitiveType = gl.LINES;
+            var primitiveType = gl.LINES; // gl.LINE_STRIP;
             //绘制所有线段
             gl.drawArrays(primitiveType, 0, positions.length / 2);
         }
@@ -97,14 +97,8 @@
             var y = e.pageY;
             positions.push(x);
             positions.push(y);
-            if (positions.length > 0) {
-                gl.bufferData(
-                    gl.ARRAY_BUFFER,
-                    new Float32Array(positions),
-                    gl.DYNAMIC_DRAW
-                );
-                render(gl);
-            }
+
+            render(gl);
         });
     </script>
 </body>
