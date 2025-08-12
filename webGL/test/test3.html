@@ -86,7 +86,7 @@
 
 
             //绘制图元设置为线段
-            var primitiveType = gl.LINES; // gl.LINE_STRIP;
+            var primitiveType = gl.LINE_STRIP; // gl.LINE_STRIP; // gl.LINE_LOOP;
             //绘制所有线段
             gl.drawArrays(primitiveType, 0, positions.length / 2);
         }
