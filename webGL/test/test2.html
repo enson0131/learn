@@ -83,12 +83,13 @@
         var stride = 0;
         // 从缓冲起始位置开始读取     
         var offset = 0;
-        // 将 a_Position 变量获取数据的缓冲区指向当前绑定的 buffer。
-        gl.vertexAttribPointer(
-            a_Position, size, type, normalize, stride, offset);
 
         // 启用顶点着色器中的变量a_Position
         gl.enableVertexAttribArray(a_Position);
+
+        // 将 a_Position 变量获取数据的缓冲区指向当前绑定的 buffer。
+        gl.vertexAttribPointer(
+            a_Position, size, type, normalize, stride, offset);
 
         // 从顶点数组的开始位置取顶点数据
         var offset = 0;

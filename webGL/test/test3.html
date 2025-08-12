@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>webGL - 绘制线段</title>
+    <link rel="stylesheet" href="./css/common.css">
+    <script src="./utils/webgl-helper.js"></script>
+</head>
+
+<body>
+    <!-- 顶点着色器源码 -->
+    <script type="shader-source" id="vertexShader">
+        // 顶点着色器增加一个变量用来接收 canvas 的尺寸，将 canvas 坐标转化为 NDC 坐标
+        //设置浮点数精度为中等精度 
+        precision mediump float;
+        // 接收顶点坐标 (x, y)
+        attribute vec2 a_Position;
+        // 接收 canvas 的尺寸(width, height)
+        attribute vec2 a_Screen_Size;
+        void main(){
+            vec2 position = (a_Position / a_Screen_Size) * 2.0 - 1.0;
+            position = position * vec2(1.0, -1.0);
+            gl_Position = vec4(position, 0, 1);
+        }
+    </script>
+
+    <!-- 片元着色器源码 -->
+    <script type="shader-source" id="fragmentShader">
+        //设置浮点数据类型为中级精度
+        precision mediump float;
+        void main(){
+            gl_FragColor = vec4(1, 0, 0, 1);
+        }
+	</script>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        var positions = [];
+        var canvas = document.querySelector('#canvas');
+        resizeCanvas(canvas);
+        var gl = getContext(canvas);
+
+        var vertexShader = createShaderFromScript(gl, gl.VERTEX_SHADER, 'vertexShader');
+        var fragmentShader = createShaderFromScript(gl, gl.FRAGMENT_SHADER, 'fragmentShader');
+
+        //创建着色器程序
+        var program = createSimpleProgram(gl, vertexShader, fragmentShader);
+
+        // 使用着色器程序
+        gl.useProgram(program);
+
+        //找到顶点着色器中的变量a_Position
+        var a_Position = gl.getAttribLocation(program, 'a_Position');
+
+        //找到顶点着色器中的变量a_Screen_Size
+        var a_Screen_Size = gl.getAttribLocation(program, 'a_Screen_Size');
+        //为顶点着色器中的 a_Screen_Size 传递 canvas 的宽高信息
+        gl.vertexAttrib2f(a_Screen_Size, canvas.width, canvas.height);
+
+
+        // // 设置清屏颜色
+        gl.clearColor(0, 0, 0, 1.0);
+        // 用上一步设置的清空画布颜色清空画布。
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+
+        function render(gl) {
+            gl.clearColor(0, 0, 0, 1.0);
+            //用上一步设置的清空画布颜色清空画布。
+            gl.clear(gl.COLOR_BUFFER_BIT);
+
+            if (positions.length === 0) return;
+
+            // 创建位置缓冲区
+            var positionBuffer = gl.createBuffer();
+            // 绑定位置缓冲区
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            // 将顶点坐标数据写入缓冲区
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+            // 将 a_Position 变量获取数据的缓冲区指向当前绑定的 buffer。
+            gl.vertexAttribPointer(a_Position, 2, gl.FLOAT, false, 0, 0);
+            gl.enableVertexAttribArray(a_Position);
+
+
+            //绘制图元设置为线段
+            var primitiveType = gl.LINES;
+            //绘制所有线段
+            gl.drawArrays(primitiveType, 0, positions.length / 2);
+        }
+
+
+        canvas.addEventListener('mouseup', e => {
+            var x = e.pageX;
+            var y = e.pageY;
+            positions.push(x);
+            positions.push(y);
+            if (positions.length > 0) {
+                gl.bufferData(
+                    gl.ARRAY_BUFFER,
+                    new Float32Array(positions),
+                    gl.DYNAMIC_DRAW
+                );
+                render(gl);
+            }
+        });
+    </script>
+</body>
+
+</html>
