@@ -1,4 +1,4 @@
-(function (window) {
+(function(window) {
   /**
    *单位矩阵
    *
@@ -845,7 +845,7 @@
     var e = Math.cos(z),
       f = Math.sin(z);
 
-    if (euler.order === "XYZ") {
+    if (euler.order === 'XYZ') {
       var ae = a * e,
         af = a * f,
         be = b * e,
@@ -862,7 +862,7 @@
       target[2] = bf - ae * d;
       target[6] = be + af * d;
       target[10] = a * c;
-    } else if (euler.order === "YXZ") {
+    } else if (euler.order === 'YXZ') {
       var ce = c * e,
         cf = c * f,
         de = d * e,
@@ -879,7 +879,7 @@
       target[2] = cf * b - de;
       target[6] = df + ce * b;
       target[10] = a * c;
-    } else if (euler.order === "ZXY") {
+    } else if (euler.order === 'ZXY') {
       var ce = c * e,
         cf = c * f,
         de = d * e,
@@ -896,7 +896,7 @@
       target[2] = -a * d;
       target[6] = b;
       target[10] = a * c;
-    } else if (euler.order === "ZYX") {
+    } else if (euler.order === 'ZYX') {
       var ae = a * e,
         af = a * f,
         be = b * e,
@@ -913,7 +913,7 @@
       target[2] = -d;
       target[6] = b * c;
       target[10] = a * c;
-    } else if (euler.order === "YZX") {
+    } else if (euler.order === 'YZX') {
       var ac = a * c,
         ad = a * d,
         bc = b * c,
@@ -930,7 +930,7 @@
       target[2] = -d * e;
       target[6] = ad * f + bc;
       target[10] = ac - bd * f;
-    } else if (euler.order === "XZY") {
+    } else if (euler.order === 'XZY') {
       var ac = a * c,
         ad = a * d,
         bc = b * c,
@@ -1205,6 +1205,6 @@
     applyMatrix: applyMatrix,
     transpose: transpose,
     makeRotationFromEuler: makeRotationFromEuler,
-    makeRotationFromQuaternion: makeRotationFromQuaternion,
+    makeRotationFromQuaternion: makeRotationFromQuaternion
   };
 })(window);

@@ -100,3 +100,26 @@ function createSimpleProgramFromScript(gl, vertexScriptId, fragmentScriptId) {
   let program = createSimpleProgram(gl, vertexShader, fragmentShader);
   return program;
 }
+
+function loadTexture(gl, src, attribute, callback) {
+  let img = new Image();
+  img.crossOrigin = "anonymous";
+  img.onload = function () {
+    // 激活纹理单元
+    gl.activeTexture(gl.TEXTURE0);
+    // 创建纹理对象
+    let texture = gl.createTexture();
+    // 绑定纹理对象
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    // 将图片数据上传到纹理对象
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
+    // 设置纹理的过滤方式
+    gl.texParameterf(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameterf(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    // 将纹理单元绑定到着色器中的 uniform 变量
+    gl.uniform1i(attribute, 0);
+    callback && callback();
+  };
+  // 设置图片的源
+  img.src = src;
+}
