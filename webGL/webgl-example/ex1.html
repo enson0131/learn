@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./webgl.css" type="text/css" />
+    <!-- 引入gl-matrix库 做矩阵运算 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js"
+        integrity="sha512-zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ=="
+        crossorigin="anonymous" defer></script>
+    <!-- <script src="webgl-demo.js" type="module" defer></script> -->
+</head>
+
+<body>
+    <canvas id="glcanvas" width="640" height="480">
+        你的浏览器似乎不支持或者禁用了 HTML5 <code>&lt;canvas&gt;</code> 元素。
+    </canvas>
+</body>
+<!-- https://developer.mozilla.org/zh-CN/docs/Web/API/WebGL_API/Tutorial/Adding_2D_content_to_a_WebGL_context#%E7%BB%98%E5%88%B6%E5%9C%BA%E6%99%AF -->
+<script type="module">
+    import { initShaderProgram, initBuffers, drawScene } from './webgl-demo.js';
+    // 顶点着色器程序
+    const vsSource = `
+        attribute vec4 aVertexPosition;
+
+        uniform mat4 uModelViewMatrix;
+        uniform mat4 uProjectionMatrix;
+
+        void main() {
+        gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+        }
+    `;
+
+    // 片元着色器程序
+    const fsSource = `
+        void main() {
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+        }
+    `;
+
+    function main() {
+        console.log("main");
+        const canvas = document.querySelector("#glcanvas");
+        // 初始化 WebGL 上下文
+        const gl = canvas.getContext("webgl");
+
+        // 确认 WebGL 支持性
+        if (!gl) {
+            alert("无法初始化 WebGL，你的浏览器、操作系统或硬件等可能不支持 WebGL。");
+            return;
+        }
+
+        // 使用完全不透明的黑色清除所有图像
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);
+        // 用上面指定的颜色清除缓冲区
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+
+        const programInfo = {
+            program: shaderProgram,
+            attribLocations: { // 属性从缓冲区接收值，顶点着色器的每次迭代都从分配给该属性的缓冲区接收下一个值
+                vertexPosition: gl.getAttribLocation(shaderProgram, "aVertexPosition"),
+            },
+            uniformLocations: { // uniform 类似于 JavaScript 全局变量。它们在着色器的所有迭代中保持相同的值
+                projectionMatrix: gl.getUniformLocation(shaderProgram, "uProjectionMatrix"),
+                modelViewMatrix: gl.getUniformLocation(shaderProgram, "uModelViewMatrix"),
+            },
+        };
+
+        const buffers = initBuffers(gl);
+
+        // Draw the scene
+        drawScene(gl, programInfo, buffers);
+    }
+
+    window.addEventListener("load", main);
+</script>
+
+</html>
