@@ -24,19 +24,23 @@
     // 顶点着色器程序
     const vsSource = `
         attribute vec4 aVertexPosition;
+        attribute vec4 aVertexColor;
 
         uniform mat4 uModelViewMatrix;
         uniform mat4 uProjectionMatrix;
+        varying lowp vec4 vColor;
 
         void main() {
-        gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+            gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+            vColor = aVertexColor;
         }
     `;
 
     // 片元着色器程序
     const fsSource = `
+        varying lowp vec4 vColor;
         void main() {
-        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+            gl_FragColor = vColor;
         }
     `;
 
@@ -63,6 +67,7 @@
             program: shaderProgram,
             attribLocations: { // 属性从缓冲区接收值，顶点着色器的每次迭代都从分配给该属性的缓冲区接收下一个值
                 vertexPosition: gl.getAttribLocation(shaderProgram, "aVertexPosition"),
+                vertexColor: gl.getAttribLocation(shaderProgram, "aVertexColor"),
             },
             uniformLocations: { // uniform 类似于 JavaScript 全局变量。它们在着色器的所有迭代中保持相同的值
                 projectionMatrix: gl.getUniformLocation(shaderProgram, "uProjectionMatrix"),
@@ -72,8 +77,20 @@
 
         const buffers = initBuffers(gl);
 
-        // Draw the scene
-        drawScene(gl, programInfo, buffers);
+
+        var then = 0;
+
+        // Draw the scene repeatedly
+        function render(now) {
+            now *= 0.001; // convert to seconds
+            const deltaTime = now - then;
+            then = now;
+
+            drawScene(gl, programInfo, buffers, deltaTime);
+
+            requestAnimationFrame(render);
+        }
+        requestAnimationFrame(render);
     }
 
     window.addEventListener("load", main);

@@ -1,4 +1,8 @@
-function drawScene(gl, programInfo, buffers) {
+let squareRotation = 0.0;
+
+function drawScene(gl, programInfo, buffers, deltaTime) {
+  squareRotation += deltaTime; // 旋转角度
+
   gl.clearColor(0.0, 0.0, 0.0, 1.0); // 清除颜色
   gl.clearDepth(1.0); // 清除深度
   gl.enable(gl.DEPTH_TEST); // 启用深度测试
@@ -6,45 +10,46 @@ function drawScene(gl, programInfo, buffers) {
 
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-  // 创建透视矩阵，用于模拟相机视角的透视效果
-  // used to simulate the distortion of perspective in a camera.
-  // Our field of view is 45 degrees, with a width/height
-  // ratio that matches the display size of the canvas
-  // and we only want to see objects between 0.1 units
-  // and 100 units away from the camera.
-
+  //用于模拟相机中的透视失真。
+  //我们的视场角是45度，宽度/高度
+  //与画布显示尺寸匹配的比例
+  //我们只想看到0.1单位之间的对象
+  //距离相机100单位。
   const fieldOfView = (45 * Math.PI) / 180; // in radians
   const aspect = gl.canvas.clientWidth / gl.canvas.clientHeight;
   const zNear = 0.1;
   const zFar = 100.0;
   const projectionMatrix = mat4.create();
 
-  // note: glmatrix.js always has the first argument
-  // as the destination to receive the result.
+  // 注意：glmatrix.js 总是将第一个参数作为目标来接收结果。
   mat4.perspective(projectionMatrix, fieldOfView, aspect, zNear, zFar);
 
-  // Set the drawing position to the "identity" point, which is
-  // the center of the scene.
+  // 设置绘制位置为“identity”点，即场景的中心。
   const modelViewMatrix = mat4.create();
 
-  // Now move the drawing position a bit to where we want to
-  // start drawing the square.
-
+  // 现在稍微移动绘制位置，以便开始绘制正方形。
   mat4.translate(
-    modelViewMatrix, // destination matrix
-    modelViewMatrix, // matrix to translate
+    modelViewMatrix, // 目标矩阵
+    modelViewMatrix, // 要转换的矩阵
     [-0.0, 0.0, -6.0]
-  ); // amount to translate
+  ); // 要转换的量
 
-  // Tell WebGL how to pull out the positions from the position
-  // buffer into the vertexPosition attribute.
+  mat4.rotate(
+    modelViewMatrix, // 目标矩阵
+    modelViewMatrix, // 要旋转的矩阵
+    squareRotation, // 旋转角度
+    [0, 0, 1]
+  ); // 围绕 z 轴旋转
+
+  // 告诉 WebGL 如何从位置缓冲区中提取位置
+  // 到顶点位置属性。
   {
-    const numComponents = 2; // pull out 2 values per iteration
-    const type = gl.FLOAT; // the data in the buffer is 32bit floats
-    const normalize = false; // don't normalize
-    const stride = 0; // how many bytes to get from one set of values to the next
-    // 0 = use type and numComponents above
-    const offset = 0; // how many bytes inside the buffer to start from
+    const numComponents = 2; // 每次迭代提取2个值
+    const type = gl.FLOAT; // 缓冲区中的数据是32位浮点数
+    const normalize = false; // 不归一化
+    const stride = 0; // 从一组值到下一组值获取多少字节
+    // 0 = 使用 type 和 numComponents 以上
+    const offset = 0; // 从缓冲区开始获取多少字节
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
     gl.vertexAttribPointer(
       programInfo.attribLocations.vertexPosition,
@@ -57,11 +62,15 @@ function drawScene(gl, programInfo, buffers) {
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
   }
 
-  // Tell WebGL to use our program when drawing
+  // 告诉 WebGL 如何从颜色缓冲区中提取颜色
+  // 到顶点颜色属性。
+  setColorAttribute(gl, buffers, programInfo);
+
+  // 告诉 WebGL 使用我们的程序进行绘制
 
   gl.useProgram(programInfo.program);
 
-  // Set the shader uniforms
+  // 设置着色器uniforms
 
   gl.uniformMatrix4fv(
     programInfo.uniformLocations.projectionMatrix,
@@ -77,18 +86,18 @@ function drawScene(gl, programInfo, buffers) {
   {
     const offset = 0;
     const vertexCount = 4;
-    gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
+    gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount); // 绘制三角形带
   }
 }
 
-// Tell WebGL how to pull out the positions from the position
-// buffer into the vertexPosition attribute.
+// 告诉 WebGL 如何从位置缓冲区中提取位置
+// 到顶点位置属性。
 function setPositionAttribute(gl, buffers, programInfo) {
-  const numComponents = 2; // pull out 2 values per iteration
-  const type = gl.FLOAT; // the data in the buffer is 32bit floats
-  const normalize = false; // don't normalize
-  const stride = 0; // how many bytes to get from one set of values to the next
-  // 0 = use type and numComponents above
+  const numComponents = 2; // 每次迭代提取2个值
+  const type = gl.FLOAT; // 缓冲区中的数据是32位浮点数
+  const normalize = false; // 不归一化
+  const stride = 0; // 从一组值到下一组值获取多少字节
+  // 0 = 使用 type 和 numComponents 以上
   const offset = 0; // how many bytes inside the buffer to start from
   gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
   gl.vertexAttribPointer(
@@ -100,6 +109,26 @@ function setPositionAttribute(gl, buffers, programInfo) {
     offset
   );
   gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
+}
+
+// 告诉 WebGL 如何从颜色缓冲区中提取颜色
+// 到顶点颜色属性。
+function setColorAttribute(gl, buffers, programInfo) {
+  const numComponents = 4; // 每次迭代提取4个值
+  const type = gl.FLOAT;
+  const normalize = false; // 不归一化
+  const stride = 0; // 从一组值到下一组值获取多少字节
+  const offset = 0; // 从缓冲区开始获取多少字节
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
+  gl.vertexAttribPointer(
+    programInfo.attribLocations.vertexColor,
+    numComponents,
+    type,
+    normalize,
+    stride,
+    offset
+  );
+  gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
 }
 
 export { drawScene };
