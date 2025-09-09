@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<button id="button">点击我</button>
+
+<body>
+    <script>
+        // 这个调用必须由用户点击事件等触发
+        /*
+        不一定能弹系统消息
+
+        原因如下：
+        1. 和系统的配置有关，需要设置 chrome 开启通知，如果关闭的话就收不到了
+        2. 需要用户手动点击授权，如果没有手动点击授权的话，也是收不到的
+        3. 需要 https 协议
+
+        另外，从相关文档上看，和浏览器兼容性也有关
+        https://developer.mozilla.org/zh-CN/docs/Web/API/Notification
+        */
+        const button = document.getElementById('button');
+        button.addEventListener('click', () => {
+            Notification.requestPermission().then(permission => {
+                console.log('permission', permission);
+                if (permission === 'granted') {
+                    new Notification('你好！这是一条通知');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

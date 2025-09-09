@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            width: 256px;
+            height: 256px;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas" width="512" height="512"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        // 绘制一条线
+        ctx.beginPath();
+        ctx.moveTo(0, 256);
+        ctx.lineTo(512, 256);
+        ctx.strokeStyle = 'blue';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // 绘制一条线
+        ctx.beginPath();
+        ctx.moveTo(256, 0);
+        ctx.lineTo(256, 512);
+        ctx.strokeStyle = 'red';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+
+        // 绘制一个矩形
+        const rectWidth = 100;
+        const rectHeight = 100;
+        ctx.save();
+
+        // 如果想对矩阵中点对应到画布的中点，那么可以对画布整体进行平移操作
+        ctx.translate(- (rectWidth / 2), - (rectHeight / 2));
+
+        ctx.fillStyle = 'red'; // 设置填充颜色
+        ctx.beginPath(); // 开始绘制
+        ctx.rect(canvas.width / 2, canvas.height / 2, rectWidth, rectHeight); // 中心点绘制一个矩形
+        ctx.fill();
+
+        ctx.restore(); // 恢复画布状态
+    </script>
+</body>
+
+</html>
