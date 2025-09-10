@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test</title>
+    <style>
+        /* 测试1: svg path 不断做动画 */
+        #svg1 {
+            animation: move2 200ms ease-in-out infinite;
+            /* will-change: transform; */
+        }
+
+        @keyframes move {
+            0% {
+                transform: scale(0.8);
+            }
+
+            25%,
+            75% {
+                transform: scale(0.6);
+            }
+
+            50% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes move2 {
+            0% {
+                opacity: 0.8;
+            }
+
+            25%,
+            75% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.9;
+            }
+
+            100% {
+                opacity: 0.8;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 
+    结论：svg 动画不一定引起回流
+
+    如果动画改变的是不影响布局的属性，如stroke（描边颜色）、opacity（透明度）等，则通常只会引起重绘。
+
+    如果改变的是几何属性（如path的d属性）或变换（transform），则可能会引起回流，因为这些改变可能会影响SVG元素的大小和位置，进而可能影响整个SVG文档的大小和位置，从而影响页面布局。
+    -->
+    <svg style="position: absolute; width: 10px; height: 10px; overflow: hidden">
+        <path id="svg1" d="M15 13.5a5 5 0 0 1 10 0v6a5 5 0 0 1-10 0v-6Z" />
+        <path fill="#fff" d="M30 22a8 8 0 0 1-16 0h2a6 6 0 0 0 12 0h2z" />
+    </svg>
+    <!-- <div id="svg1" style="position: absolute; width: 10px; height: 10px; overflow: hidden">
+
+    </div> -->
+</body>
+
+</html>
