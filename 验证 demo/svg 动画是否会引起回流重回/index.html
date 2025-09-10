@@ -8,8 +8,8 @@
     <style>
         /* 测试1: svg path 不断做动画 */
         #svg1 {
-            animation: move2 200ms ease-in-out infinite;
-            /* will-change: transform; */
+            animation: move 200ms ease-in-out infinite;
+            /* will-change: transform;  will-change 对 svg path 无效，还是会引起回流*/
         }
 
         @keyframes move {
