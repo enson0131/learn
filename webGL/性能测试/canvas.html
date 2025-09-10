@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>影响 canvas 性能的因素 - 绘制的数量和大小</title>
+    <style>
+        canvas {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const WIDTH = canvas.width;
+        const HEIGHT = canvas.height;
+
+
+        function randomColor() {
+            return `hsl(${Math.random() * 360}, 100%, 50%)`;
+        }
+
+        function drawCircle(context, radius) {
+            const x = Math.random() * WIDTH;
+            const y = Math.random() * HEIGHT;
+            const fillColor = randomColor();
+            context.fillStyle = fillColor;
+            context.beginPath();
+            context.arc(x, y, radius, 0, 2 * Math.PI);
+            context.fill();
+        }
+
+        function draw(context, count = 500, radius = 10) {
+            for (let i = 0; i < count; i++) {
+                drawCircle(context, radius);
+            }
+        }
+
+
+        function update() {
+            ctx.clearRect(0, 0, WIDTH, HEIGHT);
+            // 对比测试
+            // 5000, 10
+            // 50000, 10
+            // 5000, 100
+            draw(ctx, 5000, 10); // FPS 和数量、绘制的大小有关 
+
+            requestAnimationFrame(update);
+        }
+
+        requestAnimationFrame(update);
+    </script>
+</body>
+
+</html>
