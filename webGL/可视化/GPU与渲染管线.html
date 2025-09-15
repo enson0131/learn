@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPU与渲染管线 - 绘制一个三角形</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            width: 500px;
+            height: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 
+    疑惑解答 ✅（重要修正）
+    1. 三角形确实是顺时针绘制的！
+       顶点顺序：(-1,-1) → (0,1) → (1,-1) 是顺时针方向
+       WebGL默认情况下（gl.frontFace(gl.CCW)）：
+       - 逆时针(CCW) = 正面（front-facing）
+       - 顺时针(CW) = 背面（back-facing）
+       所以当前三角形实际上是背面！这就是为什么启用cullFace(BACK)会让它消失
+    
+    2. 坐标系统说明：
+       WebGL使用标准化设备坐标系（NDC），范围是-1到1
+       (-1,-1)：屏幕左下角
+       (0,1)：屏幕上方中间  
+       (1,-1)：屏幕右下角
+       所以三角形几乎覆盖整个屏幕，显示很大是正常的！
+    -->
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const gl = canvas.getContext('webgl');
+        // canvas.width = 500;
+        // canvas.height = 500;
+
+        // 顶点着色器
+        const vertexShaderSource = `
+            attribute vec2 a_Position;
+            void main() {
+                gl_PointSize = 1.0;
+                gl_Position = vec4(a_Position, 1.0, 1.0);
+            }
+        `;
+
+        // 片元着色器
+        const fragmentShaderSource = `
+            precision mediump float;
+            void main() {
+                gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+            }
+        `;
+
+        const program = gl.createProgram();
+        const vertexShader = gl.createShader(gl.VERTEX_SHADER); // 创建 shader 对象
+        const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER); // 创建 shader 对象
+
+        gl.shaderSource(vertexShader, vertexShaderSource); // 将顶点着色器源码分配给 shader 对象
+        gl.shaderSource(fragmentShader, fragmentShaderSource); // 将片元着色器源码分配给 shader 对象
+        gl.compileShader(vertexShader); // 编译顶点着色器
+        gl.compileShader(fragmentShader); // 编译片元着色器
+
+        gl.attachShader(program, vertexShader); // 将顶点着色器挂载到着色器程序上
+        gl.attachShader(program, fragmentShader); // 将片元着色器挂载到着色器程序上
+
+        gl.linkProgram(program); // 链接着色器程序
+        gl.useProgram(program); // 使用着色器程序
+
+        // 定义三角形的三个顶点（WebGL标准化设备坐标系，范围-1到1）
+        const vertices = new Float32Array([
+            -1, -1,  // 顶点1：屏幕左下角
+            0, 1,    // 顶点2：屏幕上方中间
+            1, -1,   // 顶点3：屏幕右下角
+            // 绘制顺序：顶点1 → 顶点2 → 顶点3，这是顺时针方向
+            // WebGL默认逆时针为正面，所以这个三角形实际上是背面！
+        ]);
+        const vertexBuffer = gl.createBuffer(); // 创建缓冲区
+        gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer); // 绑定缓冲区
+        gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW); // 向缓冲区传递数据
+
+        const vertexAttribLocation = gl.getAttribLocation(program, 'a_Position'); // 获取顶点着色器中的 a_Position 变量
+        gl.vertexAttribPointer(vertexAttribLocation, 2, gl.FLOAT, false, 0, 0); // 设置顶点着色器中的 a_Position 变量
+        gl.enableVertexAttribArray(vertexAttribLocation); // 启用顶点着色器中的 a_Position 变量
+
+        gl.clear(gl.COLOR_BUFFER_BIT); // 清屏
+
+        // 面剔除设置（取消注释来测试不同效果）
+        // gl.enable(gl.CULL_FACE);        // 启用面剔除 - 启用的话默认剔除背面
+
+        // 剔除选项：
+        // gl.cullFace(gl.FRONT);          // 剔除正面（逆时针）- 会保留当前三角形
+        // gl.cullFace(gl.BACK);           // 剔除背面（顺时针）- 当前三角形消失！因为它是顺时针的
+        // gl.cullFace(gl.FRONT_AND_BACK); // 剔除正面和背面 - 所有三角形都消失！
+
+        // 绘制三角形 3个顶点
+        // gl.TRIANGLES 模式：每3个顶点组成一个三角形
+        // 参数：绘制模式，起始顶点索引，顶点数量
+        gl.drawArrays(gl.TRIANGLES, 0, 3); // 绘制三角形
+    </script>
+</body>
+
+</html>
