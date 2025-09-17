@@ -14,6 +14,14 @@
         canvas {
             width: 500px;
             height: 500px;
+            border: 1px solid black;
+        }
+
+        #canvas-demo {
+            width: 300px;
+            height: 150px;
+            border: 1px solid black;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -36,11 +44,14 @@
        所以三角形几乎覆盖整个屏幕，显示很大是正常的！
     -->
     <canvas id="canvas"></canvas>
+    <div id="canvas-demo"></div>
     <script>
         const canvas = document.getElementById('canvas');
         const gl = canvas.getContext('webgl');
-        // canvas.width = 500;
-        // canvas.height = 500;
+        canvas.width = 500 * window.devicePixelRatio; // js 设置宽高，webgl 需要手动调整视口
+        canvas.height = 500 * window.devicePixelRatio;
+        // 需要重新调整视口
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
         // 顶点着色器
         const vertexShaderSource = `
