@@ -5,37 +5,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ogl Circles</title>
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        #canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
 </head>
 
 <body>
-    <canvas width="500" height="500"></canvas>
+    <canvas id="canvas"></canvas>
     <script type="module">
         import { Renderer, Program, Geometry, Transform, Mesh } from './ogl/index.mjs';
-        const canvas = document.querySelector('canvas');
+        const canvas = document.getElementById('canvas');
         const renderer = new Renderer({
             canvas,
-            antialias: true,
-            width: 500,
-            height: 500,
+            antialias: true, // 抗锯齿
+            width: window.innerWidth, // 宽度
+            height: window.innerHeight, // 高度
+            dpr: window.devicePixelRatio, // 设备像素比
         });
+
         const gl = renderer.gl;
         gl.clearColor(1, 1, 1, 1);
 
+        /*
+        通过三角形创建一个圆形的几何体
+        @param {WebGLRenderingContext} gl
+        @param {number} radius 圆的半径
+        @param {number} count 圆的个数
+        @param {number} segments 圆的段数 - 表示圆形的分段数，也就是用多少个三角形来组成一个圆。
+        @returns {Geometry} 圆形的几何体
+        */
         function circleGeometry(gl, radius = 0.04, count = 3000, segments = 20) {
             const tau = Math.PI * 2;
-            const position = new Float32Array(segments * 2 + 2);
-            const index = new Uint16Array(segments * 3);
+            const position = new Float32Array(segments * 2 + 2); // 创建一个 Float32Array 数组，用于存储每个三角形的顶点坐标
+            const index = new Uint16Array(segments * 3); // 创建一个 Uint16Array 数组，用于存储每个三角形的索引
             const id = new Uint16Array(count);
 
             for (let i = 0; i < segments; i++) {
-                const alpha = i / segments * tau;
-                position.set([radius * Math.cos(alpha), radius * Math.sin(alpha)], i * 2 + 2);
+                const alpha = i / segments * tau; // 计算每个三角形的角度
+                /*
+                最终输出效果：
+                [
+                    0, 0,           // 圆心
+                    x1, y1,         // 顶点1坐标 (索引 2, 3)  
+                    x2, y2,         // 顶点2坐标 (索引 4, 5)
+                    x3, y3          // 顶点3坐标 (索引 6, 7)
+                ]
+                */
+                position.set([radius * Math.cos(alpha) /* 三角形的 x 坐标 */, radius * Math.sin(alpha) /* 三角形的 y 坐标 */], i * 2 + 2 /* 设置数组的其实位置 */);
             }
+
             for (let i = 0; i < segments; i++) {
                 if (i === segments - 1) {
+                    // 最后一个三角形：连接最后一个顶点回到第一个顶点
                     index.set([0, i + 1, 1], i * 3);
                 } else {
-                    index.set([0, i + 1, i + 2], i * 3);
+                    // 普通三角形：圆心 + 当前顶点 + 下一个顶点
+                    index.set([0, i + 1, i + 2], i * 3); // 读取 position 顶点的坐标
                 }
             }
             for (let i = 0; i < count; i++) {
@@ -44,7 +82,7 @@
             return new Geometry(gl, {
                 position: {
                     data: position,
-                    size: 2,
+                    size: 2, // 读取的幅度是 2 
                 },
                 index: {
                     data: index,
@@ -56,8 +94,10 @@
                 },
             });
         }
-        // const geometry = new Box(gl);
+
         const geometry = circleGeometry(gl); // 创建一个圆形的几何体
+
+        // 顶点着色器
         const vertex = `
       precision highp float;
       attribute vec2 position;
@@ -95,10 +135,11 @@
           1.0
         );
         vColor = hsb2rgb(color);
-        gl_Position = vec4(position * 20.0 + offset, 0, 1);
+        gl_Position = vec4(position + offset, 0, 1);
       }
     `;
 
+        // 片元着色器
         const fragment = `
       precision highp float;
       varying vec3 vColor;
@@ -115,15 +156,14 @@
             },
         });
 
-        const scene = new Transform();
-        const mesh = new Mesh(gl, { geometry, program });
-        mesh.setParent(scene);
+        const scene = new Transform(); // 场景
+        const mesh = new Mesh(gl, { geometry, program }); // 网格
+        mesh.setParent(scene); // 设置网格的父级为场景
 
         function update(t) {
-            console.log(`t: ${t}`);
             program.uniforms.uTime.value = t / 1000;
             renderer.render({ scene });
-            requestAnimationFrame(update);
+            // requestAnimationFrame(update);
         }
         update(0);
     </script>
