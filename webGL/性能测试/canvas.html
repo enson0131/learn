@@ -18,8 +18,8 @@
     <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        canvas.width = window.innerWidth * window.devicePixelRatio;
+        canvas.height = window.innerHeight * window.devicePixelRatio;
 
         const WIDTH = canvas.width;
         const HEIGHT = canvas.height;
@@ -54,7 +54,7 @@
             // 5000, 100
             draw(ctx, 5000, 10); // FPS 和数量、绘制的大小有关 
 
-            requestAnimationFrame(update);
+            // requestAnimationFrame(update);
         }
 
         requestAnimationFrame(update);
