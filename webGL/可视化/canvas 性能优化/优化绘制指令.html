@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas - 优化绘制指令</title>
+    <style>
+        canvas {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth * window.devicePixelRatio;
+        canvas.height = window.innerHeight * window.devicePixelRatio;
+
+        /*
+        绘制一个正多边形
+        @param {number} x 圆心 x 坐标
+        @param {number} y 圆心 y 坐标
+        @param {number} radius 半径
+        @param {number} n 边数
+        @returns {number[]} 多边形的顶点坐标
+        */
+        function regularShape(x, y, radius, n) {
+            const positions = [];
+            const delta = Math.PI * 2 / n;
+            for (let i = 0; i < n; i++) {
+                const theta = i * delta;
+                positions.push([x + radius * Math.sin(theta), y + radius * Math.cos(theta)]);
+            }
+            return positions;
+        }
+
+        // 通过点绘制多边形
+        function drawShape(ctx, positions) {
+            ctx.fillStyle = 'red';
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(positions[0][0], positions[0][1]);
+            for (let i = 1; i < positions.length; i++) {
+                ctx.lineTo(positions[i][0], positions[i][1]);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function drawCircle(ctx, positions) {
+            ctx.fillStyle = 'red';
+            ctx.strokeStyle = 'black';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(positions[0][0], positions[0][1], 50, 0, 2 * Math.PI); // 圆心、半径、起始角度、结束角度
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        // 多边形类型: 三角形、四边形、五边形、六边形、正 100 边形
+        const shapeTypes = [3, 4, 5, 6, 100];
+        const COUNT = 30000; // 绘制的数量
+
+        /*
+        当 COUNT = 20000 时，绘制一个正 100 边形，性能较差, 可以用化圆替换
+        */
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < COUNT; i++) {
+                const shapeType = shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
+                const positions = regularShape(Math.random() * canvas.width, Math.random() * canvas.height, 50, shapeType);
+                if (shapeType === 100) {
+                    drawCircle(ctx, positions);
+                } else {
+                    drawShape(ctx, positions);
+                }
+            }
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+
+</html>

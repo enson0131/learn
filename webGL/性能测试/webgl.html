@@ -96,7 +96,12 @@
             });
         }
 
-        const geometry = circleGeometry(gl); // 创建一个圆形的几何体
+        // 和 数量、大小有关，数量越多，大小越大，性能越差
+        /*
+        1. 因为随着半径增大 ---> 着色器执行的次数增多-- -> GPU 开销大 -> 性能下降
+        2. 因为随着数量增多-- -> 着色器执行的次数增多-- -> GPU 开销大 -> 性能下降
+            */
+        const geometry = circleGeometry(gl, 0.04, 3000, 20); // 创建一个圆形的几何体
 
         // 顶点着色器
         const vertex = `
@@ -164,7 +169,7 @@
         function update(t) {
             program.uniforms.uTime.value = t / 1000;
             renderer.render({ scene });
-            // requestAnimationFrame(update);
+            requestAnimationFrame(update);
         }
         update(0);
     </script>
