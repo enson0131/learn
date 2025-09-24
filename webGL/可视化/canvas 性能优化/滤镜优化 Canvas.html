@@ -97,7 +97,7 @@
             当 COUNT = 20000 时，绘制一个正 100 边形，性能较差, 可以用化圆替换
         */
         const cacheCanvas = createCache();
-        // ctx.filter = 'blur(5px)'; // filter 开销巨大 内存占用巨大
+        ctx.filter = 'blur(5px)'; // filter 开销巨大 内存占用巨大
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             for (let i = 0; i < COUNT; i++) {

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>每月前5个交易日交易策略</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script
+        src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CFC9',
+                        neutral: '#86909C',
+                        light: '#F2F3F5',
+                        dark: '#1D2129'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .card-shadow {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            }
+            .chart-container {
+                position: relative;
+                height: 450px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 font-sans text-dark">
+    <header class="bg-white shadow-sm sticky top-0 z-10">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-[clamp(1.25rem,3vw,1.75rem)] font-bold text-primary">
+                <i class="fa fa-line-chart mr-2"></i>每月前5交易日策略
+            </h1>
+            <div class="flex items-center space-x-4">
+                <button id="refreshBtn"
+                    class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg transition-all flex items-center">
+                    <i class="fa fa-refresh mr-2"></i>重新计算
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white rounded-xl p-6 card-shadow transform hover:scale-[1.02] transition-all">
+                <h3 class="text-neutral font-medium mb-2">策略总收益率</h3>
+                <p id="strategyTotalReturn" class="text-3xl font-bold text-primary">--</p>
+                <p class="text-sm text-neutral mt-1">与沪深300指数对比</p>
+            </div>
+            <div class="bg-white rounded-xl p-6 card-shadow transform hover:scale-[1.02] transition-all">
+                <h3 class="text-neutral font-medium mb-2">策略年化收益率</h3>
+                <p id="strategyAnnualReturn" class="text-3xl font-bold text-primary">--</p>
+                <p class="text-sm text-neutral mt-1">按复利计算</p>
+            </div>
+            <div class="bg-white rounded-xl p-6 card-shadow transform hover:scale-[1.02] transition-all">
+                <h3 class="text-neutral font-medium mb-2">回测时间段</h3>
+                <p id="backtestPeriod" class="text-2xl font-bold text-dark">--</p>
+                <p class="text-sm text-neutral mt-1">包含交易日数量: <span id="tradingDaysCount">--</span></p>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 card-shadow mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold">累计收益率曲线</h2>
+                <div class="text-sm text-neutral">
+                    <span class="inline-block w-3 h-3 bg-primary rounded-full mr-1"></span>策略收益率
+                    <span class="inline-block w-3 h-3 bg-secondary rounded-full mr-1 ml-4"></span>沪深300指数收益率
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="returnChart"></canvas>
+            </div>
+            <p class="text-sm text-neutral mt-4 italic">
+                浅色背景区域表示每月前5个交易日（策略持仓期）
+            </p>
+        </div>
+
+        <div class="bg-white rounded-xl p-6 card-shadow">
+            <h2 class="text-xl font-bold mb-4">策略说明</h2>
+            <ul class="list-disc pl-5 space-y-2 text-neutral">
+                <li>每月前5个交易日满仓沪深300指数</li>
+                <li>其他时间保持空仓（收益率为0）</li>
+                <li>图表中浅色背景区域标记了每月持仓时间段</li>
+                <li>数据为模拟的沪深300指数表现，仅供演示</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center text-sm">
+            <p>交易策略演示 &copy; 2023</p>
+            <p class="text-gray-400 mt-1">免责声明：本策略仅作演示，不构成任何投资建议</p>
+        </div>
+    </footer>
+
+    <script>
+        // 工具函数：生成随机日期范围内的交易日数据（排除周末）
+        function generateTradingDays(startDate, endDate) {
+            const tradingDays = [];
+            const currentDate = new Date(startDate);
+
+            while (currentDate <= endDate) {
+                // 排除周六（6）和周日（0）
+                const dayOfWeek = currentDate.getDay();
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                    tradingDays.push(new Date(currentDate));
+                }
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            return tradingDays;
+        }
+
+        // 工具函数：生成模拟的指数数据
+        function generateIndexData(tradingDays) {
+            // 从3000点开始
+            let price = 3000;
+            const data = [];
+
+            tradingDays.forEach(date => {
+                // 生成微小的随机波动 (-1% 到 1% 之间)
+                const change = (Math.random() - 0.5) * 0.02;
+                price = price * (1 + change);
+                data.push({
+                    date: new Date(date),
+                    close: parseFloat(price.toFixed(2))
+                });
+            });
+
+            return data;
+        }
+
+        // 计算策略收益率
+        function calculateStrategyReturns(indexData) {
+            const results = [];
+            let lastPrice = null;
+            let currentMonth = null;
+            let tradeDayOfMonth = 0;
+
+            indexData.forEach((day, i) => {
+                // 计算每日收益率
+                const dailyReturn = lastPrice ? (day.close - lastPrice) / lastPrice : 0;
+
+                // 确定月份
+                const month = `${day.date.getFullYear()}-${(day.date.getMonth() + 1).toString().padStart(2, '0')}`;
+
+                // 重置每月交易日计数
+                if (month !== currentMonth) {
+                    currentMonth = month;
+                    tradeDayOfMonth = 1;
+                } else {
+                    tradeDayOfMonth++;
+                }
+
+                // 判断是否为每月前5个交易日
+                const isTradingDay = tradeDayOfMonth <= 5;
+
+                // 策略收益率（持仓日跟随指数，空仓日为0）
+                const strategyReturn = isTradingDay ? dailyReturn : 0;
+
+                // 计算累计收益率
+                const prev = i > 0 ? results[i - 1] : null;
+                const indexCumReturn = prev ? prev.indexCumReturn * (1 + dailyReturn) : 1;
+                const strategyCumReturn = prev ? prev.strategyCumReturn * (1 + strategyReturn) : 1;
+
+                results.push({
+                    date: day.date,
+                    close: day.close,
+                    dailyReturn,
+                    strategyReturn,
+                    indexCumReturn: indexCumReturn - 1,  // 转为收益率（相对于初始值）
+                    strategyCumReturn: strategyCumReturn - 1,
+                    isTradingDay,
+                    month
+                });
+
+                lastPrice = day.close;
+            });
+
+            return results;
+        }
+
+        // 计算年化收益率
+        function calculateAnnualizedReturn(totalReturn, years) {
+            return years > 0 ? Math.pow(1 + totalReturn, 1 / years) - 1 : 0;
+        }
+
+        // 绘制收益率曲线
+        function plotReturns(results) {
+            const ctx = document.getElementById('returnChart').getContext('2d');
+
+            // 准备数据
+            const dates = results.map(d => d.date);
+            const strategyReturns = results.map(d => d.strategyCumReturn * 100);
+            const indexReturns = results.map(d => d.indexCumReturn * 100);
+
+            // 收集所有持仓区间（用于背景标记）
+            const bgRegions = [];
+            let currentMonth = null;
+            let monthStart = null;
+
+            results.forEach((day, i) => {
+                if (day.month !== currentMonth) {
+                    // 新月份
+                    if (currentMonth) {
+                        // 添加上个月份的持仓区间
+                        const monthData = results.filter(d => d.month === currentMonth && d.isTradingDay);
+                        if (monthData.length > 0) {
+                            const startIdx = results.indexOf(monthData[0]);
+                            const endIdx = results.indexOf(monthData[monthData.length - 1]);
+                            bgRegions.push({
+                                start: startIdx,
+                                end: endIdx
+                            });
+                        }
+                    }
+                    currentMonth = day.month;
+                    monthStart = i;
+                }
+
+                // 处理最后一个月
+                if (i === results.length - 1) {
+                    const monthData = results.filter(d => d.month === currentMonth && d.isTradingDay);
+                    if (monthData.length > 0) {
+                        const startIdx = results.indexOf(monthData[0]);
+                        const endIdx = results.indexOf(monthData[monthData.length - 1]);
+                        bgRegions.push({
+                            start: startIdx,
+                            end: endIdx
+                        });
+                    }
+                }
+            });
+
+            // 创建图表
+            if (window.returnChartInstance) {
+                window.returnChartInstance.destroy();
+            }
+
+            window.returnChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        {
+                            label: '策略累计收益率 (%)',
+                            data: strategyReturns,
+                            borderColor: '#165DFF',
+                            backgroundColor: 'rgba(22, 93, 255, 0.1)',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.1,
+                            pointRadius: 0,
+                            pointHoverRadius: 4
+                        },
+                        {
+                            label: '沪深300累计收益率 (%)',
+                            data: indexReturns,
+                            borderColor: '#36CFC9',
+                            backgroundColor: 'rgba(54, 207, 201, 0.1)',
+                            borderWidth: 2,
+                            borderDash: [5, 5],
+                            fill: false,
+                            tension: 0.1,
+                            pointRadius: 0,
+                            pointHoverRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    scales: {
+                        x: {
+                            type: 'time',
+                            time: {
+                                unit: 'month',
+                                displayFormats: {
+                                    month: 'MMM yyyy'
+                                },
+                                tooltipFormat: 'yyyy-MM-dd'
+                            },
+                            title: {
+                                display: true,
+                                text: '日期'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '累计收益率 (%)'
+                            },
+                            ticks: {
+                                callback: function (value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return context.dataset.label + ': ' + context.raw.toFixed(2) + '%';
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: bgRegions.reduce((acc, region, idx) => {
+                                acc[`region_${idx}`] = {
+                                    type: 'rect',
+                                    xMin: region.start,
+                                    xMax: region.end,
+                                    yMin: 0,
+                                    yMax: 1,
+                                    borderWidth: 0,
+                                    backgroundColor: 'rgba(22, 93, 255, 0.05)',
+                                    borderColor: 'rgba(22, 93, 255, 0.1)',
+                                    borderWidth: 1,
+                                    yScaleID: 'y',
+                                    xScaleID: 'x'
+                                };
+                                return acc;
+                            }, {})
+                        }
+                    },
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        }
+
+        // 更新统计信息
+        function updateStats(results) {
+            if (results.length === 0) return;
+
+            const firstDate = results[0].date;
+            const lastDate = results[results.length - 1].date;
+            const totalDays = (lastDate - firstDate) / (1000 * 60 * 60 * 24);
+            const years = totalDays / 365.25;
+
+            const strategyTotalReturn = results[results.length - 1].strategyCumReturn;
+            const indexTotalReturn = results[results.length - 1].indexCumReturn;
+
+            const strategyAnnualReturn = calculateAnnualizedReturn(strategyTotalReturn, years);
+            const indexAnnualReturn = calculateAnnualizedReturn(indexTotalReturn, years);
+
+            // 更新DOM
+            document.getElementById('strategyTotalReturn').textContent =
+                `${(strategyTotalReturn * 100).toFixed(2)}%`;
+            document.getElementById('strategyAnnualReturn').textContent =
+                `${(strategyAnnualReturn * 100).toFixed(2)}%`;
+            document.getElementById('backtestPeriod').textContent =
+                `${firstDate.toLocaleDateString()} - ${lastDate.toLocaleDateString()}`;
+            document.getElementById('tradingDaysCount').textContent = results.length;
+        }
+
+        // 主函数：运行策略回测
+        function runBacktest() {
+            // 生成2012-2022年的交易日数据
+            const startDate = new Date('2012-01-01');
+            const endDate = new Date('2022-12-31');
+
+            // 生成交易日历
+            const tradingDays = generateTradingDays(startDate, endDate);
+
+            // 生成模拟指数数据
+            const indexData = generateIndexData(tradingDays);
+
+            // 计算策略收益率
+            const results = calculateStrategyReturns(indexData);
+
+            // 绘制图表
+            plotReturns(results);
+
+            // 更新统计信息
+            updateStats(results);
+        }
+
+        // 页面加载完成后运行
+        document.addEventListener('DOMContentLoaded', () => {
+            // 加载Chart.js注释插件（用于背景区域标记）
+            Chart.register({
+                id: 'annotation',
+                beforeDraw: (chart) => {
+                    const { ctx, data, chartArea, scales } = chart;
+                    const { left, right, top, bottom } = chartArea;
+
+                    // 绘制背景区域
+                    Object.values(chart.options.plugins.annotation.annotations).forEach(annotation => {
+                        if (annotation.type === 'rect') {
+                            const xMin = scales.x.getPixelForTick(annotation.xMin);
+                            const xMax = scales.x.getPixelForTick(annotation.xMax);
+
+                            ctx.save();
+                            ctx.fillStyle = annotation.backgroundColor;
+                            ctx.fillRect(xMin, top, xMax - xMin, bottom - top);
+                            ctx.restore();
+                        }
+                    });
+                }
+            });
+
+            // 初始运行回测
+            runBacktest();
+
+            // 绑定重新计算按钮事件
+            document.getElementById('refreshBtn').addEventListener('click', () => {
+                // 添加加载效果
+                const btn = document.getElementById('refreshBtn');
+                const originalText = btn.innerHTML;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa fa-spinner fa-spin mr-2"></i>计算中...';
+
+                // 延迟执行以显示加载状态
+                setTimeout(() => {
+                    runBacktest();
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 500);
+            });
+        });
+    </script>
+</body>
+
+</html>
