@@ -101,7 +101,7 @@
         1. 因为随着半径增大 ---> 着色器执行的次数增多-- -> GPU 开销大 -> 性能下降
         2. 因为随着数量增多-- -> 着色器执行的次数增多-- -> GPU 开销大 -> 性能下降
             */
-        const geometry = circleGeometry(gl, 0.04, 3000, 20); // 创建一个圆形的几何体
+        const geometry = circleGeometry(gl, 0.04, 5000, 20); // 创建一个圆形的几何体
 
         // 顶点着色器
         const vertex = `

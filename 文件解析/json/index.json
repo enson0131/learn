@@ -1,0 +1,5 @@
+{
+  "{\"id\":\"1\",\"startTime\":\"00:00:01,000\",\"startSeconds\":1,\"endTime\":\"00:00:04,000\",\"endSeconds\":4}": "Hello, this is the first subtitle.",
+  "{\"id\":\"2\",\"startTime\":\"00:00:05,000\",\"startSeconds\":5,\"endTime\":\"00:00:07,000\",\"endSeconds\":7}": "This is the second subtitle.",
+  "{\"id\":\"3\",\"startTime\":\"00:00:08,500\",\"startSeconds\":8.5,\"endTime\":\"00:00:10,000\",\"endSeconds\":10}": "The last subtitle line."
+}

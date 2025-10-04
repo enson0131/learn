@@ -1551,6 +1551,11 @@ vite@^7.1.7:
   optionalDependencies:
     fsevents "~2.3.3"
 
+vtt.js@^0.13.0:
+  version "0.13.0"
+  resolved "https://registry.npmjs.org/vtt.js/-/vtt.js-0.13.0.tgz#955c667b34d5325b2012cb9e8ba9bad6e0b11ff8"
+  integrity sha512-t0OJvTmsryCOIHdLWmUPx6V3e0MRGaZMp0Cr5DETWrWNfg9RCHcQlF7X7zNF4mQxhtkyiVKOefdSErSB/KWgOA==
+
 which@^2.0.1:
   version "2.0.2"
   resolved "https://registry.npmjs.org/which/-/which-2.0.2.tgz#7c6a8dd0a636a0327e10b59c9286eee93f3f51b1"
