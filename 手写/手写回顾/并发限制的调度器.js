@@ -116,4 +116,63 @@ limitRequest.addTask(500, "2");
 limitRequest.addTask(300, "3");
 limitRequest.addTask(400, "4");
 
-limitRequest.run();
+// limitRequest.run();
+
+/**
+ * 异步池 用于限制并发数
+ * @param poolLimit 并发数
+ * @param params 参数
+ * @param iteratorFn 迭代函数
+ * @returns 结果
+ */
+async function asyncPool(poolLimit, params, iteratorFn) {
+  // 用于保存所有异步请求
+  const ret = [];
+  // 用户保存正在进行的请求
+  const executing = new Set();
+  for (const param of params) {
+    // 构造出请求 Promise
+
+    const p = Promise.resolve()
+      .then(async () => await iteratorFn(param))
+      .then((result) => {
+        return Promise.resolve({
+          result,
+          error: null,
+          key: param,
+        });
+      })
+      .catch((error) => {
+        return Promise.reject({
+          result: null,
+          error,
+          key: param,
+        });
+      })
+      .finally(() => executing.delete(p));
+
+    ret.push(p);
+    executing.add(p);
+
+    // 如果正在执行的请求数大于并发数，就使用 Promise.race 等待一个最快执行完的请求
+    if (executing.size >= poolLimit) {
+      await Promise.race(executing);
+    }
+  }
+
+  // 返回所有结果
+  return Promise.allSettled(ret);
+}
+
+const timeout = (i) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      console.log(i);
+      resolve(i);
+    }, i);
+  });
+};
+
+asyncPool(2, [1000, 5000, 3000, 2000], timeout).then((results) => {
+  console.log(results);
+});
