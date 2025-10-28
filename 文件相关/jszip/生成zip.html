@@ -15,8 +15,18 @@
         function s2ab(s) {
             let buf = new ArrayBuffer(s.length);
             let view = new Uint8Array(buf);
-            for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff;
-            return buf;
+            /*
+            1. String.prototype.charCodeAt(index) 返回字符串中指定位置字符的 Unicode 编码（十进制）。
+            2. String.fromCharCode(code) 接受一个或多个 Unicode 码点，返回对应的字符。
+            
+            例子:
+            const str = "A"; console.log(str.charCodeAt(0)); // 65
+            const code = 65; console.log(String.fromCharCode(code)); // "A"
+
+            */
+            for (let i = 0; i != s.length; ++i) view[i] = s.charCodeAt(i) & 0xff; // & 0xff 去掉高位，只保留低 8 位。
+            console.log('view', view.buffer === buf);
+            return view.buffer;
         }
 
         //   [local file header 1]
@@ -53,7 +63,14 @@
         const totalEntries = "\x01\x00";
         const crc32 = "\x3a\x81\xaf\x99" // 99af813a   -> 可以使用https://www.23bei.com/tool/231.html在线生成
 
-        const bytes = [
+        /*
+            通过 String.fromCharCode 将 16进制 转换为 字符串
+            0x50 → 'P'
+            0x4B → 'K'
+            0x03 → '\x03'
+            0x04 → '\x04'
+        */
+        const bytesStr = [ // 16进制字符串
             /*******************************local file header start****************************************/
             "PK\x03\x04", // local file header signature     4 bytes  (0x04034b50)
             "\x0A\x00", // version needed to extract       2 bytes 代表待处理压缩文件的级别，比如说有文件夹、内容用XX方式压缩、用XX方式加密等等都是不同的值
@@ -112,7 +129,7 @@
 
         const btn = document.getElementById("btn");
         btn.onclick = () => {
-            const temp = s2ab(bytes);
+            const temp = s2ab(bytesStr);
             console.log("temp..", temp);
             let blob = new Blob([temp], { type: "application/octet-stream" });
             let url = URL.createObjectURL(blob);
