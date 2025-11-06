@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blob 对象</title>
+</head>
+
+<body>
+    <script>
+        const jsonData = {
+            name: "Hello world!我是中文",
+        }
+        const blob = new Blob([JSON.stringify(jsonData)], { type: "application/json" });
+        console.log(blob);
+
+        function readBlob(blob, type) {
+            const { promise, resolve } = Promise.withResolvers();
+            let reader = new FileReader();
+
+            reader.onload = function (event) {
+                resolve(event.target.result);
+            }
+
+            switch (type) {
+                case "ArrayBuffer":
+                    reader.readAsArrayBuffer(blob);
+                    break;
+                case "DataURL":
+                    reader.readAsDataURL(blob); // Base64 字符串
+                    break;
+                case "Text":
+                    reader.readAsText(blob, 'utf-8');
+                    break;
+            }
+
+            return promise;
+        }
+
+        function toAscii(uint8Array) {
+            let ascii = '';
+            for (let i = 0; i < uint8Array.length; i++) {
+                // 转换为ASCII字符并拼接
+                ascii += String.fromCharCode(uint8Array[i]);
+            }
+
+            return ascii;
+        }
+
+        function toAsciiPro(uint8Array) {
+            // 使用 TextDecoder 正确处理 UTF-8 编码（包括中文）
+            const decoder = new TextDecoder('utf-8');
+            return decoder.decode(uint8Array);
+        }
+
+
+        readBlob(blob, "ArrayBuffer").then(result => {
+            console.log(`-------- ArrayBuffer start --------`);
+            console.log(result);
+            console.log(`-------- ArrayBuffer end --------`);
+            const uint8Array = new Uint8Array(result); // uint8Array 的元素是 8 位 bit 的无符号整数（最大 255）
+            console.log(`-------- uint8Array start --------`);
+            console.log(uint8Array);
+            console.log(`-------- uint8Array end --------`);
+            console.log(`-------- toAscii start --------`);
+            console.log(toAscii(uint8Array));
+            console.log(`-------- toAscii end --------`);
+        })
+
+        readBlob(blob, "DataURL").then(result => {
+            console.log(`DataURL`, result);
+        })
+
+        readBlob(blob, "Text").then(result => {
+            console.log(`Text`, result);
+        })
+    </script>
+    <script>
+        function hexToAscii(hex) {
+            // 移除可能存在的空格或0x前缀
+            hex = hex.replace(/\s|0x/g, '');
+            let ascii = '';
+
+            // 每两位16进制数转换为一个ASCII字符
+            for (let i = 0; i < hex.length; i += 2) {
+                // 截取两位16进制数并转换为十进制
+                const decimal = parseInt(hex.substr(i, 2), 16);
+                // 转换为ASCII字符并拼接
+                ascii += String.fromCharCode(decimal);
+            }
+
+            return ascii;
+        }
+
+        function hexToUtf8(hex) {
+            // 移除空格、0x前缀，标准化十六进制字符串
+            hex = hex.replace(/\s|0x/g, '');
+
+            // 校验十六进制长度是否为偶数（每2位对应1个字节）
+            if (hex.length % 2 !== 0) {
+                throw new Error("无效的十六进制字符串：长度必须为偶数");
+            }
+
+            // 创建字节数组（Uint8Array）存储每个字节的十进制值
+            const bytes = new Uint8Array(hex.length / 2);
+            for (let i = 0; i < hex.length; i += 2) {
+                // 截取2位十六进制，转换为十进制字节值（0-255）
+                const byteValue = parseInt(hex.substr(i, 2), 16);
+                if (isNaN(byteValue)) {
+                    throw new Error(`无效的十六进制字符：${hex.substr(i, 2)}`);
+                }
+                bytes[i / 2] = byteValue;
+            }
+
+            // 使用UTF-8编码解码字节数组（支持多字节中文）
+            return new TextDecoder('utf-8').decode(bytes);
+        }
+
+        console.log(`hexToAscii---<`, hexToAscii("7B226E616D65223A2248656C6C6F20776F726C6421E68891E698AFE4B8ADE69687227D"));
+
+        console.log(`hexToUtf8---<`, hexToUtf8("7B226E616D65223A2248656C6C6F20776F726C6421E68891E698AFE4B8ADE69687227D"));
+    </script>
+</body>
+
+</html>
