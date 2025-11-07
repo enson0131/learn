@@ -64,13 +64,14 @@
         const crc32 = "\x3a\x81\xaf\x99" // 99af813a   -> 可以使用https://www.23bei.com/tool/231.html在线生成
 
         /*
-            通过 String.fromCharCode 将 16进制 转换为 字符串
+            通过 String.fromCharCode 将 16进制 转换为 UTF-8字符串
             0x50 → 'P'
             0x4B → 'K'
             0x03 → '\x03'
             0x04 → '\x04'
         */
-        const bytesStr = [ // 16进制字符串
+
+        const bytesStr = [ // 16进制 -> UTF-8字符串
             /*******************************local file header start****************************************/
             "PK\x03\x04", // local file header signature     4 bytes  (0x04034b50)
             "\x0A\x00", // version needed to extract       2 bytes 代表待处理压缩文件的级别，比如说有文件夹、内容用XX方式压缩、用XX方式加密等等都是不同的值
@@ -138,6 +139,31 @@
             a.download = "abc.zip";
             a.click();
         };
+    </script>
+    <script>
+
+        function hexToUtf8(hexStr) {
+            // 1. 预处理：去除可能的前缀（如0x），统一转为小写
+            hexStr = hexStr.replace(/^0x/i, '').toLowerCase();
+
+            // 2. 验证十六进制字符串合法性（仅含0-9、a-f，且长度为偶数）
+            if (!/^[0-9a-f]+$/.test(hexStr) || hexStr.length % 2 !== 0) {
+                throw new Error("无效的十六进制字符串（仅允许0-9、a-f，长度需为偶数）");
+            }
+
+            // 3. 每2个字符一组，转换为十进制字节值（0-255）
+            const bytes = new Uint8Array(hexStr.length / 2);
+            for (let i = 0; i < hexStr.length; i += 2) {
+                const hexByte = hexStr.slice(i, i + 2); // 取2个字符（一个字节的十六进制）
+                bytes[i / 2] = parseInt(hexByte, 16); // 转换为十进制字节值
+            }
+
+            // 4. 用TextDecoder解码UTF-8字节序列
+            const decoder = new TextDecoder('utf-8');
+            return decoder.decode(bytes);
+        }
+
+        console.log(`hexToUtf8---<`, hexToUtf8("04034B50"));
     </script>
 </body>
 

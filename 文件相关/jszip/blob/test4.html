@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object URL</title>
+</head>
+
+<body>
+    <button id="btn" onclick="download()">下载</button>
+    <script>
+        function download() {
+            const blob = new Blob([JSON.stringify({ name: "Hello world!" })], { type: "application/json" });
+            const url = URL.createObjectURL(blob); // 使用 URL.createObjectURL 创建一个临时的 URL，这个 URL 指向 blob 对象
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "test.json";
+            a.dispatchEvent(new MouseEvent("click")); // 模拟点击下载
+            URL.revokeObjectURL(url); // 释放内存
+        }
+    </script>
+</body>
+
+</html>
