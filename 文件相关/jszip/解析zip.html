@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>上传一个zip文件</title>
 </head>
 
 <body>
@@ -25,8 +25,8 @@
                     console.log('Array Buffer对象，不能读写：', e.target.result)
                     const uint8arr = new Uint8Array(e.target.result);
                     console.log('Uint8Array对象，可读写：', uint8arr);
-                    const dv = new DataView(e.target.result)
-                    console.log('DataView对象，可读写：', dv);
+
+                    console.log(`转化成 16 进制的字符串`, uint8ArrTohexArr(uint8arr));
                 };
                 reader.onerror = function (e) {
                     console.log("error", e.target.error);
@@ -35,6 +35,15 @@
             },
             false
         );
+
+
+        const uint8ArrTohexArr = (uint8arr) => {
+            const targetArr = []
+            for (const item of uint8arr) {
+                targetArr.push(item.toString(16).padStart(2, '0').toUpperCase())
+            }
+            return targetArr;
+        }
 
     </script>
 </body>
