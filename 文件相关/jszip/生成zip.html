@@ -55,12 +55,12 @@
         const filenameLength = "\x09\x00" // 9
         const fileName = "Hello.txt" // 长度9
         const relativeOffsetOfLocalHeader = "\x00\x00\x00\x00";
-        const lastModFileTime = "\x00\x40" // 01000(8点) 000000(0分) 00000(0秒) => \x40\x00  -> 早上8点0分0秒
-        const lastModFileDate = "\x01\x57" //  0101011(43) 1000(8) 00001(1) => \x57\x01  -> 2023年8月1日
+        const lastModFileTime = "\x00\x40" // 01000(8点) 000000(0分) 00000(0秒) => \x40\x00  -> 早上8点0分0秒 （FAT 文件系统中用于存储文件日期的 16 位二进制编码（小端字节序） ——MS-DOS 底层存储文件日期时）
+        const lastModFileDate = "\x01\x57" //  0101011(43) 1000(8) 00001(1) => \x57\x01  -> 2023年8月1日 （日期以标准 MS-DOS 格式编码。）
 
         const offsetOfCentralDirectory = "\x33\x00\x00\x00"
         const sizeOfTheCentralDirectory = "\x37\x00\x00\x00";
-        const totalEntries = "\x01\x00";
+        const totalEntries = "\x01\x00"; // 文件数量
         const crc32 = "\x3a\x81\xaf\x99" // 99af813a   -> 可以使用https://www.23bei.com/tool/231.html在线生成
 
         /*

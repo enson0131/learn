@@ -729,7 +729,7 @@ export default function LanguagesPlatform() {
         </div>
         <div className={styles["top-right"]}>
           <div className={styles["top-icon"]} onClick={() => resetSearch()}>
-            {t("languagesPlatform.reset")}
+            {i18n.t("languagesPlatform.reset")}
           </div>
           <PermissionControl
             permission={[`${searchParams.get("env")}/index/languages/query`]}
@@ -827,7 +827,7 @@ export default function LanguagesPlatform() {
                 }`}
                 onClick={() => deleteAll()}
               >
-                {t("languagesPlatform.batchDelete")}
+                {i18n.t("languagesPlatform.batchDelete")}
               </div>
             </PermissionControl>
             <PermissionControl
@@ -912,7 +912,8 @@ export default function LanguagesPlatform() {
           loading={isLoading}
           pagination={{
             ...tabPagination.current,
-            showTotal: (total) => t("languagesPlatform.totalData", { total }),
+            showTotal: (total) =>
+              i18n.t("languagesPlatform.totalData", { total }),
           }}
           rowKey={"key"}
           columns={columns}

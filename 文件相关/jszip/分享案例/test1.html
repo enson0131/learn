@@ -10,10 +10,11 @@
 <body>
     <script>
         const jsonData = {
-            name: "Hello world!",
+            name: "Hello world!我是中文",
         }
+
         const blob = new Blob([JSON.stringify(jsonData)], { type: "application/json" });
-        console.log(blob);
+        // console.log(blob);
 
         function readBlob(blob, type) {
             const { promise, resolve } = Promise.withResolvers();
@@ -38,43 +39,43 @@
             return promise;
         }
 
-        // function toAscii(uint8Array) {
-        //     let ascii = '';
-        //     for (let i = 0; i < uint8Array.length; i++) {
-        //         // 转换为ASCII字符并拼接
-        //         ascii += String.fromCharCode(uint8Array[i]);
-        //     }
+        function toAscii(uint8Array) {
+            let ascii = '';
+            for (let i = 0; i < uint8Array.length; i++) {
+                // 转换为ASCII字符并拼接
+                ascii += String.fromCharCode(uint8Array[i]);
+            }
 
-        //     return ascii;
-        // }
+            return ascii;
+        }
 
-        // function toAsciiPro(uint8Array) {
-        //     // 使用 TextDecoder 正确处理 UTF-8 编码（包括中文）
-        //     const decoder = new TextDecoder('utf-8');
-        //     return decoder.decode(uint8Array);
-        // }
+        function toAsciiPro(uint8Array) {
+            // 使用 TextDecoder 正确处理 UTF-8 编码（包括中文）
+            const decoder = new TextDecoder('utf-8');
+            return decoder.decode(uint8Array);
+        }
 
 
         readBlob(blob, "ArrayBuffer").then(result => {
             console.log(`-------- ArrayBuffer start --------`);
             console.log(result);
             console.log(`-------- ArrayBuffer end --------`);
-            // const uint8Array = new Uint8Array(result); // uint8Array 的元素是 8 位 bit 的无符号整数（最大 255）
+            const uint8Array = new Uint8Array(result); // uint8Array 的元素是 8 位 bit 的无符号整数（最大 255）
             // console.log(`-------- uint8Array start --------`);
             // console.log(uint8Array);
             // console.log(`-------- uint8Array end --------`);
-            // console.log(`-------- toAscii start --------`);
-            // console.log(toAscii(uint8Array));
-            // console.log(`-------- toAscii end --------`);
+            console.log(`-------- toAscii start --------`);
+            console.log(toAsciiPro(uint8Array));
+            console.log(`-------- toAscii end --------`);
         })
 
-        readBlob(blob, "DataURL").then(result => {
-            console.log(`DataURL`, result);
-        })
+        // readBlob(blob, "DataURL").then(result => {
+        //     console.log(`DataURL`, result);
+        // })
 
-        readBlob(blob, "Text").then(result => {
-            console.log(`Text`, result);
-        })
+        // readBlob(blob, "Text").then(result => {
+        //     console.log(`Text`, result);
+        // })
     </script>
 </body>
 

@@ -41,10 +41,40 @@ function getRegexMatches(code) {
 //   )
 // );
 
-getRegexMatches(content);
+// getRegexMatches(content);
 
-let longContent = content.repeat(10); // 800 * 100 = 8000
-getRegexMatches(longContent);
+// let longContent = content.repeat(10); // 800 * 100 = 8000
+// getRegexMatches(longContent);
 
-let longContent2 = content.repeat(100); // 800 * 100 = 80000
-getRegexMatches(longContent2);
+// let longContent2 = content.repeat(100); // 800 * 100 = 80000
+// getRegexMatches(longContent2);
+
+/**
+ * 从当前文件中提取所有的语料 key，支持自定义语料函数名
+ * @param editor 编辑器实例
+ * @param functionName 语料函数名，默认为 't'，支持 'i18n.t', '$t' 等
+ * @returns 语料 key 列表
+ */
+function extractCorpusKeyFromCurrentFile(code, functionName = "i18n.t") {
+  const lines = code.split("\n"); // 获取每一行的代码
+  const positions = [];
+  const reg = new RegExp(
+    `\\b${functionName}\\s*\\(\\s*['"\`]([^'"\`]+)['"\`]` // 优化正则，移除结尾的\\s*\\)，支持提取带参数的语料函数
+  );
+
+  console.log(`reg: ${reg}`);
+  (lines || []).map((line, index) => {
+    const match = reg.exec(line);
+
+    if (match) {
+      const key = match[1];
+      if (key) {
+        positions.push(key);
+      }
+    }
+  });
+
+  return positions;
+}
+
+console.log(extractCorpusKeyFromCurrentFile(content));
