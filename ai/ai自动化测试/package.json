@@ -1,0 +1,19 @@
+{
+  "name": "ai-test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "tsx demo.ts",
+    "test-yaml": "tsx demo-run-yaml.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@midscene/web": "^1.1.0",
+    "dotenv": "^16.4.5",
+    "puppeteer": "^24.34.0",
+    "tsx": "^4.21.0"
+  }
+}

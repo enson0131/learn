@@ -1,0 +1,75 @@
+[2026-01-05T17:29:27.048+08:00] will prepend locate param for field action.type=Input param={"prompt":"The search box","bbox":[155,26,750,69]} locatePlan={"type":"Locate","param":{"prompt":"The search box","bbox":[155,26,750,69]},"thought":""} hasBbox=true
+[2026-01-05T17:29:27.169+08:00] executing action Input {
+  value: 'Headphones',
+  locate: {
+    rect: { left: 448, top: 43, width: 8, height: 8 },
+    center: [ 452, 47 ],
+    description: 'The search box'
+  }
+} taskContext.element.center: 452,47
+[2026-01-05T17:29:27.170+08:00] will call "beforeInvokeAction" for interface
+[2026-01-05T17:29:27.170+08:00] called "beforeInvokeAction" for interface
+[2026-01-05T17:29:27.371+08:00] calling action Input
+[2026-01-05T17:29:28.509+08:00] called action Input result: undefined
+[2026-01-05T17:29:28.810+08:00] will call "afterInvokeAction" for interface
+[2026-01-05T17:29:29.015+08:00] called "afterInvokeAction" for interface
+[2026-01-05T17:29:33.381+08:00] field 'locate' is not provided for action KeyboardPress
+[2026-01-05T17:29:33.453+08:00] executing action KeyboardPress { keyName: 'Enter' } taskContext.element.center: undefined
+[2026-01-05T17:29:33.453+08:00] will call "beforeInvokeAction" for interface
+[2026-01-05T17:29:33.453+08:00] called "beforeInvokeAction" for interface
+[2026-01-05T17:29:33.655+08:00] calling action KeyboardPress
+[2026-01-05T17:29:33.662+08:00] called action KeyboardPress result: undefined
+[2026-01-05T17:29:33.964+08:00] will call "afterInvokeAction" for interface
+[2026-01-05T17:29:34.217+08:00] called "afterInvokeAction" for interface
+[2026-01-05T17:32:02.213+08:00] will prepend locate param for field action.type=Input param={"prompt":"The search box","bbox":[155,28,750,68]} locatePlan={"type":"Locate","param":{"prompt":"The search box","bbox":[155,28,750,68]},"thought":""} hasBbox=true
+[2026-01-05T17:32:02.350+08:00] executing action Input {
+  value: 'Headphones',
+  locate: {
+    rect: { left: 448, top: 44, width: 8, height: 8 },
+    center: [ 452, 48 ],
+    description: 'The search box'
+  }
+} taskContext.element.center: 452,48
+[2026-01-05T17:32:02.350+08:00] will call "beforeInvokeAction" for interface
+[2026-01-05T17:32:02.350+08:00] called "beforeInvokeAction" for interface
+[2026-01-05T17:32:02.551+08:00] calling action Input
+[2026-01-05T17:32:03.649+08:00] called action Input result: undefined
+[2026-01-05T17:32:03.950+08:00] will call "afterInvokeAction" for interface
+[2026-01-05T17:32:04.159+08:00] called "afterInvokeAction" for interface
+[2026-01-05T17:32:07.202+08:00] field 'locate' is not provided for action KeyboardPress
+[2026-01-05T17:32:07.248+08:00] executing action KeyboardPress { keyName: 'Enter' } taskContext.element.center: undefined
+[2026-01-05T17:32:07.248+08:00] will call "beforeInvokeAction" for interface
+[2026-01-05T17:32:07.248+08:00] called "beforeInvokeAction" for interface
+[2026-01-05T17:32:07.449+08:00] calling action KeyboardPress
+[2026-01-05T17:32:07.455+08:00] called action KeyboardPress result: undefined
+[2026-01-05T17:32:07.755+08:00] will call "afterInvokeAction" for interface
+[2026-01-05T17:32:07.961+08:00] called "afterInvokeAction" for interface
+[2026-01-05T17:35:27.649+08:00] will prepend locate param for field action.type=Input param={"prompt":"搜索框","bbox":[243,190,842,250]} locatePlan={"type":"Locate","param":{"prompt":"搜索框","bbox":[243,190,842,250]},"thought":""} hasBbox=true
+[2026-01-05T17:35:27.987+08:00] executing action Input {
+  value: '李尊聪先生',
+  locate: {
+    rect: { left: 538, top: 216, width: 8, height: 8 },
+    center: [ 542, 220 ],
+    description: '搜索框'
+  }
+} taskContext.element.center: 542,220
+[2026-01-05T17:35:27.987+08:00] will call "beforeInvokeAction" for interface
+[2026-01-05T17:35:27.988+08:00] called "beforeInvokeAction" for interface
+[2026-01-05T17:35:28.189+08:00] calling action Input
+[2026-01-05T17:35:28.872+08:00] called action Input result: undefined
+[2026-01-05T17:35:29.174+08:00] will call "afterInvokeAction" for interface
+[2026-01-05T17:35:29.379+08:00] called "afterInvokeAction" for interface
+[2026-01-05T17:35:33.412+08:00] will prepend locate param for field action.type=Tap param={"prompt":"百度一下按钮","bbox":[771,61,872,95]} locatePlan={"type":"Locate","param":{"prompt":"百度一下按钮","bbox":[771,61,872,95]},"thought":""} hasBbox=true
+[2026-01-05T17:35:33.532+08:00] executing action Tap {
+  locate: {
+    rect: { left: 817, top: 74, width: 8, height: 8 },
+    center: [ 821, 78 ],
+    description: '百度一下按钮'
+  }
+} taskContext.element.center: 821,78
+[2026-01-05T17:35:33.532+08:00] will call "beforeInvokeAction" for interface
+[2026-01-05T17:35:33.532+08:00] called "beforeInvokeAction" for interface
+[2026-01-05T17:35:33.734+08:00] calling action Tap
+[2026-01-05T17:35:33.762+08:00] called action Tap result: undefined
+[2026-01-05T17:35:34.063+08:00] will call "afterInvokeAction" for interface
+[2026-01-05T17:35:34.307+08:00] called "afterInvokeAction" for interface

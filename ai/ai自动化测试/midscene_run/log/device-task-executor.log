@@ -1,0 +1,290 @@
+[2026-01-05T17:17:43.514+08:00] actionSpace for this interface is: Tap, RightClick, DoubleClick, Hover, Input, KeyboardPress, Scroll, DragAndDrop, LongPress, ClearInput, Navigate, Reload, GoBack, Print_Assert_Result
+[2026-01-05T17:29:22.193+08:00] actionSpace for this interface is: Tap, RightClick, DoubleClick, Hover, Input, KeyboardPress, Scroll, DragAndDrop, LongPress, ClearInput, Navigate, Reload, GoBack, Print_Assert_Result
+[2026-01-05T17:29:26.863+08:00] planResult {
+  "log": "Type 'Headphones' in the search box",
+  "more_actions_needed_by_instruction": true,
+  "action": {
+    "type": "Input",
+    "param": {
+      "value": "Headphones",
+      "locate": {
+        "prompt": "The search box",
+        "bbox": [
+          155,
+          26,
+          750,
+          69
+        ]
+      }
+    }
+  },
+  "actions": [
+    {
+      "type": "Input",
+      "param": {
+        "value": "Headphones",
+        "locate": {
+          "prompt": "The search box",
+          "bbox": [
+            155,
+            26,
+            750,
+            69
+          ]
+        }
+      }
+    }
+  ],
+  "rawResponse": "{\n  \"log\": \"Type 'Headphones' in the search box\",\n  \"more_actions_needed_by_instruction\": true,\n  \"action\": {\n    \"type\": \"Input\",\n    \"param\": {\n      \"value\": \"Headphones\",\n      \"locate\": {\n        \"prompt\": \"The search box\",\n        \"bbox\": [121, 34, 586, 90]\n      }\n    }\n  }\n}",
+  "usage": {
+    "prompt_tokens": 3129,
+    "completion_tokens": 95,
+    "total_tokens": 3224,
+    "cached_input": 0,
+    "time_cost": 4665,
+    "model_name": "qwen3-vl-plus",
+    "model_description": "qwen3-vl mode",
+    "intent": "default"
+  },
+  "yamlFlow": [
+    {
+      "aiInput": "",
+      "value": "Headphones",
+      "locate": "The search box"
+    }
+  ]
+}
+[2026-01-05T17:29:29.264+08:00] actionSpace for this interface is: Tap, RightClick, DoubleClick, Hover, Input, KeyboardPress, Scroll, DragAndDrop, LongPress, ClearInput, Navigate, Reload, GoBack, Print_Assert_Result
+[2026-01-05T17:29:33.188+08:00] planResult {
+  "log": "Press Enter to search for 'Headphones'",
+  "more_actions_needed_by_instruction": false,
+  "action": {
+    "type": "KeyboardPress",
+    "param": {
+      "keyName": "Enter"
+    }
+  },
+  "actions": [
+    {
+      "type": "KeyboardPress",
+      "param": {
+        "keyName": "Enter"
+      }
+    }
+  ],
+  "rawResponse": "{\n  \"log\": \"Press Enter to search for 'Headphones'\",\n  \"more_actions_needed_by_instruction\": false,\n  \"action\": {\n    \"type\": \"KeyboardPress\",\n    \"param\": {\n      \"keyName\": \"Enter\"\n    }\n  }\n}",
+  "usage": {
+    "prompt_tokens": 4217,
+    "completion_tokens": 57,
+    "total_tokens": 4274,
+    "cached_input": 0,
+    "time_cost": 3911,
+    "model_name": "qwen3-vl-plus",
+    "model_description": "qwen3-vl mode",
+    "intent": "default"
+  },
+  "yamlFlow": [
+    {
+      "aiKeyboardPress": "",
+      "keyName": "Enter"
+    }
+  ]
+}
+[2026-01-05T17:31:56.866+08:00] actionSpace for this interface is: Tap, RightClick, DoubleClick, Hover, Input, KeyboardPress, Scroll, DragAndDrop, LongPress, ClearInput, Navigate, Reload, GoBack, Print_Assert_Result
+[2026-01-05T17:32:02.011+08:00] planResult {
+  "log": "Type 'Headphones' in the search box",
+  "more_actions_needed_by_instruction": true,
+  "action": {
+    "type": "Input",
+    "param": {
+      "value": "Headphones",
+      "locate": {
+        "prompt": "The search box",
+        "bbox": [
+          155,
+          28,
+          750,
+          68
+        ]
+      }
+    }
+  },
+  "actions": [
+    {
+      "type": "Input",
+      "param": {
+        "value": "Headphones",
+        "locate": {
+          "prompt": "The search box",
+          "bbox": [
+            155,
+            28,
+            750,
+            68
+          ]
+        }
+      }
+    }
+  ],
+  "rawResponse": "{\n  \"log\": \"Type 'Headphones' in the search box\",\n  \"more_actions_needed_by_instruction\": true,\n  \"action\": {\n    \"type\": \"Input\",\n    \"param\": {\n      \"value\": \"Headphones\",\n      \"locate\": {\n        \"prompt\": \"The search box\",\n        \"bbox\": [121, 37, 586, 89]\n      }\n    }\n  }\n}",
+  "usage": {
+    "prompt_tokens": 3129,
+    "completion_tokens": 95,
+    "total_tokens": 3224,
+    "cached_input": 0,
+    "time_cost": 5130,
+    "model_name": "qwen3-vl-plus",
+    "model_description": "qwen3-vl mode",
+    "intent": "default"
+  },
+  "yamlFlow": [
+    {
+      "aiInput": "",
+      "value": "Headphones",
+      "locate": "The search box"
+    }
+  ]
+}
+[2026-01-05T17:32:04.349+08:00] actionSpace for this interface is: Tap, RightClick, DoubleClick, Hover, Input, KeyboardPress, Scroll, DragAndDrop, LongPress, ClearInput, Navigate, Reload, GoBack, Print_Assert_Result
+[2026-01-05T17:32:07.051+08:00] planResult {
+  "log": "Press Enter to search for 'Headphones'",
+  "more_actions_needed_by_instruction": false,
+  "action": {
+    "type": "KeyboardPress",
+    "param": {
+      "keyName": "Enter"
+    }
+  },
+  "actions": [
+    {
+      "type": "KeyboardPress",
+      "param": {
+        "keyName": "Enter"
+      }
+    }
+  ],
+  "rawResponse": "{\n  \"log\": \"Press Enter to search for 'Headphones'\",\n  \"more_actions_needed_by_instruction\": false,\n  \"action\": {\n    \"type\": \"KeyboardPress\",\n    \"param\": {\n      \"keyName\": \"Enter\"\n    }\n  }\n}",
+  "usage": {
+    "prompt_tokens": 4217,
+    "completion_tokens": 57,
+    "total_tokens": 4274,
+    "cached_input": 0,
+    "time_cost": 2700,
+    "model_name": "qwen3-vl-plus",
+    "model_description": "qwen3-vl mode",
+    "intent": "default"
+  },
+  "yamlFlow": [
+    {
+      "aiKeyboardPress": "",
+      "keyName": "Enter"
+    }
+  ]
+}
+[2026-01-05T17:35:23.263+08:00] actionSpace for this interface is: Tap, RightClick, DoubleClick, Hover, Input, KeyboardPress, Scroll, DragAndDrop, LongPress, ClearInput, Navigate, Reload, GoBack, Print_Assert_Result
+[2026-01-05T17:35:27.358+08:00] planResult {
+  "log": "在搜索框中输入“李尊聪先生”",
+  "more_actions_needed_by_instruction": true,
+  "action": {
+    "type": "Input",
+    "param": {
+      "value": "李尊聪先生",
+      "locate": {
+        "prompt": "搜索框",
+        "bbox": [
+          243,
+          190,
+          842,
+          250
+        ]
+      }
+    }
+  },
+  "actions": [
+    {
+      "type": "Input",
+      "param": {
+        "value": "李尊聪先生",
+        "locate": {
+          "prompt": "搜索框",
+          "bbox": [
+            243,
+            190,
+            842,
+            250
+          ]
+        }
+      }
+    }
+  ],
+  "rawResponse": "{\n  \"log\": \"在搜索框中输入“李尊聪先生”\",\n  \"more_actions_needed_by_instruction\": true,\n  \"action\": {\n    \"type\": \"Input\",\n    \"param\": {\n      \"value\": \"李尊聪先生\",\n      \"locate\": {\n        \"prompt\": \"搜索框\",\n        \"bbox\": [190, 247, 658, 325]\n      }\n    }\n  }\n}",
+  "usage": {
+    "prompt_tokens": 3124,
+    "completion_tokens": 100,
+    "total_tokens": 3224,
+    "cached_input": 0,
+    "time_cost": 4089,
+    "model_name": "qwen3-vl-plus",
+    "model_description": "qwen3-vl mode",
+    "intent": "default"
+  },
+  "yamlFlow": [
+    {
+      "aiInput": "",
+      "value": "李尊聪先生",
+      "locate": "搜索框"
+    }
+  ]
+}
+[2026-01-05T17:35:29.637+08:00] actionSpace for this interface is: Tap, RightClick, DoubleClick, Hover, Input, KeyboardPress, Scroll, DragAndDrop, LongPress, ClearInput, Navigate, Reload, GoBack, Print_Assert_Result
+[2026-01-05T17:35:33.208+08:00] planResult {
+  "log": "点击“百度一下”按钮进行搜索",
+  "more_actions_needed_by_instruction": false,
+  "action": {
+    "type": "Tap",
+    "param": {
+      "locate": {
+        "prompt": "百度一下按钮",
+        "bbox": [
+          771,
+          61,
+          872,
+          95
+        ]
+      }
+    }
+  },
+  "actions": [
+    {
+      "type": "Tap",
+      "param": {
+        "locate": {
+          "prompt": "百度一下按钮",
+          "bbox": [
+            771,
+            61,
+            872,
+            95
+          ]
+        }
+      }
+    }
+  ],
+  "rawResponse": "{\n  \"log\": \"点击“百度一下”按钮进行搜索\",\n  \"more_actions_needed_by_instruction\": false,\n  \"action\": {\n    \"type\": \"Tap\",\n    \"param\": {\n      \"locate\": {\n        \"prompt\": \"百度一下按钮\",\n        \"bbox\": [602, 79, 681, 124]\n      }\n    }\n  }\n}",
+  "usage": {
+    "prompt_tokens": 4217,
+    "completion_tokens": 87,
+    "total_tokens": 4304,
+    "cached_input": 0,
+    "time_cost": 3571,
+    "model_name": "qwen3-vl-plus",
+    "model_description": "qwen3-vl mode",
+    "intent": "default"
+  },
+  "yamlFlow": [
+    {
+      "aiTap": "",
+      "locate": "百度一下按钮"
+    }
+  ]
+}
