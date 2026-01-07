@@ -35,19 +35,23 @@ Promise.resolve(
       deviceScaleFactor: os.platform() === "darwin" ? 2 : 1, // this is used to avoid flashing on UI Mode when doing screenshot on Mac
     });
 
-    await page.goto("https://www.baidu.com");
+    await page.goto("https://id.bytello.com");
     await sleep(3000);
 
     // 👀 init Midscene agent
     const agent = new PuppeteerAgent(page);
 
     // 👀 type keywords, perform a search
-    await agent.aiAct('搜索 "李尊聪先生"');
+    await agent.aiAct('账号输入 "chenshuofeng@cvte.com" ');
+
+    await agent.aiAct('密码输入 "a1234567" ');
+
+    await agent.aiAct("点击登录");
 
     // // 👀 wait for the loading
     // await agent.aiWaitFor("there is at least one headphone item on page");
     // // or you may use a plain sleep:
-    // // await sleep(5000);
+    await sleep(5000);
 
     // // 👀 understand the page content, find the items
     // const items = await agent.aiQuery<

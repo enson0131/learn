@@ -1,282 +1,167 @@
-[2026-01-05T17:17:41.468+08:00] Getting interface description
-[2026-01-05T17:17:41.468+08:00] Interface description end
-[2026-01-05T17:17:41.468+08:00] Uploading test info to server
-[2026-01-05T17:17:41.468+08:00] UploadTestInfoToServer end
-[2026-01-05T17:17:41.813+08:00] will get size
-[2026-01-05T17:17:41.814+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:21.618+08:00] Getting interface description
-[2026-01-05T17:29:21.618+08:00] Interface description end
-[2026-01-05T17:29:21.618+08:00] Uploading test info to server
-[2026-01-05T17:29:21.618+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:21.892+08:00] will get size
-[2026-01-05T17:29:21.893+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:26.863+08:00] Getting interface description
-[2026-01-05T17:29:26.863+08:00] Interface description end
-[2026-01-05T17:29:26.863+08:00] Uploading test info to server
-[2026-01-05T17:29:26.863+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:26.940+08:00] will get size
-[2026-01-05T17:29:26.940+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:29.015+08:00] Getting interface description
-[2026-01-05T17:29:29.015+08:00] Interface description end
-[2026-01-05T17:29:29.015+08:00] Uploading test info to server
-[2026-01-05T17:29:29.015+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:29.090+08:00] will get size
-[2026-01-05T17:29:29.090+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:33.189+08:00] Getting interface description
-[2026-01-05T17:29:33.190+08:00] Interface description end
-[2026-01-05T17:29:33.190+08:00] Uploading test info to server
-[2026-01-05T17:29:33.190+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:33.278+08:00] will get size
-[2026-01-05T17:29:33.278+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:34.217+08:00] Getting interface description
-[2026-01-05T17:29:34.217+08:00] Interface description end
-[2026-01-05T17:29:34.217+08:00] Uploading test info to server
-[2026-01-05T17:29:34.217+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:34.316+08:00] will get size
-[2026-01-05T17:29:34.316+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:34.583+08:00] Getting interface description
-[2026-01-05T17:29:34.583+08:00] Interface description end
-[2026-01-05T17:29:34.583+08:00] Uploading test info to server
-[2026-01-05T17:29:34.583+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:34.717+08:00] will get size
-[2026-01-05T17:29:34.717+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:34.795+08:00] Getting interface description
-[2026-01-05T17:29:34.795+08:00] Interface description end
-[2026-01-05T17:29:34.795+08:00] Uploading test info to server
-[2026-01-05T17:29:34.795+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:35.181+08:00] will get size
-[2026-01-05T17:29:35.181+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:39.289+08:00] Getting interface description
-[2026-01-05T17:29:39.289+08:00] Interface description end
-[2026-01-05T17:29:39.289+08:00] Uploading test info to server
-[2026-01-05T17:29:39.289+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:39.413+08:00] will get size
-[2026-01-05T17:29:39.413+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:39.590+08:00] Getting interface description
-[2026-01-05T17:29:39.591+08:00] Interface description end
-[2026-01-05T17:29:39.591+08:00] Uploading test info to server
-[2026-01-05T17:29:39.591+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:39.774+08:00] will get size
-[2026-01-05T17:29:39.774+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:39.885+08:00] Getting interface description
-[2026-01-05T17:29:39.885+08:00] Interface description end
-[2026-01-05T17:29:39.885+08:00] Uploading test info to server
-[2026-01-05T17:29:39.885+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:39.965+08:00] will get size
-[2026-01-05T17:29:39.965+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:43.735+08:00] Getting interface description
-[2026-01-05T17:29:43.735+08:00] Interface description end
-[2026-01-05T17:29:43.735+08:00] Uploading test info to server
-[2026-01-05T17:29:43.735+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:43.873+08:00] will get size
-[2026-01-05T17:29:43.874+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:44.111+08:00] Getting interface description
-[2026-01-05T17:29:44.111+08:00] Interface description end
-[2026-01-05T17:29:44.111+08:00] Uploading test info to server
-[2026-01-05T17:29:44.111+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:44.209+08:00] will get size
-[2026-01-05T17:29:44.209+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:44.275+08:00] Getting interface description
-[2026-01-05T17:29:44.275+08:00] Interface description end
-[2026-01-05T17:29:44.275+08:00] Uploading test info to server
-[2026-01-05T17:29:44.275+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:44.341+08:00] will get size
-[2026-01-05T17:29:44.341+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:49.107+08:00] Getting interface description
-[2026-01-05T17:29:49.107+08:00] Interface description end
-[2026-01-05T17:29:49.107+08:00] Uploading test info to server
-[2026-01-05T17:29:49.107+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:49.195+08:00] will get size
-[2026-01-05T17:29:49.195+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:49.454+08:00] Getting interface description
-[2026-01-05T17:29:49.454+08:00] Interface description end
-[2026-01-05T17:29:49.454+08:00] Uploading test info to server
-[2026-01-05T17:29:49.454+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:49.630+08:00] will get size
-[2026-01-05T17:29:49.630+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:49.697+08:00] Getting interface description
-[2026-01-05T17:29:49.697+08:00] Interface description end
-[2026-01-05T17:29:49.697+08:00] Uploading test info to server
-[2026-01-05T17:29:49.697+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:49.780+08:00] will get size
-[2026-01-05T17:29:49.780+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:52.884+08:00] Getting interface description
-[2026-01-05T17:29:52.884+08:00] Interface description end
-[2026-01-05T17:29:52.884+08:00] Uploading test info to server
-[2026-01-05T17:29:52.884+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:52.989+08:00] will get size
-[2026-01-05T17:29:52.989+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:53.216+08:00] Getting interface description
-[2026-01-05T17:29:53.216+08:00] Interface description end
-[2026-01-05T17:29:53.216+08:00] Uploading test info to server
-[2026-01-05T17:29:53.216+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:53.296+08:00] will get size
-[2026-01-05T17:29:53.296+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:53.362+08:00] Getting interface description
-[2026-01-05T17:29:53.362+08:00] Interface description end
-[2026-01-05T17:29:53.362+08:00] Uploading test info to server
-[2026-01-05T17:29:53.362+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:53.441+08:00] will get size
-[2026-01-05T17:29:53.441+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:56.504+08:00] Getting interface description
-[2026-01-05T17:29:56.504+08:00] Interface description end
-[2026-01-05T17:29:56.504+08:00] Uploading test info to server
-[2026-01-05T17:29:56.504+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:56.597+08:00] will get size
-[2026-01-05T17:29:56.597+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:56.799+08:00] Getting interface description
-[2026-01-05T17:29:56.799+08:00] Interface description end
-[2026-01-05T17:29:56.799+08:00] Uploading test info to server
-[2026-01-05T17:29:56.799+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:56.874+08:00] will get size
-[2026-01-05T17:29:56.874+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:58.356+08:00] Getting interface description
-[2026-01-05T17:29:58.356+08:00] Interface description end
-[2026-01-05T17:29:58.356+08:00] Uploading test info to server
-[2026-01-05T17:29:58.356+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:58.450+08:00] will get size
-[2026-01-05T17:29:58.450+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:58.729+08:00] Getting interface description
-[2026-01-05T17:29:58.729+08:00] Interface description end
-[2026-01-05T17:29:58.729+08:00] Uploading test info to server
-[2026-01-05T17:29:58.729+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:58.806+08:00] will get size
-[2026-01-05T17:29:58.806+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:29:58.871+08:00] Getting interface description
-[2026-01-05T17:29:58.871+08:00] Interface description end
-[2026-01-05T17:29:58.871+08:00] Uploading test info to server
-[2026-01-05T17:29:58.871+08:00] UploadTestInfoToServer end
-[2026-01-05T17:29:58.940+08:00] will get size
-[2026-01-05T17:29:58.940+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:31:56.420+08:00] Getting interface description
-[2026-01-05T17:31:56.420+08:00] Interface description end
-[2026-01-05T17:31:56.420+08:00] Uploading test info to server
-[2026-01-05T17:31:56.420+08:00] UploadTestInfoToServer end
-[2026-01-05T17:31:56.531+08:00] will get size
-[2026-01-05T17:31:56.532+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:02.012+08:00] Getting interface description
-[2026-01-05T17:32:02.014+08:00] Interface description end
-[2026-01-05T17:32:02.014+08:00] Uploading test info to server
-[2026-01-05T17:32:02.014+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:02.116+08:00] will get size
-[2026-01-05T17:32:02.116+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:04.159+08:00] Getting interface description
-[2026-01-05T17:32:04.159+08:00] Interface description end
-[2026-01-05T17:32:04.159+08:00] Uploading test info to server
-[2026-01-05T17:32:04.159+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:04.231+08:00] will get size
-[2026-01-05T17:32:04.231+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:07.051+08:00] Getting interface description
-[2026-01-05T17:32:07.051+08:00] Interface description end
-[2026-01-05T17:32:07.051+08:00] Uploading test info to server
-[2026-01-05T17:32:07.051+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:07.120+08:00] will get size
-[2026-01-05T17:32:07.120+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:07.961+08:00] Getting interface description
-[2026-01-05T17:32:07.961+08:00] Interface description end
-[2026-01-05T17:32:07.961+08:00] Uploading test info to server
-[2026-01-05T17:32:07.961+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:08.048+08:00] will get size
-[2026-01-05T17:32:08.048+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:08.165+08:00] Getting interface description
-[2026-01-05T17:32:08.165+08:00] Interface description end
-[2026-01-05T17:32:08.165+08:00] Uploading test info to server
-[2026-01-05T17:32:08.165+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:08.256+08:00] will get size
-[2026-01-05T17:32:08.256+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:08.316+08:00] Getting interface description
-[2026-01-05T17:32:08.316+08:00] Interface description end
-[2026-01-05T17:32:08.316+08:00] Uploading test info to server
-[2026-01-05T17:32:08.317+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:08.406+08:00] will get size
-[2026-01-05T17:32:08.406+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:11.483+08:00] Getting interface description
-[2026-01-05T17:32:11.483+08:00] Interface description end
-[2026-01-05T17:32:11.483+08:00] Uploading test info to server
-[2026-01-05T17:32:11.483+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:11.550+08:00] will get size
-[2026-01-05T17:32:11.550+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:11.782+08:00] Getting interface description
-[2026-01-05T17:32:11.782+08:00] Interface description end
-[2026-01-05T17:32:11.782+08:00] Uploading test info to server
-[2026-01-05T17:32:11.782+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:11.852+08:00] will get size
-[2026-01-05T17:32:11.852+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:14.700+08:00] Getting interface description
-[2026-01-05T17:32:14.700+08:00] Interface description end
-[2026-01-05T17:32:14.700+08:00] Uploading test info to server
-[2026-01-05T17:32:14.700+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:14.788+08:00] will get size
-[2026-01-05T17:32:14.788+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:14.959+08:00] Getting interface description
-[2026-01-05T17:32:14.959+08:00] Interface description end
-[2026-01-05T17:32:14.959+08:00] Uploading test info to server
-[2026-01-05T17:32:14.959+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:15.043+08:00] will get size
-[2026-01-05T17:32:15.043+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:20.311+08:00] Getting interface description
-[2026-01-05T17:32:20.311+08:00] Interface description end
-[2026-01-05T17:32:20.311+08:00] Uploading test info to server
-[2026-01-05T17:32:20.311+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:20.395+08:00] will get size
-[2026-01-05T17:32:20.395+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:20.986+08:00] Getting interface description
-[2026-01-05T17:32:20.987+08:00] Interface description end
-[2026-01-05T17:32:20.987+08:00] Uploading test info to server
-[2026-01-05T17:32:20.987+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:21.231+08:00] will get size
-[2026-01-05T17:32:21.232+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:21.675+08:00] Getting interface description
-[2026-01-05T17:32:21.675+08:00] Interface description end
-[2026-01-05T17:32:21.675+08:00] Uploading test info to server
-[2026-01-05T17:32:21.675+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:21.763+08:00] will get size
-[2026-01-05T17:32:21.763+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:31.401+08:00] Getting interface description
-[2026-01-05T17:32:31.401+08:00] Interface description end
-[2026-01-05T17:32:31.401+08:00] Uploading test info to server
-[2026-01-05T17:32:31.401+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:31.518+08:00] will get size
-[2026-01-05T17:32:31.518+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:31.747+08:00] Getting interface description
-[2026-01-05T17:32:31.747+08:00] Interface description end
-[2026-01-05T17:32:31.747+08:00] Uploading test info to server
-[2026-01-05T17:32:31.747+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:31.907+08:00] will get size
-[2026-01-05T17:32:31.907+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:32:35.630+08:00] Getting interface description
-[2026-01-05T17:32:35.634+08:00] Interface description end
-[2026-01-05T17:32:35.634+08:00] Uploading test info to server
-[2026-01-05T17:32:35.634+08:00] UploadTestInfoToServer end
-[2026-01-05T17:32:35.800+08:00] will get size
-[2026-01-05T17:32:35.800+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:35:22.761+08:00] Getting interface description
-[2026-01-05T17:35:22.761+08:00] Interface description end
-[2026-01-05T17:35:22.761+08:00] Uploading test info to server
-[2026-01-05T17:35:22.761+08:00] UploadTestInfoToServer end
-[2026-01-05T17:35:22.913+08:00] will get size
-[2026-01-05T17:35:22.914+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:35:27.358+08:00] Getting interface description
-[2026-01-05T17:35:27.358+08:00] Interface description end
-[2026-01-05T17:35:27.358+08:00] Uploading test info to server
-[2026-01-05T17:35:27.358+08:00] UploadTestInfoToServer end
-[2026-01-05T17:35:27.445+08:00] will get size
-[2026-01-05T17:35:27.445+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:35:29.379+08:00] Getting interface description
-[2026-01-05T17:35:29.379+08:00] Interface description end
-[2026-01-05T17:35:29.379+08:00] Uploading test info to server
-[2026-01-05T17:35:29.379+08:00] UploadTestInfoToServer end
-[2026-01-05T17:35:29.474+08:00] will get size
-[2026-01-05T17:35:29.474+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:35:33.208+08:00] Getting interface description
-[2026-01-05T17:35:33.209+08:00] Interface description end
-[2026-01-05T17:35:33.209+08:00] Uploading test info to server
-[2026-01-05T17:35:33.209+08:00] UploadTestInfoToServer end
-[2026-01-05T17:35:33.295+08:00] will get size
-[2026-01-05T17:35:33.295+08:00] size: 1280x768 dpr: 2
-[2026-01-05T17:35:34.308+08:00] Getting interface description
-[2026-01-05T17:35:34.308+08:00] Interface description end
-[2026-01-05T17:35:34.308+08:00] Uploading test info to server
-[2026-01-05T17:35:34.308+08:00] UploadTestInfoToServer end
-[2026-01-05T17:35:35.426+08:00] will get size
-[2026-01-05T17:35:35.426+08:00] size: 1280x768 dpr: 2
+[2026-01-06T16:22:41.622+08:00] Getting interface description
+[2026-01-06T16:22:41.622+08:00] Interface description end
+[2026-01-06T16:22:41.622+08:00] Uploading test info to server
+[2026-01-06T16:22:41.622+08:00] UploadTestInfoToServer end
+[2026-01-06T16:22:41.771+08:00] will get size
+[2026-01-06T16:22:41.773+08:00] size: 1280x768 dpr: 2
+[2026-01-06T16:22:46.606+08:00] Getting interface description
+[2026-01-06T16:22:46.606+08:00] Interface description end
+[2026-01-06T16:22:46.606+08:00] Uploading test info to server
+[2026-01-06T16:22:46.606+08:00] UploadTestInfoToServer end
+[2026-01-06T16:22:46.709+08:00] will get size
+[2026-01-06T16:22:46.709+08:00] size: 1280x768 dpr: 2
+[2026-01-06T16:22:49.923+08:00] Getting interface description
+[2026-01-06T16:22:49.923+08:00] Interface description end
+[2026-01-06T16:22:49.923+08:00] Uploading test info to server
+[2026-01-06T16:22:49.923+08:00] UploadTestInfoToServer end
+[2026-01-06T16:22:50.181+08:00] will get size
+[2026-01-06T16:22:50.181+08:00] size: 1280x768 dpr: 2
+[2026-01-06T16:22:55.213+08:00] Getting interface description
+[2026-01-06T16:22:55.213+08:00] Interface description end
+[2026-01-06T16:22:55.213+08:00] Uploading test info to server
+[2026-01-06T16:22:55.213+08:00] UploadTestInfoToServer end
+[2026-01-06T16:22:55.713+08:00] Getting interface description
+[2026-01-07T11:39:54.226+08:00] Getting interface description
+[2026-01-07T11:39:54.226+08:00] Interface description end
+[2026-01-07T11:39:54.226+08:00] Uploading test info to server
+[2026-01-07T11:39:54.227+08:00] UploadTestInfoToServer end
+[2026-01-07T11:39:54.354+08:00] will get size
+[2026-01-07T11:39:54.356+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:00.313+08:00] Getting interface description
+[2026-01-07T11:40:00.313+08:00] Interface description end
+[2026-01-07T11:40:00.313+08:00] Uploading test info to server
+[2026-01-07T11:40:00.313+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:00.390+08:00] will get size
+[2026-01-07T11:40:00.390+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:03.802+08:00] Getting interface description
+[2026-01-07T11:40:03.802+08:00] Interface description end
+[2026-01-07T11:40:03.802+08:00] Uploading test info to server
+[2026-01-07T11:40:03.802+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:03.893+08:00] will get size
+[2026-01-07T11:40:03.893+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:07.937+08:00] Getting interface description
+[2026-01-07T11:40:07.937+08:00] Interface description end
+[2026-01-07T11:40:07.937+08:00] Uploading test info to server
+[2026-01-07T11:40:07.937+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:08.023+08:00] will get size
+[2026-01-07T11:40:08.023+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:10.075+08:00] Getting interface description
+[2026-01-07T11:40:10.075+08:00] Interface description end
+[2026-01-07T11:40:10.075+08:00] Uploading test info to server
+[2026-01-07T11:40:10.075+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:10.149+08:00] will get size
+[2026-01-07T11:40:10.149+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:14.123+08:00] Getting interface description
+[2026-01-07T11:40:14.123+08:00] Interface description end
+[2026-01-07T11:40:14.123+08:00] Uploading test info to server
+[2026-01-07T11:40:14.123+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:14.216+08:00] will get size
+[2026-01-07T11:40:14.216+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:15.154+08:00] Getting interface description
+[2026-01-07T11:40:15.154+08:00] Interface description end
+[2026-01-07T11:40:15.154+08:00] Uploading test info to server
+[2026-01-07T11:40:15.154+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:15.224+08:00] will get size
+[2026-01-07T11:40:15.224+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:28.343+08:00] Getting interface description
+[2026-01-07T11:40:28.343+08:00] Interface description end
+[2026-01-07T11:40:28.343+08:00] Uploading test info to server
+[2026-01-07T11:40:28.343+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:28.450+08:00] will get size
+[2026-01-07T11:40:28.451+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:32.838+08:00] Getting interface description
+[2026-01-07T11:40:32.838+08:00] Interface description end
+[2026-01-07T11:40:32.838+08:00] Uploading test info to server
+[2026-01-07T11:40:32.838+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:32.933+08:00] will get size
+[2026-01-07T11:40:32.933+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:35.830+08:00] Getting interface description
+[2026-01-07T11:40:35.830+08:00] Interface description end
+[2026-01-07T11:40:35.830+08:00] Uploading test info to server
+[2026-01-07T11:40:35.830+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:36.033+08:00] will get size
+[2026-01-07T11:40:36.033+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:41.250+08:00] Getting interface description
+[2026-01-07T11:40:41.250+08:00] Interface description end
+[2026-01-07T11:40:41.250+08:00] Uploading test info to server
+[2026-01-07T11:40:41.250+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:41.356+08:00] will get size
+[2026-01-07T11:40:41.356+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:43.210+08:00] Getting interface description
+[2026-01-07T11:40:43.210+08:00] Interface description end
+[2026-01-07T11:40:43.210+08:00] Uploading test info to server
+[2026-01-07T11:40:43.211+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:43.299+08:00] will get size
+[2026-01-07T11:40:43.299+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:47.483+08:00] Getting interface description
+[2026-01-07T11:40:47.483+08:00] Interface description end
+[2026-01-07T11:40:47.483+08:00] Uploading test info to server
+[2026-01-07T11:40:47.483+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:47.560+08:00] will get size
+[2026-01-07T11:40:47.560+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:40:48.458+08:00] Getting interface description
+[2026-01-07T11:40:48.458+08:00] Interface description end
+[2026-01-07T11:40:48.458+08:00] Uploading test info to server
+[2026-01-07T11:40:48.458+08:00] UploadTestInfoToServer end
+[2026-01-07T11:40:48.526+08:00] will get size
+[2026-01-07T11:40:48.526+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:41:11.022+08:00] Getting interface description
+[2026-01-07T11:41:11.022+08:00] Interface description end
+[2026-01-07T11:41:11.022+08:00] Uploading test info to server
+[2026-01-07T11:41:11.022+08:00] UploadTestInfoToServer end
+[2026-01-07T11:41:11.126+08:00] will get size
+[2026-01-07T11:41:11.127+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:41:15.443+08:00] Getting interface description
+[2026-01-07T11:41:15.443+08:00] Interface description end
+[2026-01-07T11:41:15.443+08:00] Uploading test info to server
+[2026-01-07T11:41:15.443+08:00] UploadTestInfoToServer end
+[2026-01-07T11:41:15.539+08:00] will get size
+[2026-01-07T11:41:15.539+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:41:18.492+08:00] Getting interface description
+[2026-01-07T11:41:18.492+08:00] Interface description end
+[2026-01-07T11:41:18.492+08:00] Uploading test info to server
+[2026-01-07T11:41:18.492+08:00] UploadTestInfoToServer end
+[2026-01-07T11:41:18.580+08:00] will get size
+[2026-01-07T11:41:18.580+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:41:58.652+08:00] Getting interface description
+[2026-01-07T11:41:58.652+08:00] Interface description end
+[2026-01-07T11:41:58.652+08:00] Uploading test info to server
+[2026-01-07T11:41:58.652+08:00] UploadTestInfoToServer end
+[2026-01-07T11:41:58.743+08:00] will get size
+[2026-01-07T11:41:58.743+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:41:58.895+08:00] Getting interface description
+[2026-01-07T11:41:58.895+08:00] Interface description end
+[2026-01-07T11:41:58.895+08:00] Uploading test info to server
+[2026-01-07T11:41:58.895+08:00] UploadTestInfoToServer end
+[2026-01-07T11:41:58.967+08:00] will get size
+[2026-01-07T11:41:58.967+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:42:04.258+08:00] Getting interface description
+[2026-01-07T11:42:04.258+08:00] Interface description end
+[2026-01-07T11:42:04.258+08:00] Uploading test info to server
+[2026-01-07T11:42:04.258+08:00] UploadTestInfoToServer end
+[2026-01-07T11:42:04.359+08:00] will get size
+[2026-01-07T11:42:04.359+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:42:06.209+08:00] Getting interface description
+[2026-01-07T11:42:06.209+08:00] Interface description end
+[2026-01-07T11:42:06.209+08:00] Uploading test info to server
+[2026-01-07T11:42:06.209+08:00] UploadTestInfoToServer end
+[2026-01-07T11:42:06.311+08:00] will get size
+[2026-01-07T11:42:06.311+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:42:06.451+08:00] Getting interface description
+[2026-01-07T11:42:06.451+08:00] Interface description end
+[2026-01-07T11:42:06.451+08:00] Uploading test info to server
+[2026-01-07T11:42:06.452+08:00] UploadTestInfoToServer end
+[2026-01-07T11:42:06.550+08:00] will get size
+[2026-01-07T11:42:06.550+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:42:10.086+08:00] Getting interface description
+[2026-01-07T11:42:10.086+08:00] Interface description end
+[2026-01-07T11:42:10.086+08:00] Uploading test info to server
+[2026-01-07T11:42:10.086+08:00] UploadTestInfoToServer end
+[2026-01-07T11:42:10.164+08:00] will get size
+[2026-01-07T11:42:10.164+08:00] size: 1280x768 dpr: 2
+[2026-01-07T11:42:11.073+08:00] Getting interface description
+[2026-01-07T11:42:11.073+08:00] Interface description end
+[2026-01-07T11:42:11.073+08:00] Uploading test info to server
+[2026-01-07T11:42:11.073+08:00] UploadTestInfoToServer end
+[2026-01-07T11:42:11.156+08:00] will get size
+[2026-01-07T11:42:11.156+08:00] size: 1280x768 dpr: 2
