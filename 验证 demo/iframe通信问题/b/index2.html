@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        我是b页面
+    </div>
+    <script>
+        window.parent.postMessage({ text: '你好，我是页面b' }, 'http://127.0.0.1:53090')
+
+        // console.log(window.parent.document) // 打印a页面的document - 不是同源策略
+
+        // console.log(window.parent.__DATA_MODIFY);
+
+        window.addEventListener('message', (res) => {
+            console.log('我是 B 页面，接受到a页面传来的数据', res)
+        })
+    </script>
+</body>
+
+</html>
