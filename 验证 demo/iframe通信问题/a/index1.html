@@ -8,6 +8,18 @@
 </head>
 
 <body>
+    <!-- 
+        postMessage 可以实现跨域通信
+
+        发送消息需要获取指定的 window 窗口的句柄。
+        获取句柄的方式：
+        1. 通过 iframe 的 contentWindow 属性
+        2. 通过 window.open 打开的窗口
+        3. 通过 window.parent 获取父窗口
+        
+
+        监听消息则监听自身 window 的 message 事件 addEventListener('message', callback) 方法。
+    -->
     <div>
         我是a页面
         <iframe src="http://127.0.0.1:53266/index2.html" frameborder="0"></iframe>
