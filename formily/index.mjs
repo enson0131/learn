@@ -90,6 +90,40 @@ function testObservable3_object() {
 // testObservable3_object();
 
 
+function testObservable3() {
+    const obs = observable({
+        aa: {
+            bb: ['a'],
+        },
+    })
+    autorun(() => {
+        // 只倾听bb字段的话，变化的时候也不会触发
+        // 因为obs.aa.bb的引用没变化
+        // 只会触发1次
+        console.log('array1', obs.aa.bb)
+    })
+
+    autorun(() => {
+        // length字段会autorun的时候触发
+        // 因为obs.aa.bb的length字段发生变化了
+         // 触发2次
+        console.log('array2', obs.aa.bb.length)
+    })
+
+    autorun(() => {
+        // 即使原来的不存在，也能触发
+        // 这里会触发2次，因为的确obs.aa.bb[1]的值变了
+        // 触发2次
+        console.log('array3', obs.aa.bb[1])
+    })
+
+    console.log('testObservable3 set data')
+    obs.aa.bb.push('cc')
+}
+
+// testObservable3();
+
+
 function testObservable4() {
     const obs = observable({
         aa: {
@@ -137,3 +171,13 @@ function testObservableShadow() {
 }
 
 // testObservableShadow();
+
+/**
+ 可以看到触发的规则为：
+
+  1. number与string的基础类型，值比较发生变化了会触发
+  2. object与array的复合类型，引用发生变化了会触发，object的字段添减不会触发，array的push和pop也不会触发
+  3.array.length，它属于字段的基础类型变化，所以也会触发
+  4. object与array类型，对于自己引用整个变化的时候，它也会触发子字段的触发
+  5. 浅倾听shadow，只能处理表面一层的数据
+ */
